@@ -2,44 +2,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-<style>
-  /* ---------- Tema (açık) ---------- */
+<style id="app-css">
   :root {
-    --bg: #eef1f5;
-    --surface: #ffffff;
-    --surface-2: #f5f7fa;
-    --ink: #14213a;
-    --muted: #5f6b7e;
-    --line: #dde3eb;
-    --line-strong: #c3ccd8;
-    --head: #13274a;
-    --head-2: #1d3864;
-    --head-ink: #ffffff;
-    --brass: #b08a45;
-    --brass-soft: #ecdcb8;
-    --focus: #6f95d4;
-    --today: #fbf3df;
-    --accent: #13274a;
-    --accent-ink: #ffffff;
-
+    --bg: #eef1f5; --surface: #ffffff; --surface-2: #f5f7fa; --ink: #14213a; --muted: #5f6b7e;
+    --line: #dde3eb; --line-strong: #c3ccd8; --head: #13274a; --head-2: #1d3864; --head-ink: #ffffff;
+    --brass: #b08a45; --brass-soft: #ecdcb8; --focus: #6f95d4; --today: #fbf3df;
+    --accent: #13274a; --accent-ink: #ffffff; --wa: #1f7a4d; --wa-ink: #ffffff;
     --work-bg: #e2f0e6; --work-fg: #276444; --work-bd: #bddcc7;
     --off-bg:  #eceff3; --off-fg:  #5b6576; --off-bd:  #d3d9e1;
     --sick-bg: #f6e0df; --sick-fg: #9b3534; --sick-bd: #e7c0bf;
     --hol-bg:  #f7edcf; --hol-fg:  #83620f; --hol-bd:  #e5d39c;
-
     --shadow: 0 1px 2px rgba(19, 39, 74, .06), 0 4px 14px rgba(19, 39, 74, .05);
     --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
     --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
-  /* ---------- Tema (koyu) ---------- */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --bg: #0c1422; --surface: #132036; --surface-2: #192941; --ink: #e6ebf3; --muted: #98a4b9;
       --line: #25365a; --line-strong: #34497a; --head: #0a1427; --head-2: #13254a; --head-ink: #f2f5fa;
-      --brass: #cfa75d; --brass-soft: #4a3d22; --focus: #8fb0ea; --today: #2a2615;
-      --accent: #cfa75d; --accent-ink: #14213a;
+      --brass: #cfa75d; --brass-soft: #e9d3a5; --focus: #8fb0ea; --today: #2a2615;
+      --accent: #cfa75d; --accent-ink: #14213a; --wa: #2f9a64; --wa-ink: #07140d;
       --work-bg: #183526; --work-fg: #93d4ab; --work-bd: #2a5a40;
       --off-bg: #212c40;  --off-fg: #a6b1c3;  --off-bd: #34425c;
       --sick-bg: #3b1f23; --sick-fg: #f0a8a6; --sick-bd: #6a3338;
@@ -51,8 +35,8 @@
     color-scheme: dark;
     --bg: #0c1422; --surface: #132036; --surface-2: #192941; --ink: #e6ebf3; --muted: #98a4b9;
     --line: #25365a; --line-strong: #34497a; --head: #0a1427; --head-2: #13254a; --head-ink: #f2f5fa;
-    --brass: #cfa75d; --brass-soft: #4a3d22; --focus: #8fb0ea; --today: #2a2615;
-    --accent: #cfa75d; --accent-ink: #14213a;
+    --brass: #cfa75d; --brass-soft: #e9d3a5; --focus: #8fb0ea; --today: #2a2615;
+    --accent: #cfa75d; --accent-ink: #14213a; --wa: #2f9a64; --wa-ink: #07140d;
     --work-bg: #183526; --work-fg: #93d4ab; --work-bd: #2a5a40;
     --off-bg: #212c40;  --off-fg: #a6b1c3;  --off-bd: #34425c;
     --sick-bg: #3b1f23; --sick-fg: #f0a8a6; --sick-bd: #6a3338;
@@ -64,86 +48,73 @@
   body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
   .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 
-  /* ---------- Başlık ---------- */
-  .top {
-    background: linear-gradient(135deg, var(--head), var(--head-2));
-    color: var(--head-ink);
-    border-bottom: 3px solid var(--brass);
-    padding: 18px 16px 16px;
-  }
-  .top-in { max-width: 1320px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; justify-content: space-between; }
+  /* Başlık */
+  .top { background: linear-gradient(135deg, var(--head), var(--head-2)); color: var(--head-ink); border-bottom: 3px solid var(--brass); padding: 16px; }
+  .top-in { max-width: 1320px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; }
   .brand { display: flex; gap: 14px; align-items: center; }
-  .mark {
-    width: 52px; height: 52px; flex: none; border: 2px solid var(--brass); border-radius: 8px;
-    display: grid; place-items: center; font-family: var(--f-display); font-weight: 700; font-size: 24px; color: var(--brass); letter-spacing: .04em;
-  }
-  .brand h1 { margin: 0; font-family: var(--f-display); font-weight: 700; font-size: 28px; letter-spacing: .08em; line-height: 1; }
-  .brand p { margin: 5px 0 0; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; opacity: .75; }
-  .top-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .month { font-family: var(--f-display); font-size: 26px; font-weight: 700; letter-spacing: .1em; color: var(--brass-soft); }
-  :root[data-theme="dark"] .month { color: var(--brass); }
-  .live {
-    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 12px;
-    border-radius: 999px; border: 1px solid rgba(255,255,255,.28); white-space: nowrap;
-  }
-  .live i { width: 8px; height: 8px; border-radius: 50%; background: #9aa4b5; }
-  .live.on i { background: #62c48a; box-shadow: 0 0 0 3px rgba(98,196,138,.25); }
-  .live.off i { background: #e07b73; }
-  .role { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; background: rgba(255,255,255,.1); }
+  .mark { width: 50px; height: 50px; flex: none; border: 2px solid var(--brass); border-radius: 8px; display: grid; place-items: center; font: 700 23px var(--f-display); color: var(--brass); letter-spacing: .04em; }
+  .brand h1 { margin: 0; font: 700 28px/1 var(--f-display); letter-spacing: .08em; }
+  .brand p { margin: 5px 0 0; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+  .top-right { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+  .month { font: 700 26px var(--f-display); letter-spacing: .1em; color: var(--brass-soft); }
+  .langs { display: inline-flex; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; overflow: hidden; }
+  .langs button { background: none; border: 0; color: inherit; font: 600 13px var(--f-body); letter-spacing: .08em; padding: 8px 11px; min-height: 36px; cursor: pointer; opacity: .7; }
+  .langs button[aria-pressed="true"] { background: var(--brass); color: #14213a; opacity: 1; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); white-space: nowrap; }
+  .chip i { width: 8px; height: 8px; border-radius: 50%; background: #62c48a; }
+  .chip.dirty i { background: var(--brass); }
+  .chip.busy i { background: #9fb6de; animation: blink 1s infinite; }
+  .chip button { background: var(--brass); color: #14213a; border: 0; border-radius: 999px; font: 700 12px var(--f-body); padding: 3px 10px; cursor: pointer; }
+  @keyframes blink { 50% { opacity: .3; } }
 
   main { max-width: 1320px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+  body.saving main, body.saving .brush { pointer-events: none; opacity: .65; }
 
-  /* ---------- Araç çubuğu ---------- */
+  /* Araç çubuğu */
   .bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .bar .grow { flex: 1; }
-  .btn {
-    min-height: 44px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--line-strong);
-    background: var(--surface); color: var(--ink); font: 600 15px var(--f-body); cursor: pointer;
-  }
+  .nav, .chef { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn { min-height: 44px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: 600 15px var(--f-body); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
   .btn:hover { background: var(--surface-2); }
-  .btn:focus-visible, .cell:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, .name:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .btn:focus-visible, .cell:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, .name:focus-visible, .langs button:focus-visible, .day:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
   .btn.pri { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   .btn.pri:hover { filter: brightness(1.08); }
+  .btn.wa { background: var(--wa); color: var(--wa-ink); border-color: var(--wa); }
+  .btn.wa:hover { filter: brightness(1.08); }
   .btn.warn { color: var(--sick-fg); border-color: var(--sick-bd); }
   .btn.warn:hover { background: var(--sick-bg); }
   .btn.sm { min-height: 38px; padding: 0 11px; font-size: 14px; }
   .btn:disabled { opacity: .45; cursor: default; }
-  select, input[type=text], input[type=time], textarea {
-    min-height: 44px; padding: 8px 12px; border: 1px solid var(--line-strong); border-radius: 9px;
-    background: var(--surface); color: var(--ink); font: 500 16px var(--f-body); width: 100%;
-  }
+  .btn[aria-pressed="true"] { background: var(--brass); border-color: var(--brass); color: #14213a; }
+  select, input[type=text], input[type=url], input[type=time], textarea { min-height: 44px; padding: 8px 12px; border: 1px solid var(--line-strong); border-radius: 9px; background: var(--surface); color: var(--ink); font: 500 16px var(--f-body); width: 100%; }
   textarea { min-height: 64px; resize: vertical; }
   .who { display: flex; align-items: center; gap: 8px; }
   .who label { font-weight: 600; font-size: 14px; color: var(--muted); white-space: nowrap; }
   .who select { width: auto; min-width: 190px; }
 
-  /* ---------- Paneller ---------- */
+  /* Paneller */
   .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 18px; min-width: 0; }
   .panel-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; margin-bottom: 12px; }
-  .panel h2 { margin: 0; font-family: var(--f-display); font-weight: 700; font-size: 22px; letter-spacing: .04em; text-wrap: balance; }
+  .panel h2 { margin: 0; font: 700 22px var(--f-display); letter-spacing: .04em; text-wrap: balance; }
   .hint { color: var(--muted); font-size: 13px; margin: 0; }
-  .banner { padding: 12px 14px; border-radius: 10px; background: var(--hol-bg); color: var(--hol-fg); border: 1px solid var(--hol-bd); font-weight: 500; }
-
   .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); }
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
   .sw { width: 14px; height: 14px; border-radius: 4px; border: 1px solid; }
-
   .st-work { background: var(--work-bg); color: var(--work-fg); border-color: var(--work-bd); }
   .st-off  { background: var(--off-bg);  color: var(--off-fg);  border-color: var(--off-bd); }
   .st-sick { background: var(--sick-bg); color: var(--sick-fg); border-color: var(--sick-bd); }
   .st-hol  { background: var(--hol-bg);  color: var(--hol-fg);  border-color: var(--hol-bd); }
-
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 9px; border: 1px solid; }
 
-  /* ---------- Bugün paneli ---------- */
+  /* Bugün */
   .today-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
   .tcard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--surface-2); display: grid; gap: 3px; }
   .tcard .n { font-weight: 700; }
   .tcard .r { display: flex; align-items: center; gap: 7px; font-size: 14px; }
   .tcard .t { font-family: var(--f-mono); font-size: 14px; color: var(--muted); }
-  .pill { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 9px; border: 1px solid; }
 
-  /* ---------- Tablolar ---------- */
+  /* Tablolar */
   .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 10px; }
   table { border-collapse: separate; border-spacing: 0; width: 100%; }
   th, td { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
@@ -153,48 +124,41 @@
   .sticky { position: sticky; left: 0; z-index: 2; background: var(--surface); text-align: left; min-width: 140px; box-shadow: 1px 0 0 var(--line); }
   thead .sticky { background: var(--surface-2); z-index: 3; padding-left: 14px; }
   .dow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  .dn { font-family: var(--f-display); font-size: 20px; font-weight: 700; line-height: 1.1; }
+  .dn { font: 700 20px/1.1 var(--f-display); }
   th.wk, td.wk { border-left: 3px solid var(--line-strong); }
   th.is-today { background: var(--today); }
   th.is-today .dow { color: var(--brass); }
   td.is-today { background: color-mix(in srgb, var(--today) 55%, transparent); }
-
   .name { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; min-height: 64px; padding: 8px 12px; border: 0; background: none; color: var(--ink); font: 600 15px var(--f-body); text-align: left; }
+  .name.ph { color: var(--muted); font-style: italic; }
   button.name { cursor: pointer; }
   button.name:hover { background: var(--surface-2); }
-  .name small { color: var(--muted); font-weight: 500; font-size: 12px; display: block; }
-
   .grid td { padding: 3px; min-width: 88px; }
-  .cell {
-    width: 100%; min-height: 58px; border-radius: 8px; border: 1px solid transparent; background: none;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-    padding: 4px 3px; color: var(--ink); font: inherit; position: relative;
-  }
+  .cell { width: 100%; min-height: 58px; border-radius: 8px; border: 1px solid transparent; background: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px 3px; color: var(--ink); font: inherit; position: relative; }
   button.cell { cursor: pointer; }
   button.cell.empty:hover { border: 1px dashed var(--line-strong); background: var(--surface-2); }
   button.cell.empty::after { content: "+"; color: var(--line-strong); font-size: 18px; }
   .cell .tr { display: inline-flex; align-items: center; gap: 4px; font: 600 12px var(--f-mono); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cell .tm { font: 600 14px var(--f-mono); white-space: nowrap; }
-  .cell .lb { font-weight: 700; font-size: 13px; letter-spacing: .06em; }
+  .cell .lb { font-weight: 700; font-size: 12px; letter-spacing: .06em; }
   .cell .nd { position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .6; }
   .tot { font: 600 14px var(--f-mono); padding: 0 10px; white-space: nowrap; background: var(--surface-2); }
   .zero { color: var(--line-strong); }
-
   .sum td { padding: 10px; font: 500 14px var(--f-mono); white-space: nowrap; }
   .sum td.sticky { font: 600 15px var(--f-body); padding-left: 14px; }
   .sum .rg { display: block; font-size: 11px; color: var(--muted); font-weight: 500; }
   .sum .cur { background: var(--today); }
   .sum tfoot td { font-weight: 700; background: var(--surface-2); border-top: 2px solid var(--line); }
   .sum tfoot td.sticky { background: var(--surface-2); }
-
   .totals { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
   .tt { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--surface-2); display: grid; gap: 6px; align-content: start; }
   .tt .n { font-weight: 700; }
-  .tt .h { font: 700 26px var(--f-display); letter-spacing: .02em; }
+  .tt .h { font: 700 26px var(--f-display); }
   .tt .h small { font: 500 13px var(--f-body); color: var(--muted); }
   .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .empty { padding: 26px; text-align: center; color: var(--muted); }
 
-  /* ---------- Kişisel görünüm ---------- */
+  /* Kişisel görünüm */
   .me-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .me-head h2 { font-size: 30px; }
   .kpis { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -205,6 +169,7 @@
   .wk-title { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 2px 6px; border-bottom: 2px solid var(--line); }
   .wk-title b { font-family: var(--f-mono); color: var(--ink); letter-spacing: 0; }
   .day { display: grid; grid-template-columns: 74px 1fr auto; gap: 4px 12px; align-items: center; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+  .day[data-act] { cursor: pointer; }
   .day.is-today { background: var(--today); border-radius: 8px; padding-inline: 8px; }
   .day .d { font-weight: 700; line-height: 1.15; }
   .day .d small { display: block; color: var(--muted); font-weight: 500; font-size: 12px; }
@@ -215,7 +180,7 @@
   .day .note { grid-column: 2 / -1; font-size: 13px; color: var(--muted); }
   .day .none { color: var(--muted); font-size: 14px; }
 
-  /* ---------- Pencereler ---------- */
+  /* Pencere */
   .ov { position: fixed; inset: 0; background: rgba(8, 16, 32, .5); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
   .dlg { background: var(--surface); color: var(--ink); width: 100%; max-width: 460px; max-height: calc(100% - 8px); overflow-y: auto; border-radius: 14px; padding: 20px; box-shadow: 0 24px 60px rgba(0,0,0,.3); }
   .dlg.wide { max-width: 640px; }
@@ -240,421 +205,578 @@
   .row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; align-items: center; }
   .trow { display: grid; grid-template-columns: 70px 1fr 96px 96px auto; gap: 6px; align-items: center; }
   .trow .c { display: flex; gap: 4px; grid-column: 1 / -1; align-items: center; flex-wrap: wrap; }
-  .cpick { width: 26px; height: 26px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
-  .cpick[aria-pressed="true"] { border-color: var(--ink); }
   .trow + .trow { border-top: 1px solid var(--line); padding-top: 10px; }
+  .cpick { width: 26px; height: 26px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+  .cpick[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--surface) inset; }
   .colhead { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .06em; }
+  .copyrow { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .steps { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+  .plist { display: grid; gap: 6px; margin: 12px 0 16px; }
+  .prow { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .prow span { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .wa-all { width: 100%; min-height: 52px; font-size: 17px; }
 
-  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-weight: 600; z-index: 60; box-shadow: var(--shadow); }
-  .empty { padding: 26px; text-align: center; color: var(--muted); }
+  /* Hızlı giriş */
+  .brush { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--surface); border-top: 3px solid var(--brass); box-shadow: 0 -8px 24px rgba(8, 16, 32, .18); padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .brush-in { max-width: 1320px; margin: 0 auto; display: grid; gap: 10px; }
+  .brush-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .brush-top b { font: 700 18px var(--f-display); letter-spacing: .06em; margin-right: 4px; }
+  .bseg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bseg button { min-height: 42px; padding: 0 14px; border-radius: 9px; border: 2px solid transparent; font: 600 15px var(--f-body); cursor: pointer; }
+  .bseg button[aria-pressed="true"] { border-color: currentColor; }
+  .bseg .erase { background: var(--surface-2); color: var(--ink); border: 2px dashed var(--line-strong); }
+  .bseg .erase[aria-pressed="true"] { border-style: solid; border-color: var(--ink); }
+  .brow { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .bact { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .bact .hint { flex: 1; min-width: 180px; }
+  .bact .hint.bad { color: var(--sick-fg); font-weight: 600; }
+  body.brushing main { padding-bottom: 270px; }
+  body.brushing button.cell:hover { outline: 2px solid var(--brass); outline-offset: -2px; }
+  body.brushing .grid thead th[data-act] { cursor: pointer; }
+  body.brushing .grid thead th[data-act]:hover { background: var(--brass-soft); color: #14213a; }
+  @keyframes pop { 0% { transform: scale(.86); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  .cell.just { animation: pop .35s ease-out; }
+
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-weight: 600; z-index: 60; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
+  body.brushing .toast { bottom: calc(230px + env(safe-area-inset-bottom, 0px)); }
 
   @media (max-width: 640px) {
     .brand h1 { font-size: 23px; }
-    .mark { width: 44px; height: 44px; font-size: 20px; }
+    .mark { width: 42px; height: 42px; font-size: 19px; }
     .month { font-size: 21px; }
     main { padding: 12px 16px; }
     .panel { padding: 14px; }
     .bar .grow { display: none; }
-    .nav { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; width: 100%; }
+    .nav { display: grid; grid-template-columns: auto 1fr auto; width: 100%; }
     .who { width: 100%; }
     .who select { flex: 1; min-width: 0; }
-    .chef { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; }
+    .chef { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
     .chef .btn { padding: 0 8px; font-size: 14px; }
+    .chef .btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
     .sticky { min-width: 112px; }
     .ov { align-items: flex-end; padding: 0; }
     .dlg { border-radius: 16px 16px 0 0; max-height: 92%; padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
     .trow { grid-template-columns: 64px 1fr auto; }
-    .trow .tm-in { grid-column: span 1; }
     .day { grid-template-columns: 62px 1fr auto; }
+    .brow { grid-template-columns: 1fr 1fr; }
+    .brow select { grid-column: 1 / -1; }
+    .bseg { display: grid; grid-template-columns: repeat(5, 1fr); width: 100%; }
+    .bseg button { padding: 0 4px; font-size: 13px; }
+    .brush-top b { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .cell.just, .chip.busy i { animation: none; } }
 </style>
 
-<header class="top">
-  <div class="top-in">
-    <div class="brand">
-      <div class="mark" aria-hidden="true">EA</div>
-      <div>
-        <h1>EA TRANSPORT</h1>
-        <p>Personel &amp; Tur Planı</p>
-      </div>
-    </div>
-    <div class="top-right">
-      <span class="role" id="role" hidden></span>
-      <span class="month" id="monthLabel"></span>
-      <span class="live" id="live"><i></i><span>Bağlanıyor…</span></span>
-    </div>
-  </div>
-</header>
+<div id="app"></div>
 
-<main>
-  <div class="banner" id="banner" hidden></div>
+<script type="application/json" id="plan-data">{"v":1,"shareUrl":"https://claude.ai/artifact/SXg1ahXMwkcWK6qSNAERhm","employees":[{"id":"e01","name":""},{"id":"e02","name":""},{"id":"e03","name":""},{"id":"e04","name":""},{"id":"e05","name":""},{"id":"e06","name":""},{"id":"e07","name":""},{"id":"e08","name":""},{"id":"e09","name":""},{"id":"e10","name":""}],"tours":[],"entries":{}}</script>
 
-  <div class="bar">
-    <div class="nav">
-      <button class="btn" id="prev" aria-label="Önceki ay">‹ Önceki</button>
-      <button class="btn" id="today">Bugün</button>
-      <button class="btn" id="next" aria-label="Sonraki ay">Sonraki ›</button>
-    </div>
-    <div class="who">
-      <label for="who">Program:</label>
-      <select id="who"></select>
-    </div>
-    <div class="grow"></div>
-    <div class="chef" id="chefBar" hidden>
-      <button class="btn pri" id="addEmp">+ Çalışan</button>
-      <button class="btn" id="editEmp">Çalışanlar</button>
-      <button class="btn" id="editTours">Turlar</button>
-    </div>
-  </div>
-
-  <!-- Kişisel görünüm -->
-  <section class="panel" id="personView" hidden></section>
-
-  <!-- Ekip görünümü -->
-  <div id="teamView" style="display:grid;gap:16px">
-    <section class="panel" id="todayPanel" hidden>
-      <div class="panel-h"><h2 id="todayTitle">Bugün</h2><p class="hint">Kim hangi turda, kaçta</p></div>
-      <div class="today-grid" id="todayGrid"></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-h">
-        <h2>Aylık Tur Takvimi</h2>
-        <div class="legend">
-          <span><i class="sw st-work"></i>Çalışıyor</span>
-          <span><i class="sw st-off"></i>İzinli</span>
-          <span><i class="sw st-sick"></i>Hastalık</span>
-          <span><i class="sw st-hol"></i>Tatil</span>
-        </div>
-      </div>
-      <p class="hint" id="gridHint" style="margin-bottom:10px"></p>
-      <div class="scroll" id="gridWrap"><table class="grid" id="grid"></table></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-h"><h2>Haftalık Saatler</h2><p class="hint">Pazartesi–Cumartesi · ay sınırındaki haftalar komşu ayı da sayar</p></div>
-      <div class="scroll"><table class="sum" id="weekly"></table></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-h"><h2>Aylık Toplam</h2><p class="hint" id="monthHint"></p></div>
-      <div class="totals" id="totals"></div>
-    </section>
-  </div>
-</main>
-
-<!-- Gün düzenleme -->
-<div class="ov" id="ovCell" hidden>
-  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="cTitle">
-    <h3 id="cTitle"></h3>
-    <p class="sub" id="cSub"></p>
-    <div class="f">
-      <span class="l">Durum</span>
-      <div class="seg" id="cStatus">
-        <label><input type="radio" name="st" value="work" id="stWork"><span class="st-work">Çalışıyor</span></label>
-        <label><input type="radio" name="st" value="off" id="stOff"><span class="st-off">İzinli</span></label>
-        <label><input type="radio" name="st" value="sick" id="stSick"><span class="st-sick">Hastalık</span></label>
-        <label><input type="radio" name="st" value="hol" id="stHol"><span class="st-hol">Tatil</span></label>
-      </div>
-    </div>
-    <div class="f" id="cTourF">
-      <label for="cTour">Tur</label>
-      <select id="cTour"></select>
-    </div>
-    <div class="two">
-      <div class="f"><label for="cStart">Başlangıç</label><input type="time" id="cStart"></div>
-      <div class="f"><label for="cEnd">Bitiş</label><input type="time" id="cEnd"></div>
-    </div>
-    <div class="dur" id="cDur"></div>
-    <div class="f"><label for="cNote">Not (çalışan görür)</label><textarea id="cNote" placeholder="Örn. araç 34 EA 112, 06:45'te garajda"></textarea></div>
-    <label class="chk"><input type="checkbox" id="cWeek"> <span id="cWeekLbl">Bu haftanın tüm günlerine uygula (Pzt–Cmt)</span></label>
-    <div class="err" id="cErr" hidden></div>
-    <div class="acts">
-      <button class="btn warn l" id="cClear">Temizle</button>
-      <button class="btn" data-close>Vazgeç</button>
-      <button class="btn pri" id="cSave">Kaydet</button>
-    </div>
-  </div>
-</div>
-
-<!-- Çalışanlar -->
-<div class="ov" id="ovEmp" hidden>
-  <div class="dlg wide" role="dialog" aria-modal="true" aria-labelledby="eTitle">
-    <h3 id="eTitle">Çalışanlar</h3>
-    <p class="sub">İsimleri düzenleyin, ↑ ↓ ile sıralayın. Değişiklikler herkese anında yansır.</p>
-    <div class="rows" id="eRows"></div>
-    <button class="btn sm" id="eAdd">+ Yeni satır</button>
-    <div class="err" id="eErr" hidden></div>
-    <div class="acts" style="margin-top:14px">
-      <button class="btn" data-close>Vazgeç</button>
-      <button class="btn pri" id="eSave">Kaydet</button>
-    </div>
-  </div>
-</div>
-
-<!-- Turlar -->
-<div class="ov" id="ovTour" hidden>
-  <div class="dlg wide" role="dialog" aria-modal="true" aria-labelledby="tTitle">
-    <h3 id="tTitle">Turlar</h3>
-    <p class="sub">Kod takvimde görünür (örn. T1). Varsayılan saatler, tur seçilince forma otomatik gelir.</p>
-    <div class="rows" id="tRows"></div>
-    <button class="btn sm" id="tAdd">+ Yeni tur</button>
-    <div class="err" id="tErr" hidden></div>
-    <div class="acts" style="margin-top:14px">
-      <button class="btn" data-close>Vazgeç</button>
-      <button class="btn pri" id="tSave">Kaydet</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast" hidden></div>
-
-<script>
+<script id="app-js">
 /* =========================================================
-   SABİTLER
+   EA Transport · Personel & Tur Planı
+   Veriler sayfanın içinde (#plan-data) tutulur. Şef kaydettiğinde
+   sayfa kendini yeni sürüm olarak yayınlar; bağlantıyı açık olan
+   herkesin ekranı otomatik yenilenir.
    ========================================================= */
-const STATUS = {
-  work: { label: 'Çalışıyor', short: '',      cls: 'st-work' },
-  off:  { label: 'İzinli',    short: 'İZİN',  cls: 'st-off'  },
-  sick: { label: 'Hastalık',  short: 'HASTA', cls: 'st-sick' },
-  hol:  { label: 'Tatil',     short: 'TATİL', cls: 'st-hol'  }
+
+/* ---------- Diller ---------- */
+const I18N = {
+  tr: {
+    locale: 'tr-TR', sub: 'Personel & Tur Planı',
+    months: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+    mon3: ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],
+    day3: ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],
+    dayL: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+    work: 'Çalışıyor', off: 'İzinli', sick: 'Hastalık', hol: 'Tatil',
+    offS: 'İZİN', sickS: 'HASTA', holS: 'TATİL',
+    bWork: 'Çalışıyor', bOff: 'İzin', bSick: 'Hasta', bHol: 'Tatil', bErase: 'Sil',
+    prev: '‹ Önceki', next: 'Sonraki ›', today: 'Bugün', schedule: 'Program', team: 'Tüm ekip',
+    quick: '⚡ Hızlı giriş', addEmp: '+ Çalışan', emps: 'Çalışanlar', tours: 'Turlar', share: 'WhatsApp ile paylaş',
+    empN: 'Çalışan {n}', employee: 'Çalışan', monthCol: 'Ay', total: 'Toplam',
+    todayT: 'Bugün', todayHint: 'Kim hangi turda, kaçta',
+    gridT: 'Aylık Tur Takvimi', gridEdit: 'Bir güne dokunun: durum, tur ve saat girin. Çok gün için “Hızlı giriş” kullanın.',
+    gridView: 'Kendi programınız için yukarıdan adınızı seçin.',
+    weeklyT: 'Haftalık Saatler', weeklyHint: 'Pazartesi–Cumartesi · ay sınırındaki haftalar komşu ayı da sayar',
+    monthlyT: 'Aylık Toplam', monthlyHint: '{m} {y} · {n} iş günü (Pzt–Cmt)',
+    weekN: '{n}. hafta', thisWeek: 'bu hafta', hShort: 'sa', hours: 'saat', workDays: 'çalışma günü',
+    notPlanned: 'Plan girilmedi', noTour: 'Tur atanmadı', noEntries: 'Kayıt yok', noEmps: 'Henüz çalışan yok.',
+    status: 'Durum', tour: 'Tur', tourNone: '— Tur seçilmedi —', start: 'Başlangıç', end: 'Bitiş',
+    note: 'Not (çalışan görür)', notePh: 'Örn. araç 34 EA 112, 06:45’te garajda', applyWeek: 'Bu haftanın tüm günlerine uygula (Pzt–Cmt)',
+    clear: 'Temizle', cancel: 'Vazgeç', save: 'Kaydet', close: 'Kapat',
+    dur: 'Süre: {h} saat', overnight: 'ertesi güne sarkıyor', noHours: 'Bu durumda saat sayılmaz.', badTime: 'Geçerli başlangıç ve bitiş saati girin.',
+    empsSub: 'İsimleri yazın, ↑ ↓ ile sıralayın.', addRow: '+ Yeni satır', del: 'Sil', sure: 'Emin misin?', namePh: 'Ad Soyad',
+    toursSub: 'Kod takvimde görünür (örn. T1). Varsayılan saatler tur seçilince otomatik gelir.', addTour: '+ Yeni tur', tourPh: 'Güzergâh / tur adı', color: 'Renk',
+    quickT: 'HIZLI GİRİŞ', quickHint: 'Bir güne dokun, seçim uygulanır. Gün başlığına dokun, o gün tüm ekibe uygulanır.',
+    undo: '↶ Geri al', done: 'Bitti', undone: 'Geri alındı',
+    saved: 'Kaydedildi', saving: 'Kaydediliyor…', unsaved: '{n} değişiklik', saveNow: 'Kaydet', upToDate: 'Güncel',
+    saveFail: 'Kaydedilemedi, tekrar deneyin', readOnly: 'Bu görünümde düzenleme yapılamaz', conflict: 'Plan başka yerden güncellendi, yenileniyor',
+    shareT: 'Ekiple paylaş', shareSub: 'Çalışanlar bağlantıyı açar, adını seçer ve programını görür. Siz kaydettikçe güncellenir.',
+    step1: 'Sayfanın üstündeki Paylaş (Share) menüsünde “Bağlantıya sahip herkes” açık olsun.',
+    step2: 'Aşağıdan tüm ekibe tek mesaj gönderin ya da her çalışana kendi bağlantısını yollayın. Kişisel bağlantı doğrudan o kişinin programını açar.',
+    link: 'Plan bağlantısı', copy: 'Kopyala', copied: 'Kopyalandı', waAll: 'Tüm ekibe WhatsApp’tan gönder', perPerson: 'Kişiye özel bağlantı',
+    msgAll: 'EA Transport çalışma planı:\n{url}\nAdını seçerek kendi programını görebilirsin.',
+    msgOne: 'Merhaba {name}, EA Transport çalışma programın:\n{url}'
+  },
+  en: {
+    locale: 'en-GB', sub: 'Staff & Route Plan',
+    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    mon3: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    day3: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    dayL: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    work: 'Working', off: 'Day off', sick: 'Sick', hol: 'Holiday',
+    offS: 'OFF', sickS: 'SICK', holS: 'HOLIDAY',
+    bWork: 'Working', bOff: 'Off', bSick: 'Sick', bHol: 'Holiday', bErase: 'Erase',
+    prev: '‹ Previous', next: 'Next ›', today: 'Today', schedule: 'Schedule', team: 'Whole team',
+    quick: '⚡ Quick entry', addEmp: '+ Employee', emps: 'Employees', tours: 'Routes', share: 'Share on WhatsApp',
+    empN: 'Employee {n}', employee: 'Employee', monthCol: 'Month', total: 'Total',
+    todayT: 'Today', todayHint: 'Who drives which route, and when',
+    gridT: 'Monthly Route Calendar', gridEdit: 'Tap a day to set status, route and hours. Use “Quick entry” for many days.',
+    gridView: 'Pick your name above to see your own schedule.',
+    weeklyT: 'Weekly Hours', weeklyHint: 'Monday–Saturday · weeks at month edges include the neighbouring month',
+    monthlyT: 'Monthly Total', monthlyHint: '{m} {y} · {n} working days (Mon–Sat)',
+    weekN: 'Week {n}', thisWeek: 'this week', hShort: 'h', hours: 'hours', workDays: 'work days',
+    notPlanned: 'Not planned', noTour: 'No route assigned', noEntries: 'No entries', noEmps: 'No employees yet.',
+    status: 'Status', tour: 'Route', tourNone: '— No route —', start: 'Start', end: 'End',
+    note: 'Note (visible to the employee)', notePh: 'e.g. vehicle 34 EA 112, at the depot 06:45', applyWeek: 'Apply to the whole week (Mon–Sat)',
+    clear: 'Clear', cancel: 'Cancel', save: 'Save', close: 'Close',
+    dur: 'Duration: {h} h', overnight: 'runs past midnight', noHours: 'No hours counted for this status.', badTime: 'Enter a valid start and end time.',
+    empsSub: 'Type the names, reorder with ↑ ↓.', addRow: '+ Add row', del: 'Delete', sure: 'Sure?', namePh: 'Full name',
+    toursSub: 'The code shows in the calendar (e.g. T1). Default hours fill in when the route is picked.', addTour: '+ Add route', tourPh: 'Route name', color: 'Colour',
+    quickT: 'QUICK ENTRY', quickHint: 'Tap a day to apply. Tap a date header to apply it to the whole team that day.',
+    undo: '↶ Undo', done: 'Done', undone: 'Undone',
+    saved: 'Saved', saving: 'Saving…', unsaved: '{n} unsaved', saveNow: 'Save', upToDate: 'Up to date',
+    saveFail: 'Could not save, try again', readOnly: 'Editing is not available in this view', conflict: 'The plan changed elsewhere, reloading',
+    shareT: 'Share with the team', shareSub: 'Employees open the link, pick their name and see their schedule. It updates whenever you save.',
+    step1: 'In the page’s Share menu at the top, turn on “Anyone with the link”.',
+    step2: 'Send one message to the whole team below, or send each employee their own link, which opens their schedule directly.',
+    link: 'Plan link', copy: 'Copy', copied: 'Copied', waAll: 'Send to the whole team on WhatsApp', perPerson: 'Personal links',
+    msgAll: 'EA Transport work schedule:\n{url}\nPick your name to see your own schedule.',
+    msgOne: 'Hi {name}, here is your EA Transport schedule:\n{url}'
+  },
+  da: {
+    locale: 'da-DK', sub: 'Personale- & ruteplan',
+    months: ['Januar','Februar','Marts','April','Maj','Juni','Juli','August','September','Oktober','November','December'],
+    mon3: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
+    day3: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
+    dayL: ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'],
+    work: 'Arbejder', off: 'Fri', sick: 'Syg', hol: 'Ferie',
+    offS: 'FRI', sickS: 'SYG', holS: 'FERIE',
+    bWork: 'Arbejder', bOff: 'Fri', bSick: 'Syg', bHol: 'Ferie', bErase: 'Slet',
+    prev: '‹ Forrige', next: 'Næste ›', today: 'I dag', schedule: 'Plan', team: 'Hele holdet',
+    quick: '⚡ Hurtig indtastning', addEmp: '+ Medarbejder', emps: 'Medarbejdere', tours: 'Ture', share: 'Del på WhatsApp',
+    empN: 'Medarbejder {n}', employee: 'Medarbejder', monthCol: 'Måned', total: 'I alt',
+    todayT: 'I dag', todayHint: 'Hvem kører hvilken tur, og hvornår',
+    gridT: 'Månedlig turkalender', gridEdit: 'Tryk på en dag for at angive status, tur og tider. Brug “Hurtig indtastning” til mange dage.',
+    gridView: 'Vælg dit navn ovenfor for at se din egen plan.',
+    weeklyT: 'Timer pr. uge', weeklyHint: 'Mandag–lørdag · uger ved månedsskifte tæller nabomåneden med',
+    monthlyT: 'Månedstotal', monthlyHint: '{m} {y} · {n} arbejdsdage (man–lør)',
+    weekN: 'Uge {n}', thisWeek: 'denne uge', hShort: 't', hours: 'timer', workDays: 'arbejdsdage',
+    notPlanned: 'Ikke planlagt', noTour: 'Ingen tur tildelt', noEntries: 'Ingen poster', noEmps: 'Ingen medarbejdere endnu.',
+    status: 'Status', tour: 'Tur', tourNone: '— Ingen tur —', start: 'Start', end: 'Slut',
+    note: 'Note (vises for medarbejderen)', notePh: 'F.eks. bil 34 EA 112, i garagen kl. 06:45', applyWeek: 'Anvend på hele ugen (man–lør)',
+    clear: 'Ryd', cancel: 'Annuller', save: 'Gem', close: 'Luk',
+    dur: 'Varighed: {h} t', overnight: 'går over midnat', noHours: 'Der tælles ingen timer for denne status.', badTime: 'Angiv et gyldigt start- og sluttidspunkt.',
+    empsSub: 'Skriv navnene, sorter med ↑ ↓.', addRow: '+ Tilføj række', del: 'Slet', sure: 'Sikker?', namePh: 'Fulde navn',
+    toursSub: 'Koden vises i kalenderen (f.eks. T1). Standardtider udfyldes, når turen vælges.', addTour: '+ Tilføj tur', tourPh: 'Turens navn', color: 'Farve',
+    quickT: 'HURTIG INDTASTNING', quickHint: 'Tryk på en dag for at anvende. Tryk på en datooverskrift for hele holdet den dag.',
+    undo: '↶ Fortryd', done: 'Færdig', undone: 'Fortrudt',
+    saved: 'Gemt', saving: 'Gemmer…', unsaved: '{n} ikke gemt', saveNow: 'Gem', upToDate: 'Opdateret',
+    saveFail: 'Kunne ikke gemme, prøv igen', readOnly: 'Redigering er ikke mulig i denne visning', conflict: 'Planen er ændret et andet sted, genindlæser',
+    shareT: 'Del med holdet', shareSub: 'Medarbejderne åbner linket, vælger deres navn og ser deres plan. Den opdateres, hver gang du gemmer.',
+    step1: 'Slå “Alle med linket” til i sidens Del-menu (Share) øverst.',
+    step2: 'Send én besked til hele holdet herunder, eller send hver medarbejder sit eget link, som åbner deres plan direkte.',
+    link: 'Link til planen', copy: 'Kopiér', copied: 'Kopieret', waAll: 'Send til hele holdet på WhatsApp', perPerson: 'Personlige links',
+    msgAll: 'EA Transport arbejdsplan:\n{url}\nVælg dit navn for at se din egen plan.',
+    msgOne: 'Hej {name}, her er din arbejdsplan hos EA Transport:\n{url}'
+  }
 };
+const LANGS = [['tr', 'TR'], ['en', 'EN'], ['da', 'DA']];
+const STATUS_KEYS = ['work', 'off', 'sick', 'hol'];
+const STATUS_CLS = { work: 'st-work', off: 'st-off', sick: 'st-sick', hol: 'st-hol' };
 const TOUR_COLORS = ['#3b6fb6', '#1f8a86', '#7a55b3', '#c0702a', '#b8456b', '#6b7d2a', '#5a6b85'];
-const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-const MON3 = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
-const DAY3 = ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'];
-const DAYL = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 
-/* =========================================================
-   DURUM
-   ========================================================= */
-let db = null;               // paylaşılan canlı veritabanı
-let canEdit = false;         // şef mi (düzenleme yetkisi)
-let employees = [];          // [{id, name, order}]
-let tours = [];              // [{id, code, name, start, end, color, order}]
-const monthDocs = {};        // 'YYYY-MM' -> { exists, entries }
-const monthSubs = {};        // 'YYYY-MM' -> unsubscribe
-const knownExists = {};
-const writeQ = {};
-let ready = { emp: false, tour: false };
-const now0 = new Date();
-let view = { y: now0.getFullYear(), m: now0.getMonth() };
-let who = lsGet('ea.who') || '';   // '' = tüm ekip, yoksa çalışan id
-
-/* =========================================================
-   YARDIMCILAR
-   ========================================================= */
+/* ---------- Küçük yardımcılar ---------- */
 const $ = s => document.querySelector(s);
 const pad = n => String(n).padStart(2, '0');
 const dkey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const mkey = d => dkey(d).slice(0, 7);
 const parseKey = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function store(kind) { try { return kind === 's' ? sessionStorage : localStorage; } catch (e) { return null; } }
+function sGet(kind, k) { try { return store(kind)?.getItem(k) ?? null; } catch (e) { return null; } }
+function sSet(kind, k, v) { try { store(kind)?.setItem(k, v); } catch (e) {} }
 
-function mins(t) { if (!t || !/^\d{1,2}:\d{2}$/.test(t)) return null; const [h, m] = t.split(':').map(Number); return h * 60 + m; }
-function hoursOf(start, end) {
-  const s = mins(start), e = mins(end);
-  if (s === null || e === null || s === e) return 0;
-  let d = e - s; if (d < 0) d += 1440;          // gece vardiyası
-  return d / 60;
+function pickLang() {
+  const saved = sGet('l', 'ea.lang');
+  if (saved && I18N[saved]) return saved;
+  const nav = (navigator.language || '').slice(0, 2).toLowerCase();
+  return nav === 'da' ? 'da' : nav === 'en' ? 'en' : 'tr';
 }
+let lang = pickLang();
+function t(k, vars) {
+  let s = I18N[lang][k] ?? I18N.tr[k] ?? k;
+  if (vars && typeof s === 'string') for (const [a, b] of Object.entries(vars)) s = s.split('{' + a + '}').join(b);
+  return s;
+}
+const L = () => I18N[lang];
+
+function mins(v) { if (!v || !/^\d{1,2}:\d{2}$/.test(v)) return null; const [h, m] = v.split(':').map(Number); return h * 60 + m; }
+function hoursOf(a, b) { const s = mins(a), e = mins(b); if (s === null || e === null || s === e) return 0; let d = e - s; if (d < 0) d += 1440; return d / 60; }
 const entryHours = e => (e && e.status === 'work') ? hoursOf(e.start, e.end) : 0;
-const fmtH = h => h.toLocaleString('tr-TR', { maximumFractionDigits: 2 });
-const shortT = t => (t || '').endsWith(':00') ? t.slice(0, 2) : (t || '');
+const fmtH = h => h.toLocaleString(L().locale, { maximumFractionDigits: 2 });
+const shortT = v => (v || '').endsWith(':00') ? v.slice(0, 2) : (v || '');
+const isToday = d => dkey(d) === dkey(new Date());
 
-function getEntry(empId, dk) {
-  const md = monthDocs[dk.slice(0, 7)];
-  return (md && md.entries && md.entries[empId + '__' + dk]) || null;
-}
-const tourById = id => tours.find(t => t.id === id) || null;
-
-// Ayın Pazar hariç günleri
 function monthDays(y, m) {
   const n = new Date(y, m + 1, 0).getDate(), out = [];
   for (let d = 1; d <= n; d++) { const dt = new Date(y, m, d); if (dt.getDay() !== 0) out.push(dt); }
   return out;
 }
-// Ayın Pzt–Cmt haftaları
 function monthWeeks(y, m) {
   const first = new Date(y, m, 1), last = new Date(y, m + 1, 0);
   let mon = new Date(y, m, 1 - ((first.getDay() + 6) % 7));
   const weeks = [];
   while (mon <= last) {
-    const days = [0,1,2,3,4,5].map(i => new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i));
+    const days = [0, 1, 2, 3, 4, 5].map(i => new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i));
     if (days.some(d => d.getMonth() === m)) weeks.push(days);
     mon = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 7);
   }
   return weeks;
 }
-const sumH = (empId, days) => days.reduce((s, d) => s + entryHours(getEntry(empId, dkey(d))), 0);
-const isToday = d => dkey(d) === dkey(new Date());
-
-function toast(msg) {
-  const t = $('#toast'); t.textContent = msg; t.hidden = false;
-  clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2200);
+function weekOf(dk) {
+  const d = parseKey(dk), off = (d.getDay() + 6) % 7;
+  return [0, 1, 2, 3, 4, 5].map(i => dkey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - off + i)));
 }
-function setLive(state, text) {
-  const el = $('#live'); el.className = 'live ' + state; el.querySelector('span').textContent = text;
+
+/* ---------- Plan verisi ---------- */
+function loadPlan() {
+  let s = {};
+  try { s = JSON.parse(document.getElementById('plan-data').textContent) || {}; } catch (e) {}
+  return {
+    v: 1,
+    shareUrl: typeof s.shareUrl === 'string' ? s.shareUrl : '',
+    employees: Array.isArray(s.employees) ? s.employees.filter(e => e && e.id) : [],
+    tours: Array.isArray(s.tours) ? s.tours.filter(x => x && x.id) : [],
+    entries: s.entries && typeof s.entries === 'object' ? s.entries : {}
+  };
+}
+let plan = loadPlan();
+const ekey = (empId, dk) => empId + '__' + dk;
+const getEntry = (empId, dk) => plan.entries[ekey(empId, dk)] || null;
+function setEntry(empId, dk, entry) { if (entry) plan.entries[ekey(empId, dk)] = entry; else delete plan.entries[ekey(empId, dk)]; }
+const tourById = id => plan.tours.find(x => x.id === id) || null;
+const empName = emp => emp.name || t('empN', { n: plan.employees.indexOf(emp) + 1 });
+const sumH = (empId, days) => days.reduce((s, d) => s + entryHours(getEntry(empId, dkey(d))), 0);
+const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+/* ---------- Görünüm durumu ---------- */
+const now0 = new Date();
+let view = { y: now0.getFullYear(), m: now0.getMonth() };
+let who = sGet('l', 'ea.who') || '';
+let canEdit = false, artifactNs = null;
+let brushOn = false, brushStatus = 'work';
+let brush = { tour: '', start: '07:00', end: '15:00' };
+let lastTimes = { start: '07:00', end: '15:00' };
+let undoStack = [];
+const justApplied = {};
+
+// Yayından sonra sayfa yenilenir: şefin ekran durumunu bu sekmede koru
+function stashUi() {
+  sSet('s', 'ea.ui', JSON.stringify({ view, brushOn, brushStatus, brush, lastTimes, undo: undoStack.slice(-20), scroll: $('#gridWrap')?.scrollLeft || 0, at: Date.now() }));
+}
+let restoredScroll = null;
+(function restoreUi() {
+  try {
+    const u = JSON.parse(sGet('s', 'ea.ui') || 'null');
+    if (!u || Date.now() - u.at > 6 * 3600e3) return;
+    if (u.view) view = u.view;
+    brushStatus = u.brushStatus || 'work';
+    if (u.brush) brush = u.brush;
+    if (u.lastTimes) lastTimes = u.lastTimes;
+    if (Array.isArray(u.undo)) undoStack = u.undo;
+    brushOn = !!u.brushOn;
+    restoredScroll = u.scroll;
+  } catch (e) {}
+})();
+// Kişisel bağlantı: ...#e03 doğrudan o kişinin programını açar
+(function readHash() {
+  const h = (location.hash || '').slice(1);
+  if (h && plan.employees.some(e => e.id === h)) { who = h; sSet('l', 'ea.who', who); }
+})();
+
+/* =========================================================
+   KAYDETME: sayfa kendini yeni sürüm olarak yayınlar
+   ========================================================= */
+const SKELETON = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>';
+const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">';
+
+function buildHtml() {
+  const css = document.getElementById('app-css').textContent;
+  const js = document.getElementById('app-js').textContent;
+  const data = JSON.stringify(plan).replace(/</g, '\\u003c');
+  return SKELETON + '\n<title>EA Transport Personel Planı</title>\n' + FONTS +
+    '\n<style id="app-css">' + css + '</style>\n\n<div id="app"></div>\n\n' +
+    '<script type="application/json" id="plan-data">' + data + '<\/script>\n\n' +
+    '<script id="app-js">' + js + '<\/script>\n</body></html>';
+}
+
+let pending = 0, saveTimer = null, saving = false;
+function commit(fast) {
+  pending++;
+  render();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(publishNow, fast ? 60 : 1800);
+}
+async function publishNow() {
+  clearTimeout(saveTimer);
+  if (!pending || saving) return;
+  if (!artifactNs) { toast(t('readOnly')); return; }
+  saving = true; document.body.classList.add('saving'); renderChip();
+  stashUi();
+  try {
+    await artifactNs.publish(buildHtml());
+    // Başarılı yayından sonra platform sayfayı yeni sürüme yeniler.
+    setTimeout(() => { if (saving) { saving = false; pending = 0; document.body.classList.remove('saving'); renderChip(); } }, 9000);
+  } catch (err) {
+    saving = false; document.body.classList.remove('saving');
+    const code = err && err.code;
+    if (code === 'conflict') { toast(t('conflict')); return; }
+    if (['not_writer', 'not_granted', 'not_declared', 'consent_required', 'capability_disabled', 'capability_removed'].includes(code)) {
+      canEdit = false; setBrush(false); toast(t('readOnly')); render(); return;
+    }
+    if (code === 'rate_limited') saveTimer = setTimeout(publishNow, 5000);
+    toast(t('saveFail')); renderChip();
+  }
 }
 
 /* =========================================================
    ÇİZİM
    ========================================================= */
+function renderShell() {
+  document.documentElement.lang = lang;
+  const statusBtns = STATUS_KEYS.map(k => `<button data-act="bstatus" data-s="${k}" class="${STATUS_CLS[k]}" aria-pressed="false">${t('b' + k[0].toUpperCase() + k.slice(1))}</button>`).join('');
+  $('#app').innerHTML = `
+  <header class="top">
+    <div class="top-in">
+      <div class="brand"><div class="mark" aria-hidden="true">EA</div><div><h1>EA TRANSPORT</h1><p>${t('sub')}</p></div></div>
+      <div class="top-right">
+        <span class="month" id="monthLabel"></span>
+        <span class="chip" id="chip"></span>
+        <div class="langs" role="group" aria-label="Dil / Language / Sprog">
+          ${LANGS.map(([c, lbl]) => `<button data-act="lang" data-l="${c}" aria-pressed="${c === lang}">${lbl}</button>`).join('')}
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="bar">
+      <div class="nav">
+        <button class="btn" data-act="prev">${t('prev')}</button>
+        <button class="btn" data-act="today">${t('today')}</button>
+        <button class="btn" data-act="next">${t('next')}</button>
+      </div>
+      <div class="who"><label for="who">${t('schedule')}:</label><select id="who"></select></div>
+      <div class="grow"></div>
+      <div class="chef" id="chefBar" hidden>
+        <button class="btn" data-act="brush" id="brushBtn" aria-pressed="false">${t('quick')}</button>
+        <button class="btn" data-act="emp-new">${t('addEmp')}</button>
+        <button class="btn" data-act="emp-open">${t('emps')}</button>
+        <button class="btn" data-act="tour-open">${t('tours')}</button>
+        <button class="btn wa" data-act="share-open">${t('share')}</button>
+      </div>
+    </div>
+    <section class="panel" id="personView" hidden></section>
+    <div id="teamView" style="display:grid;gap:16px">
+      <section class="panel" id="todayPanel" hidden>
+        <div class="panel-h"><h2 id="todayTitle"></h2><p class="hint">${t('todayHint')}</p></div>
+        <div class="today-grid" id="todayGrid"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-h"><h2>${t('gridT')}</h2>
+          <div class="legend">${STATUS_KEYS.map(k => `<span><i class="sw ${STATUS_CLS[k]}"></i>${t(k)}</span>`).join('')}</div>
+        </div>
+        <p class="hint" id="gridHint" style="margin-bottom:10px"></p>
+        <div class="scroll" id="gridWrap"><table class="grid" id="grid"></table></div>
+      </section>
+      <section class="panel">
+        <div class="panel-h"><h2>${t('weeklyT')}</h2><p class="hint">${t('weeklyHint')}</p></div>
+        <div class="scroll"><table class="sum" id="weekly"></table></div>
+      </section>
+      <section class="panel">
+        <div class="panel-h"><h2>${t('monthlyT')}</h2><p class="hint" id="monthHint"></p></div>
+        <div class="totals" id="totals"></div>
+      </section>
+    </div>
+  </main>
+  <div class="brush" id="brush" hidden>
+    <div class="brush-in">
+      <div class="brush-top"><b>${t('quickT')}</b>
+        <div class="bseg" id="bStatus" role="group">${statusBtns}<button data-act="bstatus" data-s="clear" class="erase" aria-pressed="false">${t('bErase')}</button></div>
+      </div>
+      <div class="brow" id="bWork">
+        <select id="bTour" aria-label="${t('tour')}"></select>
+        <input type="time" id="bStart" aria-label="${t('start')}">
+        <input type="time" id="bEnd" aria-label="${t('end')}">
+      </div>
+      <div class="bact">
+        <p class="hint" id="bHint"></p>
+        <button class="btn sm" data-act="undo" id="bUndo">${t('undo')}</button>
+        <button class="btn sm pri" data-act="brush-done">${t('done')}</button>
+      </div>
+    </div>
+  </div>
+  <div class="ov" id="ov" hidden></div>
+  <div class="toast" id="toast" hidden></div>`;
+  $('#bStart').value = brush.start; $('#bEnd').value = brush.end;
+}
+
 function render() {
-  $('#monthLabel').textContent = (MONTHS[view.m] + ' ' + view.y).toLocaleUpperCase('tr-TR');
+  $('#monthLabel').textContent = (L().months[view.m] + ' ' + view.y).toLocaleUpperCase(L().locale);
   $('#chefBar').hidden = !canEdit;
-  renderWho();
-  const person = employees.find(e => e.id === who);
+  renderChip(); renderWho(); renderBrush();
+  const person = plan.employees.find(e => e.id === who);
   $('#personView').hidden = !person;
   $('#teamView').style.display = person ? 'none' : 'grid';
   if (person) { renderPerson(person); return; }
   renderToday(); renderGrid(); renderWeekly(); renderTotals();
 }
 
+function renderChip() {
+  const c = $('#chip'); if (!c) return;
+  if (!canEdit) { c.className = 'chip'; c.innerHTML = `<i></i><span>${t('upToDate')}</span>`; return; }
+  if (saving) { c.className = 'chip busy'; c.innerHTML = `<i></i><span>${t('saving')}</span>`; return; }
+  if (pending) { c.className = 'chip dirty'; c.innerHTML = `<i></i><span>${t('unsaved', { n: pending })}</span><button data-act="save-now">${t('saveNow')}</button>`; return; }
+  c.className = 'chip'; c.innerHTML = `<i></i><span>${t('saved')}</span>`;
+}
+
 function renderWho() {
   const sel = $('#who');
-  const opts = ['<option value="">Tüm ekip</option>']
-    .concat(employees.map(e => `<option value="${esc(e.id)}">${esc(e.name)}</option>`)).join('');
+  const opts = `<option value="">${esc(t('team'))}</option>` + plan.employees.map(e => `<option value="${esc(e.id)}">${esc(empName(e))}</option>`).join('');
   if (sel._opts !== opts) { sel.innerHTML = opts; sel._opts = opts; }
-  sel.value = employees.some(e => e.id === who) ? who : '';
+  sel.value = plan.employees.some(e => e.id === who) ? who : '';
 }
 
-// Tur etiketi (renkli nokta + kod)
-function tourTag(t) {
-  if (!t) return '';
-  return `<span class="tr"><i class="dot" style="background:${esc(t.color || TOUR_COLORS[0])}"></i>${esc(t.code || t.name)}</span>`;
+function tourTag(x) {
+  return x ? `<span class="tr"><i class="dot" style="background:${esc(x.color || TOUR_COLORS[0])}"></i>${esc(x.code || x.name)}</span>` : '';
 }
+const statusPill = s => `<span class="pill ${STATUS_CLS[s] || 'st-off'}">${esc(t(s))}</span>`;
 
-// ---------- Bugün paneli ----------
 function renderToday() {
-  const t = new Date();
-  const show = t.getFullYear() === view.y && t.getMonth() === view.m && t.getDay() !== 0 && employees.length;
+  const d = new Date();
+  const show = d.getFullYear() === view.y && d.getMonth() === view.m && d.getDay() !== 0 && plan.employees.length;
   $('#todayPanel').hidden = !show;
   if (!show) return;
-  $('#todayTitle').textContent = `Bugün · ${DAYL[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
-  const dk = dkey(t);
-  const list = employees.map(emp => ({ emp, e: getEntry(emp.id, dk) }));
+  $('#todayTitle').textContent = `${t('todayT')} · ${L().dayL[d.getDay()]} ${d.getDate()} ${L().months[d.getMonth()]}`;
+  const dk = dkey(d);
+  const list = plan.employees.map(emp => ({ emp, e: getEntry(emp.id, dk) }));
   list.sort((a, b) => (a.e?.status === 'work' ? 0 : 1) - (b.e?.status === 'work' ? 0 : 1) || (mins(a.e?.start) ?? 9999) - (mins(b.e?.start) ?? 9999));
   $('#todayGrid').innerHTML = list.map(({ emp, e }) => {
     let body;
-    if (!e) body = '<span class="t">Plan girilmedi</span>';
+    if (!e) body = `<span class="t">${t('notPlanned')}</span>`;
     else if (e.status === 'work') {
-      const tr = tourById(e.tour);
-      body = `<span class="r">${tr ? `<i class="dot" style="background:${esc(tr.color)}"></i><b>${esc(tr.code)}</b> ${esc(tr.name)}` : '<b>Tur atanmadı</b>'}</span>
-              <span class="t">${esc(e.start)}–${esc(e.end)} · ${fmtH(entryHours(e))} sa</span>`;
-    } else body = `<span><span class="pill ${STATUS[e.status].cls}">${STATUS[e.status].label}</span></span>`;
-    return `<div class="tcard"><span class="n">${esc(emp.name)}</span>${body}</div>`;
+      const x = tourById(e.tour);
+      body = `<span class="r">${x ? `<i class="dot" style="background:${esc(x.color)}"></i><b>${esc(x.code)}</b> ${esc(x.name)}` : `<b>${t('noTour')}</b>`}</span>
+              <span class="t">${esc(e.start)}–${esc(e.end)} · ${fmtH(entryHours(e))} ${t('hShort')}</span>`;
+    } else body = `<span>${statusPill(e.status)}</span>`;
+    return `<div class="tcard"><span class="n">${esc(empName(emp))}</span>${body}</div>`;
   }).join('');
 }
 
-// ---------- Aylık tablo ----------
 function renderGrid() {
   const days = monthDays(view.y, view.m);
-  $('#gridHint').textContent = canEdit
-    ? 'Bir güne dokunun: durum, tur ve saat girin. İsme dokunarak ismi değiştirin.'
-    : 'Salt okunur görünüm. Kendi programınız için yukarıdan adınızı seçin.';
-  let h = '<thead><tr><th class="sticky">Çalışan</th>';
+  $('#gridHint').textContent = canEdit ? t('gridEdit') : t('gridView');
+  let h = `<thead><tr><th class="sticky">${t('employee')}</th>`;
   days.forEach((d, i) => {
     const c = [(d.getDay() === 1 && i) ? 'wk' : '', isToday(d) ? 'is-today' : ''].join(' ');
-    h += `<th class="${c}"><div class="dow">${DAY3[d.getDay()]}</div><div class="dn">${d.getDate()}</div></th>`;
+    const act = canEdit && brushOn ? ` data-act="dayhead" data-date="${dkey(d)}"` : '';
+    h += `<th class="${c}"${act}><div class="dow">${L().day3[d.getDay()]}</div><div class="dn">${d.getDate()}</div></th>`;
   });
-  h += '<th>Ay</th></tr></thead><tbody>';
-  if (!ready.emp) h += `<tr><td class="empty" colspan="${days.length + 2}">Yükleniyor…</td></tr>`;
-  else if (!employees.length) h += `<tr><td class="empty" colspan="${days.length + 2}">Henüz çalışan yok.${canEdit ? ' “+ Çalışan” ile ekleyin.' : ''}</td></tr>`;
-  employees.forEach(emp => {
+  h += `<th>${t('monthCol')}</th></tr></thead><tbody>`;
+  if (!plan.employees.length) h += `<tr><td class="empty" colspan="${days.length + 2}">${t('noEmps')}</td></tr>`;
+  plan.employees.forEach(emp => {
+    const ph = emp.name ? '' : ' ph';
     const nm = canEdit
-      ? `<button class="name" data-rename="${esc(emp.id)}" title="İsmi değiştir">${esc(emp.name)}<span aria-hidden="true" style="opacity:.45">✎</span></button>`
-      : `<div class="name">${esc(emp.name)}</div>`;
+      ? `<button class="name${ph}" data-act="rename" data-emp="${esc(emp.id)}">${esc(empName(emp))}<span aria-hidden="true" style="opacity:.45">✎</span></button>`
+      : `<div class="name${ph}">${esc(empName(emp))}</div>`;
     h += `<tr><td class="sticky">${nm}</td>`;
     let total = 0;
     days.forEach((d, i) => {
-      const dk = dkey(d), e = getEntry(emp.id, dk);
+      const e = getEntry(emp.id, dkey(d));
       total += entryHours(e);
       const c = [(d.getDay() === 1 && i) ? 'wk' : '', isToday(d) ? 'is-today' : ''].join(' ');
       h += `<td class="${c}">${cellHtml(emp, d, e)}</td>`;
     });
-    h += `<td class="tot">${total ? fmtH(total) + ' sa' : '<span class="zero">0</span>'}</td></tr>`;
+    h += `<td class="tot">${total ? fmtH(total) + ' ' + t('hShort') : '<span class="zero">0</span>'}</td></tr>`;
   });
   $('#grid').innerHTML = h + '</tbody>';
 }
 
 function cellHtml(emp, d, e) {
   const dk = dkey(d), tag = canEdit ? 'button' : 'div';
-  const attrs = canEdit ? ` data-emp="${esc(emp.id)}" data-date="${dk}" aria-label="${esc(emp.name)}, ${d.getDate()} ${MONTHS[d.getMonth()]}"` : '';
-  if (!e) return `<${tag} class="cell empty"${attrs}></${tag}>`;
-  const st = STATUS[e.status] || STATUS.off;
+  const just = justApplied[ekey(emp.id, dk)] > Date.now() ? ' just' : '';
+  const attrs = canEdit ? ` data-act="cell" data-emp="${esc(emp.id)}" data-date="${dk}" aria-label="${esc(empName(emp))}, ${d.getDate()} ${esc(L().months[d.getMonth()])}"` : '';
+  if (!e) return `<${tag} class="cell empty${just}"${attrs}></${tag}>`;
   const title = e.note ? ` title="${esc(e.note)}"` : '';
   const nd = e.note ? '<span class="nd"></span>' : '';
-  let inner;
-  if (e.status === 'work') inner = `${tourTag(tourById(e.tour))}<span class="tm">${esc(shortT(e.start))}–${esc(shortT(e.end))}</span>`;
-  else inner = `<span class="lb">${st.short}</span>`;
-  return `<${tag} class="cell ${st.cls}"${attrs}${title}>${nd}${inner}</${tag}>`;
+  const inner = e.status === 'work'
+    ? `${tourTag(tourById(e.tour))}<span class="tm">${esc(shortT(e.start))}–${esc(shortT(e.end))}</span>`
+    : `<span class="lb">${esc(t(e.status + 'S'))}</span>`;
+  return `<${tag} class="cell ${STATUS_CLS[e.status] || 'st-off'}${just}"${attrs}${title}>${nd}${inner}</${tag}>`;
 }
 
-// ---------- Haftalık ----------
+function weekRange(w) {
+  const a = w[0], b = w[5], M = L().mon3;
+  return `${a.getDate()} ${M[a.getMonth()]} – ${b.getDate()} ${M[b.getMonth()]}`;
+}
+
 function renderWeekly() {
-  const weeks = monthWeeks(view.y, view.m);
-  const cur = weeks.map(w => w.some(isToday));
-  let h = '<thead><tr><th class="sticky">Çalışan</th>';
-  weeks.forEach((w, i) => {
-    const a = w[0], b = w[5];
-    h += `<th class="${cur[i] ? 'cur' : ''}">${i + 1}. hafta${cur[i] ? ' · bu hafta' : ''}<span class="rg">${a.getDate()} ${MON3[a.getMonth()]} – ${b.getDate()} ${MON3[b.getMonth()]}</span></th>`;
-  });
+  const weeks = monthWeeks(view.y, view.m), cur = weeks.map(w => w.some(isToday));
+  let h = `<thead><tr><th class="sticky">${t('employee')}</th>`;
+  weeks.forEach((w, i) => { h += `<th class="${cur[i] ? 'cur' : ''}">${t('weekN', { n: i + 1 })}${cur[i] ? ' · ' + t('thisWeek') : ''}<span class="rg">${weekRange(w)}</span></th>`; });
   h += '</tr></thead><tbody>';
   const tot = weeks.map(() => 0);
-  employees.forEach(emp => {
-    h += `<tr><td class="sticky">${esc(emp.name)}</td>`;
-    weeks.forEach((w, i) => { const x = sumH(emp.id, w); tot[i] += x; h += `<td class="${cur[i] ? 'cur' : ''}">${x ? fmtH(x) + ' sa' : '<span class="zero">0</span>'}</td>`; });
+  plan.employees.forEach(emp => {
+    h += `<tr><td class="sticky">${esc(empName(emp))}</td>`;
+    weeks.forEach((w, i) => { const x = sumH(emp.id, w); tot[i] += x; h += `<td class="${cur[i] ? 'cur' : ''}">${x ? fmtH(x) + ' ' + t('hShort') : '<span class="zero">0</span>'}</td>`; });
     h += '</tr>';
   });
-  if (!employees.length) h += `<tr><td class="empty" colspan="${weeks.length + 1}">—</td></tr>`;
-  h += '</tbody><tfoot><tr><td class="sticky">Toplam</td>' + tot.map(t => `<td>${fmtH(t)} sa</td>`).join('') + '</tr></tfoot>';
+  h += `</tbody><tfoot><tr><td class="sticky">${t('total')}</td>` + tot.map(x => `<td>${fmtH(x)} ${t('hShort')}</td>`).join('') + '</tr></tfoot>';
   $('#weekly').innerHTML = h;
 }
 
-// ---------- Aylık toplam ----------
 function renderTotals() {
   const days = monthDays(view.y, view.m);
-  $('#monthHint').textContent = `${MONTHS[view.m]} ${view.y} · ${days.length} iş günü (Pzt–Cmt)`;
-  if (!employees.length) { $('#totals').innerHTML = '<div class="empty">—</div>'; return; }
-  $('#totals').innerHTML = employees.map(emp => {
+  $('#monthHint').textContent = t('monthlyHint', { m: L().months[view.m], y: view.y, n: days.length });
+  $('#totals').innerHTML = plan.employees.map(emp => {
     const cnt = { work: 0, off: 0, sick: 0, hol: 0 }; let tot = 0;
     days.forEach(d => { const e = getEntry(emp.id, dkey(d)); if (e && cnt[e.status] !== undefined) cnt[e.status]++; tot += entryHours(e); });
-    const chips = Object.keys(STATUS).filter(k => cnt[k]).map(k => `<span class="pill ${STATUS[k].cls}">${STATUS[k].label} ${cnt[k]}</span>`).join('');
-    return `<div class="tt"><span class="n">${esc(emp.name)}</span><span class="h">${fmtH(tot)} <small>saat</small></span><div class="chips">${chips || '<span class="hint">Kayıt yok</span>'}</div></div>`;
-  }).join('');
+    const chips = STATUS_KEYS.filter(k => cnt[k]).map(k => `<span class="pill ${STATUS_CLS[k]}">${esc(t(k))} ${cnt[k]}</span>`).join('');
+    return `<div class="tt"><span class="n">${esc(empName(emp))}</span><span class="h">${fmtH(tot)} <small>${t('hours')}</small></span><div class="chips">${chips || `<span class="hint">${t('noEntries')}</span>`}</div></div>`;
+  }).join('') || `<div class="empty">${t('noEmps')}</div>`;
 }
 
-// ---------- Kişisel program ----------
 function renderPerson(emp) {
-  const weeks = monthWeeks(view.y, view.m);
-  const days = monthDays(view.y, view.m);
-  const monthTot = sumH(emp.id, days);
+  const weeks = monthWeeks(view.y, view.m), days = monthDays(view.y, view.m);
   const workDays = days.filter(d => getEntry(emp.id, dkey(d))?.status === 'work').length;
   const curWeek = weeks.find(w => w.some(isToday));
-  let h = `<div class="me-head"><h2>${esc(emp.name)}</h2><div class="kpis">
-      <div class="kpi"><b>${fmtH(monthTot)}</b><span>saat · ${MONTHS[view.m]}</span></div>
-      <div class="kpi"><b>${workDays}</b><span>çalışma günü</span></div>
-      ${curWeek ? `<div class="kpi"><b>${fmtH(sumH(emp.id, curWeek))}</b><span>saat · bu hafta</span></div>` : ''}
+  let h = `<div class="me-head"><h2>${esc(empName(emp))}</h2><div class="kpis">
+      <div class="kpi"><b>${fmtH(sumH(emp.id, days))}</b><span>${t('hours')} · ${esc(L().months[view.m])}</span></div>
+      <div class="kpi"><b>${workDays}</b><span>${t('workDays')}</span></div>
+      ${curWeek ? `<div class="kpi"><b>${fmtH(sumH(emp.id, curWeek))}</b><span>${t('hours')} · ${t('thisWeek')}</span></div>` : ''}
     </div></div>`;
   weeks.forEach((w, i) => {
-    const a = w[0], b = w[5];
-    h += `<div class="wk-block"><div class="wk-title"><span>${i + 1}. hafta · ${a.getDate()} ${MON3[a.getMonth()]} – ${b.getDate()} ${MON3[b.getMonth()]}</span><b>${fmtH(sumH(emp.id, w))} sa</b></div>`;
+    h += `<div class="wk-block"><div class="wk-title"><span>${t('weekN', { n: i + 1 })} · ${weekRange(w)}</span><b>${fmtH(sumH(emp.id, w))} ${t('hShort')}</b></div>`;
     w.filter(d => d.getMonth() === view.m).forEach(d => {
-      const e = getEntry(emp.id, dkey(d));
+      const dk = dkey(d), e = getEntry(emp.id, dk);
       let what, hrs = '';
-      if (!e) what = '<span class="none">Plan girilmedi</span>';
+      if (!e) what = `<span class="none">${t('notPlanned')}</span>`;
       else if (e.status === 'work') {
-        const t = tourById(e.tour);
-        what = `${t ? `<span class="tour"><i class="dot" style="background:${esc(t.color)}"></i>${esc(t.code)} · ${esc(t.name)}</span>` : '<span class="tour">Tur atanmadı</span>'}<span class="time">${esc(e.start)}–${esc(e.end)}</span>`;
-        hrs = fmtH(entryHours(e)) + ' sa';
-      } else what = `<span class="pill ${STATUS[e.status].cls}">${STATUS[e.status].label}</span>`;
-      const cellBtn = canEdit ? ` style="cursor:pointer" data-emp="${esc(emp.id)}" data-date="${dkey(d)}" role="button" tabindex="0"` : '';
-      h += `<div class="day ${isToday(d) ? 'is-today' : ''}"${cellBtn}>
-              <div class="d">${DAY3[d.getDay()]} ${d.getDate()}<small>${MON3[d.getMonth()]}</small></div>
+        const x = tourById(e.tour);
+        what = `${x ? `<span class="tour"><i class="dot" style="background:${esc(x.color)}"></i>${esc(x.code)} · ${esc(x.name)}</span>` : `<span class="tour">${t('noTour')}</span>`}<span class="time">${esc(e.start)}–${esc(e.end)}</span>`;
+        hrs = fmtH(entryHours(e)) + ' ' + t('hShort');
+      } else what = statusPill(e.status);
+      const act = canEdit ? ` data-act="cell" data-emp="${esc(emp.id)}" data-date="${dk}" role="button" tabindex="0"` : '';
+      h += `<div class="day ${isToday(d) ? 'is-today' : ''}"${act}>
+              <div class="d">${L().day3[d.getDay()]} ${d.getDate()}<small>${L().mon3[d.getMonth()]}</small></div>
               <div class="what">${what}</div><div class="hrs">${hrs}</div>
               ${e && e.note ? `<div class="note">📝 ${esc(e.note)}</div>` : ''}
             </div>`;
@@ -664,292 +786,314 @@ function renderPerson(emp) {
   $('#personView').innerHTML = h;
 }
 
+function toast(msg) {
+  const el = $('#toast'); if (!el) return;
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => { el.hidden = true; }, 2400);
+}
+
 /* =========================================================
-   CANLI VERİ BAĞLANTISI
+   HIZLI GİRİŞ
    ========================================================= */
-function onDbErr(e) {
-  if (e && e.code === 'revoked') { setLive('off', 'Bağlantı kapandı'); return; }
-  setLive('off', 'Bağlantı hatası');
+function tourOptions(selected) {
+  return `<option value="">${esc(t('tourNone'))}</option>` + plan.tours.map(x =>
+    `<option value="${esc(x.id)}"${x.id === selected ? ' selected' : ''}>${esc(x.code)} · ${esc(x.name)}${x.start ? ` (${esc(x.start)}–${esc(x.end)})` : ''}</option>`).join('');
 }
-
-// Görünen haftaların kapsadığı ayları dinle
-function syncMonthSubs() {
-  if (!db) return;
-  const need = new Set();
-  monthWeeks(view.y, view.m).forEach(w => w.forEach(d => need.add(mkey(d))));
-  need.forEach(k => {
-    if (monthSubs[k]) return;
-    monthSubs[k] = db.doc('months/' + k).onSnapshot(snap => {
-      const data = snap.exists ? snap.data() : null;
-      monthDocs[k] = { exists: snap.exists, entries: (data && data.entries) || {} };
-      if (snap.exists) knownExists[k] = true;
-      render();
-    }, onDbErr);
-  });
-  Object.keys(monthSubs).forEach(k => { if (!need.has(k)) { monthSubs[k](); delete monthSubs[k]; delete monthDocs[k]; } });
+function setBrush(on) { brushOn = on && canEdit; render(); }
+function renderBrush() {
+  const bar = $('#brush'); if (!bar) return;
+  bar.hidden = !brushOn;
+  document.body.classList.toggle('brushing', brushOn);
+  $('#brushBtn')?.setAttribute('aria-pressed', String(brushOn));
+  if (!brushOn) return;
+  const sel = $('#bTour'), opts = tourOptions(brush.tour);
+  if (sel._opts !== opts) { sel.innerHTML = opts; sel._opts = opts; }
+  sel.value = tourById(brush.tour) ? brush.tour : '';
+  document.querySelectorAll('#bStatus button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === brushStatus)));
+  $('#bWork').style.display = brushStatus === 'work' ? '' : 'none';
+  $('#bUndo').disabled = !undoStack.length;
+  const hint = $('#bHint');
+  const bad = brushStatus === 'work' && !brushEntry();
+  hint.classList.toggle('bad', bad);
+  hint.textContent = bad ? t('badTime') : t('quickHint');
 }
-
-// Gün kayıtlarını yaz (ay belgesine göre gruplanır, her belge için sırayla)
-function writeEntries(changes) {
-  const byMonth = {};
-  changes.forEach(({ empId, dk, entry }) => { const m = dk.slice(0, 7); (byMonth[m] = byMonth[m] || {})[empId + '__' + dk] = entry; });
-  return Promise.all(Object.entries(byMonth).map(([m, entries]) => {
-    const ref = db.doc('months/' + m);
-    writeQ[m] = (writeQ[m] || Promise.resolve()).catch(() => {}).then(async () => {
-      if (knownExists[m]) await ref.update({ entries });
-      else {
-        const s = await ref.get();
-        if (s.exists) await ref.update({ entries }); else await ref.set({ entries });
-      }
-      knownExists[m] = true;
-    });
-    return writeQ[m];
-  }));
+function brushEntry() {
+  if (brushStatus === 'clear') return null;
+  if (brushStatus !== 'work') return { status: brushStatus, tour: null, start: null, end: null, note: '' };
+  if (!brush.start || !brush.end || brush.start === brush.end) return undefined;
+  return { status: 'work', tour: brush.tour || null, start: brush.start, end: brush.end, note: '' };
 }
-
-async function boot() {
-  render();
-  const cl = window.claude;
-  const [dbNs, userNs] = cl && cl.use ? await Promise.all([cl.use('db'), cl.use('user')]) : [null, null];
-  if (userNs) canEdit = await userNs.canEdit();
-  $('#role').hidden = false;
-  $('#role').textContent = canEdit ? 'Şef · düzenleme' : 'Görüntüleme';
-  if (!dbNs) {
-    setLive('off', 'Çevrimdışı');
-    const b = $('#banner'); b.hidden = false;
-    b.textContent = 'Canlı plana bağlanılamadı. Sayfayı claude.ai üzerinden, oturum açarak açın.';
-    ready.emp = true; render(); return;
-  }
-  db = dbNs;
-  setLive('on', 'Canlı');
-  db.collection('employees').orderBy('order').onSnapshot(s => {
-    employees = s.docs.map(d => ({ id: d.id, ...d.data() })); ready.emp = true; render();
-  }, onDbErr);
-  db.collection('tours').orderBy('order').onSnapshot(s => {
-    tours = s.docs.map(d => ({ id: d.id, ...d.data() })); ready.tour = true; render();
-  }, onDbErr);
-  syncMonthSubs();
+function applyBrush(targets) {
+  const entry = brushEntry();
+  if (entry === undefined) { toast(t('badTime')); return; }
+  const changes = targets.map(({ empId, dk }) => {
+    const prev = getEntry(empId, dk);
+    const next = entry && prev && prev.note ? { ...entry, note: prev.note } : entry;   // notu koru
+    return { empId, dk, prev, next };
+  }).filter(c => JSON.stringify(c.prev || null) !== JSON.stringify(c.next || null));
+  if (!changes.length) return;
+  const until = Date.now() + 900;
+  changes.forEach(c => { setEntry(c.empId, c.dk, c.next); justApplied[ekey(c.empId, c.dk)] = until; });
+  undoStack.push(changes.map(c => ({ empId: c.empId, dk: c.dk, entry: c.prev || null })));
+  if (undoStack.length > 30) undoStack.shift();
+  commit();
+}
+function undo() {
+  const last = undoStack.pop(); if (!last) return;
+  last.forEach(c => setEntry(c.empId, c.dk, c.entry));
+  toast(t('undone')); commit();
 }
 
 /* =========================================================
    PENCERELER
    ========================================================= */
-function openOv(id) { $('#' + id).hidden = false; }
-function closeOv(id) { $('#' + id).hidden = true; }
-document.querySelectorAll('.ov').forEach(ov => ov.addEventListener('click', e => {
-  if (e.target === ov || e.target.hasAttribute('data-close')) ov.hidden = true;
-}));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.ov').forEach(o => o.hidden = true); });
+function openDlg(html, wide) { const ov = $('#ov'); ov.innerHTML = `<div class="dlg${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div>`; ov.hidden = false; }
+function closeDlg() { const ov = $('#ov'); ov.hidden = true; ov.innerHTML = ''; }
 
-/* ---------- Gün düzenleme ---------- */
+/* ---------- Gün ---------- */
 let editing = null;
-let lastTimes = { start: '07:00', end: '15:00' };
-const stVal = () => (document.querySelector('input[name=st]:checked') || {}).value || 'work';
-
+function openCell(empId, dk) {
+  const emp = plan.employees.find(e => e.id === empId); if (!emp) return;
+  const d = parseKey(dk), e = getEntry(empId, dk), st = e ? e.status : 'work';
+  editing = { empId, dk };
+  openDlg(`
+    <h3>${esc(empName(emp))}</h3>
+    <p class="sub">${L().dayL[d.getDay()]}, ${d.getDate()} ${L().months[d.getMonth()]} ${d.getFullYear()}</p>
+    <div class="f"><span class="l">${t('status')}</span><div class="seg">
+      ${STATUS_KEYS.map(k => `<label><input type="radio" name="st" value="${k}" id="st-${k}"${k === st ? ' checked' : ''}><span class="${STATUS_CLS[k]}">${esc(t(k))}</span></label>`).join('')}
+    </div></div>
+    <div class="f" id="cTourF"><label for="cTour">${t('tour')}</label><select id="cTour">${tourOptions(e && tourById(e.tour) ? e.tour : '')}</select></div>
+    <div class="two">
+      <div class="f"><label for="cStart">${t('start')}</label><input type="time" id="cStart" value="${esc((e && e.start) || lastTimes.start)}"></div>
+      <div class="f"><label for="cEnd">${t('end')}</label><input type="time" id="cEnd" value="${esc((e && e.end) || lastTimes.end)}"></div>
+    </div>
+    <div class="dur" id="cDur"></div>
+    <div class="f"><label for="cNote">${t('note')}</label><textarea id="cNote" placeholder="${esc(t('notePh'))}">${esc((e && e.note) || '')}</textarea></div>
+    <label class="chk"><input type="checkbox" id="cWeek"> <span>${t('applyWeek')}</span></label>
+    <div class="err" id="cErr" hidden></div>
+    <div class="acts">
+      ${e ? `<button class="btn warn l" data-act="cell-clear">${t('clear')}</button>` : ''}
+      <button class="btn" data-act="dlg-close">${t('cancel')}</button>
+      <button class="btn pri" data-act="cell-save">${t('save')}</button>
+    </div>`);
+  refreshCellForm();
+}
+function stVal() { return (document.querySelector('input[name=st]:checked') || {}).value || 'work'; }
 function refreshCellForm() {
   const work = stVal() === 'work';
   $('#cTourF').style.display = work ? '' : 'none';
   $('#cStart').disabled = !work; $('#cEnd').disabled = !work;
-  const h = hoursOf($('#cStart').value, $('#cEnd').value);
-  const over = work && mins($('#cEnd').value) !== null && mins($('#cEnd').value) < mins($('#cStart').value);
-  $('#cDur').textContent = work ? (h ? `Süre: ${fmtH(h)} saat${over ? ' · ertesi güne sarkıyor' : ''}` : '') : 'Bu durumda saat sayılmaz.';
+  const a = $('#cStart').value, b = $('#cEnd').value, h = hoursOf(a, b);
+  const over = work && mins(b) !== null && mins(b) < mins(a);
+  $('#cDur').textContent = work ? (h ? t('dur', { h: fmtH(h) }) + (over ? ' · ' + t('overnight') : '') : '') : t('noHours');
 }
-
-function openCell(empId, dk) {
-  const emp = employees.find(e => e.id === empId); if (!emp) return;
-  const d = parseKey(dk), e = getEntry(empId, dk);
-  editing = { empId, dk };
-  $('#cTitle').textContent = emp.name;
-  $('#cSub').textContent = `${DAYL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-  document.querySelector(`input[name=st][value="${e ? e.status : 'work'}"]`).checked = true;
-  $('#cTour').innerHTML = '<option value="">— Tur seçilmedi —</option>' +
-    tours.map(t => `<option value="${esc(t.id)}">${esc(t.code)} · ${esc(t.name)}${t.start ? ` (${esc(t.start)}–${esc(t.end)})` : ''}</option>`).join('');
-  $('#cTour').value = (e && e.tour && tourById(e.tour)) ? e.tour : '';
-  $('#cStart').value = (e && e.start) || lastTimes.start;
-  $('#cEnd').value = (e && e.end) || lastTimes.end;
-  $('#cNote').value = (e && e.note) || '';
-  $('#cWeek').checked = false;
-  $('#cClear').hidden = !e;
-  $('#cErr').hidden = true;
-  refreshCellForm();
-  openOv('ovCell');
-}
-$('#cStatus').addEventListener('change', refreshCellForm);
-$('#cStart').addEventListener('input', refreshCellForm);
-$('#cEnd').addEventListener('input', refreshCellForm);
-$('#cTour').addEventListener('change', () => {
-  const t = tourById($('#cTour').value);
-  if (t && t.start && t.end) { $('#cStart').value = t.start; $('#cEnd').value = t.end; }
-  refreshCellForm();
-});
-
-// Aynı haftanın Pzt–Cmt günleri
-function weekOf(dk) {
-  const d = parseKey(dk), off = (d.getDay() + 6) % 7;
-  return [0,1,2,3,4,5].map(i => dkey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - off + i)));
-}
-
-async function saveCell(clear) {
-  if (!editing || !db) return;
+function saveCell(clear) {
+  if (!editing) return;
   let entry = null;
   if (!clear) {
     const status = stVal();
     entry = { status, tour: null, start: null, end: null, note: $('#cNote').value.trim() };
     if (status === 'work') {
-      const s = $('#cStart').value, e = $('#cEnd').value;
-      if (!s || !e || s === e) { const x = $('#cErr'); x.textContent = 'Geçerli bir başlangıç ve bitiş saati girin.'; x.hidden = false; return; }
-      entry.start = s; entry.end = e; entry.tour = $('#cTour').value || null;
-      lastTimes = { start: s, end: e };
+      const a = $('#cStart').value, b = $('#cEnd').value;
+      if (!a || !b || a === b) { const x = $('#cErr'); x.textContent = t('badTime'); x.hidden = false; return; }
+      entry.start = a; entry.end = b; entry.tour = $('#cTour').value || null;
+      lastTimes = { start: a, end: b };
     }
   }
   const dks = (!clear && $('#cWeek').checked) ? weekOf(editing.dk) : [editing.dk];
-  closeOv('ovCell');
-  try {
-    await writeEntries(dks.map(dk => ({ empId: editing.empId, dk, entry })));
-    toast(clear ? 'Temizlendi' : 'Kaydedildi · herkese yansıdı');
-  } catch (err) { toast('Kaydedilemedi: ' + (err && err.message || 'bilinmeyen hata')); }
+  const prev = dks.map(dk => ({ empId: editing.empId, dk, entry: getEntry(editing.empId, dk) }));
+  undoStack.push(prev);
+  dks.forEach(dk => setEntry(editing.empId, dk, entry));
+  closeDlg(); commit(true);
 }
-$('#cSave').addEventListener('click', () => saveCell(false));
-$('#cClear').addEventListener('click', () => saveCell(true));
 
 /* ---------- Çalışanlar ---------- */
 let eDraft = [];
-function openEmp(focusNew) {
-  eDraft = employees.map(e => ({ id: e.id, name: e.name, del: false, arm: false }));
-  if (focusNew) eDraft.push({ id: null, name: '', del: false, arm: false });
-  drawEmp(); $('#eErr').hidden = true; openOv('ovEmp');
-  if (focusNew) setTimeout(() => { const ins = $('#eRows').querySelectorAll('input'); ins[ins.length - 1]?.focus(); }, 30);
+function openEmp(addNew, focusId) {
+  eDraft = plan.employees.map(e => ({ id: e.id, name: e.name, del: false, arm: false }));
+  if (addNew) eDraft.push({ id: null, name: '', del: false, arm: false });
+  openDlg(`<h3>${t('emps')}</h3><p class="sub">${t('empsSub')}</p><div class="rows" id="eRows"></div>
+    <button class="btn sm" data-act="e-add">${t('addRow')}</button>
+    <div class="acts" style="margin-top:14px"><button class="btn" data-act="dlg-close">${t('cancel')}</button><button class="btn pri" data-act="e-save">${t('save')}</button></div>`, true);
+  drawEmp();
+  setTimeout(() => {
+    const idx = focusId ? eDraft.findIndex(e => e.id === focusId) : addNew ? eDraft.length - 1 : -1;
+    const el = idx >= 0 && document.getElementById('emp-' + idx);
+    if (el) { el.focus(); el.select(); }
+  }, 40);
 }
-function syncEmp() { $('#eRows').querySelectorAll('.row').forEach(r => { eDraft[+r.dataset.i].name = r.querySelector('input').value; }); }
+function syncEmp() { document.querySelectorAll('#eRows .row').forEach(r => { eDraft[+r.dataset.i].name = r.querySelector('input').value; }); }
 function drawEmp() {
   const vis = eDraft.map((e, i) => ({ e, i })).filter(x => !x.e.del);
-  $('#eRows').innerHTML = vis.length ? vis.map(({ e, i }, k) => `
+  $('#eRows').innerHTML = vis.map(({ e, i }, k) => `
     <div class="row" data-i="${i}">
-      <input type="text" id="emp-${i}" value="${esc(e.name)}" maxlength="40" placeholder="Ad Soyad" aria-label="Çalışan adı">
-      <button class="btn sm" data-a="up" ${k === 0 ? 'disabled' : ''} aria-label="Yukarı">↑</button>
-      <button class="btn sm" data-a="down" ${k === vis.length - 1 ? 'disabled' : ''} aria-label="Aşağı">↓</button>
-      <button class="btn sm warn" data-a="del">${e.arm ? 'Emin misin?' : 'Sil'}</button>
-    </div>`).join('') : '<div class="empty">Liste boş</div>';
+      <input type="text" id="emp-${i}" value="${esc(e.name)}" maxlength="40" placeholder="${esc(e.id ? t('empN', { n: k + 1 }) : t('namePh'))}" aria-label="${esc(t('namePh'))}">
+      <button class="btn sm" data-act="e-up" ${k === 0 ? 'disabled' : ''} aria-label="↑">↑</button>
+      <button class="btn sm" data-act="e-down" ${k === vis.length - 1 ? 'disabled' : ''} aria-label="↓">↓</button>
+      <button class="btn sm warn" data-act="e-del">${e.arm ? t('sure') : t('del')}</button>
+    </div>`).join('') || `<div class="empty">${t('noEmps')}</div>`;
 }
-$('#eRows').addEventListener('click', ev => {
-  const b = ev.target.closest('button[data-a]'); if (!b) return;
+function empAction(act, i) {
   syncEmp();
-  const i = +b.closest('.row').dataset.i, a = b.dataset.a;
   const vis = eDraft.map((e, j) => j).filter(j => !eDraft[j].del), p = vis.indexOf(i);
-  if (a === 'up' && p > 0) { const j = vis[p - 1]; [eDraft[i], eDraft[j]] = [eDraft[j], eDraft[i]]; }
-  if (a === 'down' && p < vis.length - 1) { const j = vis[p + 1]; [eDraft[i], eDraft[j]] = [eDraft[j], eDraft[i]]; }
-  if (a === 'del') { if (eDraft[i].arm || !eDraft[i].id) eDraft[i].del = true; else eDraft[i].arm = true; }
+  if (act === 'e-up' && p > 0) { const j = vis[p - 1]; [eDraft[i], eDraft[j]] = [eDraft[j], eDraft[i]]; }
+  if (act === 'e-down' && p < vis.length - 1) { const j = vis[p + 1]; [eDraft[i], eDraft[j]] = [eDraft[j], eDraft[i]]; }
+  if (act === 'e-del') { if (eDraft[i].arm || !eDraft[i].id) eDraft[i].del = true; else eDraft[i].arm = true; }
   drawEmp();
-});
-$('#eAdd').addEventListener('click', () => { syncEmp(); eDraft.push({ id: null, name: '', del: false }); drawEmp(); const ins = $('#eRows').querySelectorAll('input'); ins[ins.length - 1]?.focus(); });
-$('#eSave').addEventListener('click', async () => {
+}
+function saveEmp() {
   syncEmp();
-  const btn = $('#eSave'); btn.disabled = true;
-  try {
-    let order = 0;
-    for (const e of eDraft) {
-      if (e.del) { if (e.id) await db.doc('employees/' + e.id).delete(); continue; }
-      const name = e.name.trim(); if (!name) continue;
-      order++;
-      const cur = employees.find(x => x.id === e.id);
-      if (!e.id) await db.collection('employees').doc().set({ name, order });
-      else if (!cur || cur.name !== name || cur.order !== order) await db.doc('employees/' + e.id).update({ name, order });
-    }
-    closeOv('ovEmp'); toast('Çalışanlar güncellendi');
-  } catch (err) { const x = $('#eErr'); x.textContent = 'Kaydedilemedi: ' + (err && err.message || ''); x.hidden = false; }
-  btn.disabled = false;
-});
+  const removed = new Set(eDraft.filter(e => e.del && e.id).map(e => e.id));
+  plan.employees = eDraft.filter(e => !e.del && (e.id || e.name.trim())).map(e => ({ id: e.id || newId('e'), name: e.name.trim() }));
+  if (removed.size) Object.keys(plan.entries).forEach(k => { if (removed.has(k.split('__')[0])) delete plan.entries[k]; });
+  closeDlg(); commit(true);
+}
 
 /* ---------- Turlar ---------- */
 let tDraft = [];
+function newTour(n) { return { id: null, code: 'T' + n, name: '', start: '07:00', end: '15:00', color: TOUR_COLORS[(n - 1) % TOUR_COLORS.length], del: false, arm: false }; }
 function openTours() {
-  tDraft = tours.map(t => ({ ...t, del: false, arm: false }));
-  if (!tDraft.length) tDraft.push(newTour());
-  drawTours(); $('#tErr').hidden = true; openOv('ovTour');
+  tDraft = plan.tours.map(x => ({ ...x, del: false, arm: false }));
+  if (!tDraft.length) tDraft.push(newTour(1));
+  openDlg(`<h3>${t('tours')}</h3><p class="sub">${t('toursSub')}</p><div class="rows" id="tRows"></div>
+    <button class="btn sm" data-act="t-add">${t('addTour')}</button>
+    <div class="acts" style="margin-top:14px"><button class="btn" data-act="dlg-close">${t('cancel')}</button><button class="btn pri" data-act="t-save">${t('save')}</button></div>`, true);
+  drawTours();
 }
-function newTour() { return { id: null, code: 'T' + (tDraft.length + 1), name: '', start: '07:00', end: '15:00', color: TOUR_COLORS[tDraft.length % TOUR_COLORS.length], del: false }; }
 function syncTours() {
-  $('#tRows').querySelectorAll('.trow').forEach(r => {
-    const t = tDraft[+r.dataset.i];
-    t.code = r.querySelector('[data-f=code]').value; t.name = r.querySelector('[data-f=name]').value;
-    t.start = r.querySelector('[data-f=start]').value; t.end = r.querySelector('[data-f=end]').value;
+  document.querySelectorAll('#tRows .trow').forEach(r => {
+    const x = tDraft[+r.dataset.i];
+    x.code = r.querySelector('[data-f=code]').value; x.name = r.querySelector('[data-f=name]').value;
+    x.start = r.querySelector('[data-f=start]').value; x.end = r.querySelector('[data-f=end]').value;
   });
 }
 function drawTours() {
-  const vis = tDraft.map((t, i) => ({ t, i })).filter(x => !x.t.del);
-  $('#tRows').innerHTML = vis.length ? vis.map(({ t, i }) => `
+  const vis = tDraft.map((x, i) => ({ x, i })).filter(v => !v.x.del);
+  $('#tRows').innerHTML = vis.map(({ x, i }) => `
     <div class="trow" data-i="${i}">
-      <input type="text" id="tc-${i}" data-f="code" value="${esc(t.code)}" maxlength="6" aria-label="Tur kodu" class="mono">
-      <input type="text" id="tn-${i}" data-f="name" value="${esc(t.name)}" maxlength="50" placeholder="Güzergâh / tur adı" aria-label="Tur adı">
-      <input type="time" id="ts-${i}" data-f="start" value="${esc(t.start)}" aria-label="Varsayılan başlangıç" class="tm-in">
-      <input type="time" id="te-${i}" data-f="end" value="${esc(t.end)}" aria-label="Varsayılan bitiş" class="tm-in">
-      <button class="btn sm warn" data-a="del">${t.arm ? 'Emin misin?' : 'Sil'}</button>
-      <div class="c"><span class="colhead">Renk</span>${TOUR_COLORS.map(c => `<button class="cpick" data-a="color" data-c="${c}" style="background:${c}" aria-label="Renk ${c}" aria-pressed="${t.color === c}"></button>`).join('')}</div>
-    </div>`).join('') : '<div class="empty">Tur yok</div>';
+      <input type="text" id="tc-${i}" data-f="code" value="${esc(x.code)}" maxlength="6" class="mono" aria-label="Kod">
+      <input type="text" id="tn-${i}" data-f="name" value="${esc(x.name)}" maxlength="50" placeholder="${esc(t('tourPh'))}" aria-label="${esc(t('tourPh'))}">
+      <input type="time" id="ts-${i}" data-f="start" value="${esc(x.start)}" aria-label="${esc(t('start'))}">
+      <input type="time" id="te-${i}" data-f="end" value="${esc(x.end)}" aria-label="${esc(t('end'))}">
+      <button class="btn sm warn" data-act="t-del">${x.arm ? t('sure') : t('del')}</button>
+      <div class="c"><span class="colhead">${t('color')}</span>${TOUR_COLORS.map(c => `<button class="cpick" data-act="t-color" data-c="${c}" style="background:${c}" aria-label="${c}" aria-pressed="${x.color === c}"></button>`).join('')}</div>
+    </div>`).join('') || `<div class="empty">—</div>`;
 }
-$('#tRows').addEventListener('click', ev => {
-  const b = ev.target.closest('button[data-a]'); if (!b) return;
+function tourAction(act, i, el) {
   syncTours();
-  const t = tDraft[+b.closest('.trow').dataset.i];
-  if (b.dataset.a === 'color') t.color = b.dataset.c;
-  if (b.dataset.a === 'del') { if (t.arm || !t.id) t.del = true; else t.arm = true; }
+  const x = tDraft[i];
+  if (act === 't-color') x.color = el.dataset.c;
+  if (act === 't-del') { if (x.arm || !x.id) x.del = true; else x.arm = true; }
   drawTours();
-});
-$('#tAdd').addEventListener('click', () => { syncTours(); tDraft.push(newTour()); drawTours(); });
-$('#tSave').addEventListener('click', async () => {
+}
+function saveTours() {
   syncTours();
-  const btn = $('#tSave'); btn.disabled = true;
-  try {
-    let order = 0;
-    for (const t of tDraft) {
-      if (t.del) { if (t.id) await db.doc('tours/' + t.id).delete(); continue; }
-      const code = t.code.trim(), name = t.name.trim();
-      if (!code && !name) continue;
-      order++;
-      const body = { code: code || name.slice(0, 4), name: name || code, start: t.start || '', end: t.end || '', color: t.color, order };
-      const cur = tours.find(x => x.id === t.id);
-      if (!t.id) await db.collection('tours').doc().set(body);
-      else if (!cur || JSON.stringify([cur.code, cur.name, cur.start, cur.end, cur.color, cur.order]) !== JSON.stringify([body.code, body.name, body.start, body.end, body.color, body.order]))
-        await db.doc('tours/' + t.id).set(body);
-    }
-    closeOv('ovTour'); toast('Turlar güncellendi');
-  } catch (err) { const x = $('#tErr'); x.textContent = 'Kaydedilemedi: ' + (err && err.message || ''); x.hidden = false; }
-  btn.disabled = false;
-});
+  plan.tours = tDraft.filter(x => !x.del && (x.code.trim() || x.name.trim())).map(x => ({
+    id: x.id || newId('t'), code: (x.code.trim() || x.name.trim().slice(0, 4)).toUpperCase(), name: x.name.trim() || x.code.trim(),
+    start: x.start || '', end: x.end || '', color: x.color || TOUR_COLORS[0]
+  }));
+  closeDlg(); commit(true);
+}
 
-/* ---------- İsim değiştir (tablodan) ---------- */
-function renameFromGrid(id) {
-  openEmp(false);
-  const i = eDraft.findIndex(e => e.id === id);
-  setTimeout(() => { const el = document.getElementById('emp-' + i); if (el) { el.focus(); el.select(); } }, 30);
+/* ---------- Paylaş (WhatsApp) ---------- */
+const waLink = text => 'https://wa.me/?text=' + encodeURIComponent(text);
+function openShare() {
+  const url = plan.shareUrl;
+  const rows = plan.employees.map(e => {
+    const link = url ? url + '#' + e.id : '';
+    return `<div class="prow"><span>${esc(empName(e))}</span>
+      <a class="btn sm wa" href="${esc(waLink(t('msgOne', { name: empName(e), url: link })))}" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="btn sm" data-act="copy" data-text="${esc(link)}">${t('copy')}</button></div>`;
+  }).join('');
+  openDlg(`<h3>${t('shareT')}</h3><p class="sub">${t('shareSub')}</p>
+    <ol class="steps"><li>${t('step1')}</li><li>${t('step2')}</li></ol>
+    <div class="f"><label for="shareUrl">${t('link')}</label>
+      <div class="copyrow"><input type="url" id="shareUrl" value="${esc(url)}" placeholder="https://claude.ai/artifact/…"><button class="btn" data-act="copy" data-from="#shareUrl">${t('copy')}</button></div>
+    </div>
+    <a class="btn wa wa-all" href="${esc(waLink(t('msgAll', { url })))}" target="_blank" rel="noopener">${t('waAll')}</a>
+    <div class="f" style="margin-top:16px"><span class="l">${t('perPerson')}</span><div class="plist">${rows}</div></div>
+    <div class="acts"><button class="btn" data-act="dlg-close">${t('close')}</button></div>`, true);
+}
+async function copyText(text, input) {
+  try { await navigator.clipboard.writeText(text); toast(t('copied')); }
+  catch (e) { if (input) { input.focus(); input.select(); } else toast(text); }
 }
 
 /* =========================================================
-   OLAYLAR
+   OLAYLAR (tek yerden)
    ========================================================= */
-$('#grid').addEventListener('click', ev => {
-  const c = ev.target.closest('button.cell'); if (c) return openCell(c.dataset.emp, c.dataset.date);
-  const n = ev.target.closest('button[data-rename]'); if (n) renameFromGrid(n.dataset.rename);
-});
-$('#personView').addEventListener('click', ev => { const r = ev.target.closest('.day[data-emp]'); if (r) openCell(r.dataset.emp, r.dataset.date); });
-$('#personView').addEventListener('keydown', ev => { if (ev.key === 'Enter') { const r = ev.target.closest('.day[data-emp]'); if (r) openCell(r.dataset.emp, r.dataset.date); } });
-
-function go(delta) {
-  const d = new Date(view.y, view.m + delta, 1);
-  view = { y: d.getFullYear(), m: d.getMonth() };
-  syncMonthSubs(); render(); $('#gridWrap').scrollLeft = 0;
-}
+function go(delta) { const d = new Date(view.y, view.m + delta, 1); view = { y: d.getFullYear(), m: d.getMonth() }; render(); const w = $('#gridWrap'); if (w) w.scrollLeft = 0; }
 function scrollToday() {
-  const w = $('#gridWrap'), th = w.querySelector('th.is-today'), s = w.querySelector('thead .sticky');
+  const w = $('#gridWrap'); if (!w) return;
+  const th = w.querySelector('th.is-today'), s = w.querySelector('thead .sticky');
   w.scrollLeft = th ? Math.max(0, th.offsetLeft - (s ? s.offsetWidth : 0) - 8) : 0;
 }
-$('#prev').addEventListener('click', () => go(-1));
-$('#next').addEventListener('click', () => go(1));
-$('#today').addEventListener('click', () => { const t = new Date(); view = { y: t.getFullYear(), m: t.getMonth() }; syncMonthSubs(); render(); scrollToday(); });
-$('#who').addEventListener('change', e => { who = e.target.value; lsSet('ea.who', who); render(); });
-$('#addEmp').addEventListener('click', () => openEmp(true));
-$('#editEmp').addEventListener('click', () => openEmp(false));
-$('#editTours').addEventListener('click', openTours);
 
-boot().then(() => setTimeout(scrollToday, 400));
+document.addEventListener('click', ev => {
+  if (ev.target.id === 'ov') return closeDlg();
+  const el = ev.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act;
+  switch (a) {
+    case 'lang': lang = el.dataset.l; sSet('l', 'ea.lang', lang); renderShell(); render(); break;
+    case 'prev': go(-1); break;
+    case 'next': go(1); break;
+    case 'today': { const d = new Date(); view = { y: d.getFullYear(), m: d.getMonth() }; render(); scrollToday(); break; }
+    case 'brush': setBrush(!brushOn); break;
+    case 'brush-done': setBrush(false); if (pending) publishNow(); break;
+    case 'bstatus': brushStatus = el.dataset.s; renderBrush(); break;
+    case 'undo': undo(); break;
+    case 'save-now': publishNow(); break;
+    case 'cell': if (!canEdit) break; if (brushOn) applyBrush([{ empId: el.dataset.emp, dk: el.dataset.date }]); else openCell(el.dataset.emp, el.dataset.date); break;
+    case 'dayhead': if (canEdit && brushOn) applyBrush(plan.employees.map(e => ({ empId: e.id, dk: el.dataset.date }))); break;
+    case 'rename': if (!brushOn) openEmp(false, el.dataset.emp); break;
+    case 'emp-new': openEmp(true); break;
+    case 'emp-open': openEmp(false); break;
+    case 'tour-open': openTours(); break;
+    case 'share-open': openShare(); break;
+    case 'dlg-close': closeDlg(); break;
+    case 'cell-save': saveCell(false); break;
+    case 'cell-clear': saveCell(true); break;
+    case 'e-up': case 'e-down': case 'e-del': empAction(a, +el.closest('.row').dataset.i); break;
+    case 'e-add': syncEmp(); eDraft.push({ id: null, name: '', del: false, arm: false }); drawEmp(); document.getElementById('emp-' + (eDraft.length - 1))?.focus(); break;
+    case 'e-save': saveEmp(); break;
+    case 't-color': case 't-del': tourAction(a, +el.closest('.trow').dataset.i, el); break;
+    case 't-add': syncTours(); tDraft.push(newTour(tDraft.filter(x => !x.del).length + 1)); drawTours(); break;
+    case 't-save': saveTours(); break;
+    case 'copy': { const inp = el.dataset.from ? $(el.dataset.from) : null; copyText(inp ? inp.value : el.dataset.text, inp); break; }
+  }
+});
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Escape') closeDlg();
+  if (ev.key === 'Enter' && ev.target.matches && ev.target.matches('.day[data-act]')) ev.target.click();
+});
+document.addEventListener('change', ev => {
+  const id = ev.target.id;
+  if (id === 'who') { who = ev.target.value; sSet('l', 'ea.who', who); render(); }
+  else if (id === 'bTour') { brush.tour = ev.target.value; const x = tourById(brush.tour); if (x && x.start && x.end) { brush.start = x.start; brush.end = x.end; $('#bStart').value = x.start; $('#bEnd').value = x.end; } renderBrush(); }
+  else if (id === 'cTour') { const x = tourById(ev.target.value); if (x && x.start && x.end) { $('#cStart').value = x.start; $('#cEnd').value = x.end; } refreshCellForm(); }
+  else if (ev.target.name === 'st') refreshCellForm();
+  else if (id === 'shareUrl') { plan.shareUrl = ev.target.value.trim().replace(/#.*$/, ''); openShare(); commit(true); }
+});
+document.addEventListener('input', ev => {
+  const id = ev.target.id;
+  if (id === 'bStart' || id === 'bEnd') { brush[id === 'bStart' ? 'start' : 'end'] = ev.target.value; renderBrush(); }
+  else if (id === 'cStart' || id === 'cEnd') refreshCellForm();
+});
+
+/* =========================================================
+   BAŞLAT
+   ========================================================= */
+renderShell();
+render();
+setTimeout(() => { const w = $('#gridWrap'); if (restoredScroll != null && w) w.scrollLeft = restoredScroll; else scrollToday(); }, 60);
+
+(async () => {
+  const cl = window.claude;
+  if (!cl || !cl.use) return;                       // bağımsız dosya olarak açıldıysa: salt okunur
+  const [art, user] = await Promise.all([cl.use('artifact'), cl.use('user')]);
+  artifactNs = art;
+  canEdit = !!(art && user && await user.canEdit());
+  if (!canEdit) brushOn = false;
+  render();
+})();
 </script>
