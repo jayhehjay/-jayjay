@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Schedule</title>
+<style>
+  /* =========================================================
+     RENKLER VE TEMEL DEĞİŞKENLER
+     Durum renkleri bilerek yumuşak (pastel) tutuldu.
+     ========================================================= */
+  :root {
+    --navy: #15294a;
+    --navy-2: #1f3a63;
+    --gold: #b8914a;
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --line: #e1e5eb;
+    --text: #1c2533;
+    --muted: #6b7585;
+
+    --work-bg: #e4f1e8; --work-fg: #2d6a43; --work-bd: #bcdcc6;  /* Çalışıyor → yeşil */
+    --off-bg:  #eef0f3; --off-fg:  #5d6673; --off-bd:  #d3d8df;  /* İzinli → gri */
+    --sick-bg: #f7e3e3; --sick-fg: #9a3a3a; --sick-bd: #e8c1c1;  /* Hastalık → kırmızı */
+    --hol-bg:  #f8efd4; --hol-fg:  #86650f; --hol-bd:  #e7d49d;  /* Tatil → sarı */
+
+    --today: #fff6e3;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---------- Üst başlık ---------- */
+  .app-header {
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: #fff;
+    padding: 22px 16px 18px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .app-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: .14em;
+  }
+  .month-label {
+    margin-top: 6px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: #ead8b0;
+  }
+  .save-status {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.3);
+    color: #dfe6f0;
+    white-space: nowrap;
+  }
+  .save-status.error { border-color: #e8a0a0; color: #ffd5d5; }
+
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* ---------- Butonlar ---------- */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .toolbar .group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .toolbar .spacer { flex: 1; }
+
+  .btn {
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .btn:hover { background: #f6f7f9; border-color: #cfd5de; }
+  .btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .btn.primary:hover { background: var(--navy-2); }
+  .btn.danger { color: var(--sick-fg); border-color: var(--sick-bd); }
+  .btn.danger:hover { background: var(--sick-bg); }
+  .btn.small { min-height: 40px; padding: 0 12px; font-size: 14px; }
+  .btn:disabled { opacity: .4; cursor: default; }
+
+  /* ---------- Kartlar ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(20, 30, 50, .04);
+  }
+  .card h2 {
+    margin: 0 0 4px;
+    font-size: 19px;
+  }
+  .card .sub {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ---------- Renk açıklaması ---------- */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 16px; height: 16px; border-radius: 4px; border: 1px solid; }
+
+  /* ---------- Tablolar (ortak) ---------- */
+  .table-wrap {
+    overflow-x: auto;                   /* telefonda yatay kaydırma */
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  table { border-collapse: separate; border-spacing: 0; width: 100%; }
+  th, td {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+  tr > :last-child { border-right: none; }
+  tbody tr:last-child > * { border-bottom: none; }
+  thead th {
+    background: #f6f7f9;
+    font-weight: 600;
+    padding: 10px 6px;
+    white-space: nowrap;
+  }
+
+  /* Çalışan adı sütunu: yatay kaydırırken solda sabit kalır */
+  .name-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+    min-width: 150px;
+    text-align: left;
+    box-shadow: 1px 0 0 var(--line);
+  }
+  thead .name-col { background: #f6f7f9; z-index: 3; padding-left: 14px; }
+
+  .name-btn {
+    width: 100%;
+    min-height: 62px;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .name-btn:hover { background: #f6f7f9; }
+  .name-btn .pen { color: var(--muted); font-size: 14px; opacity: .6; }
+
+  /* ---------- Aylık takvim ---------- */
+  .schedule .dow {
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .schedule .dnum { font-size: 18px; margin-top: 2px; }
+  .schedule .week-start { border-left: 3px solid #c9d0da; }
+  .schedule th.today { background: var(--today); color: #7a5a14; }
+  .schedule td.today { background: #fffbf2; }
+
+  .schedule td { padding: 4px; min-width: 76px; }
+  .cell {
+    position: relative;
+    width: 100%;
+    min-height: 54px;
+    border: 1px dashed transparent;
+    border-radius: 8px;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 2px;
+    color: var(--text);
+  }
+  .cell:hover { border-color: #b9c2cf; background: #f7f9fb; }
+  .cell.empty::after { content: "+"; color: #c3c9d2; font-size: 18px; }
+  .cell .main { font-weight: 700; font-size: 15px; white-space: nowrap; }
+  .cell .extra { font-size: 11px; opacity: .8; margin-top: 2px; }
+  .cell .note-dot {
+    position: absolute; top: 5px; right: 5px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor; opacity: .55;
+  }
+
+  /* Durum renkleri */
+  .st-work    { background: var(--work-bg); color: var(--work-fg); border: 1px solid var(--work-bd); }
+  .st-off     { background: var(--off-bg);  color: var(--off-fg);  border: 1px solid var(--off-bd); }
+  .st-sick    { background: var(--sick-bg); color: var(--sick-fg); border: 1px solid var(--sick-bd); }
+  .st-holiday { background: var(--hol-bg);  color: var(--hol-fg);  border: 1px solid var(--hol-bd); }
+  .cell.st-work:hover, .cell.st-off:hover, .cell.st-sick:hover, .cell.st-holiday:hover { filter: brightness(.97); }
+
+  .total-col { min-width: 90px; font-weight: 700; background: #fafbfc; padding: 0 10px; }
+  thead .total-col { background: #f0f2f5; }
+
+  .empty-state { padding: 30px; color: var(--muted); text-align: center; }
+
+  /* ---------- Haftalık özet ---------- */
+  .summary td { padding: 12px 10px; font-size: 15px; white-space: nowrap; }
+  .summary td.name-col { font-weight: 600; padding-left: 14px; }
+  .summary .range { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .summary th.current, .summary td.current { background: var(--today); }
+  .summary th.current .badge {
+    display: inline-block; margin-left: 4px; font-size: 11px;
+    background: var(--gold); color: #fff; border-radius: 999px; padding: 1px 7px;
+  }
+  .summary tfoot td { font-weight: 700; background: #f6f7f9; border-top: 2px solid var(--line); }
+  .summary tfoot td.name-col { background: #f6f7f9; }
+  .zero { color: #b3bac5; }
+
+  /* ---------- Aylık toplam kartları ---------- */
+  .month-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .emp-total {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    background: #fbfcfd;
+  }
+  .emp-total .n { font-weight: 700; font-size: 16px; }
+  .emp-total .h { font-size: 26px; font-weight: 800; color: var(--navy); margin: 6px 0 8px; }
+  .emp-total .h small { font-size: 14px; font-weight: 600; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 12px; border-radius: 999px; padding: 3px 9px; }
+
+  /* ---------- Açılır pencere (modal) ---------- */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(15, 25, 45, .45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 100;
+  }
+  .overlay.open { display: flex; }
+  .dialog {
+    background: #fff;
+    width: 100%;
+    max-width: 440px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(15, 25, 45, .25);
+  }
+  .dialog.wide { max-width: 560px; }
+  .dialog h3 { margin: 0 0 2px; font-size: 20px; }
+  .dialog .dsub { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+  .field { margin-bottom: 14px; }
+  .field > label, .field-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  input[type="text"], input[type="time"], textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid #cfd5de;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 16px;               /* 16px: iPhone'da otomatik yakınlaştırmayı önler */
+    background: #fff;
+    color: var(--text);
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid #9fb4d6; outline-offset: 1px; }
+  input:disabled { background: #f3f4f6; color: #a0a7b2; }
+
+  .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .status-opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .status-opt span {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 46px; border-radius: 10px; font-weight: 600; cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .status-opt input:checked + span { border-color: currentColor; box-shadow: 0 0 0 2px rgba(0,0,0,.04); }
+  .status-opt input:focus-visible + span { outline: 2px solid #9fb4d6; }
+
+  .time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .duration { font-size: 14px; color: var(--muted); margin-top: -4px; margin-bottom: 14px; }
+  .form-error { color: var(--sick-fg); font-size: 14px; margin-bottom: 10px; display: none; }
+  .form-error.show { display: block; }
+
+  .dialog-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+  .dialog-actions .left { margin-right: auto; }
+
+  /* Çalışan düzenleme listesi */
+  .emp-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .emp-row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; align-items: center; }
+  .emp-row .btn.small { min-width: 40px; padding: 0 10px; }
+
+  /* ---------- Mobil ---------- */
+  @media (max-width: 640px) {
+    .app-title { font-size: 23px; }
+    .month-label { font-size: 16px; }
+    main { padding: 12px; }
+    .card { padding: 14px; }
+    .toolbar .group { width: 100%; }
+    .toolbar .group .btn { flex: 1 1 auto; padding: 0 10px; }
+    .toolbar .spacer { display: none; }
+    .name-col { min-width: 118px; }
+    .name-btn { font-size: 15px; padding: 8px 10px; }
+    .overlay { align-items: flex-end; padding: 0; }
+    .dialog { border-radius: 16px 16px 0 0; max-height: 92vh; }
+  }
+
+  /* ---------- Yazdırma: sadece takvim ---------- */
+  .print-only { display: none; }
+  @media print {
+    @page { size: A4 landscape; margin: 8mm; }
+    body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .no-print, .toolbar, .overlay, #weeklyCard, #monthlyCard, .save-status, .app-header { display: none !important; }
+    .print-only { display: block; margin-bottom: 6px; }
+    .print-only h1 { margin: 0; font-size: 18px; letter-spacing: .12em; }
+    .print-only div { font-size: 13px; letter-spacing: .1em; color: #444; }
+    main { max-width: none; padding: 0; }
+    .card { border: none; box-shadow: none; padding: 0; margin: 0; }
+    .card h2, .card .sub { display: none; }
+    .legend { font-size: 9px; margin-bottom: 6px; }
+    .table-wrap { overflow: visible; border-radius: 0; }
+    .schedule { table-layout: fixed; font-size: 8.5px; }
+    .schedule .name-col { position: static; min-width: 0; width: 26mm; box-shadow: none; }
+    .schedule td, .schedule th { min-width: 0; padding: 1px; }
+    .schedule .dnum { font-size: 10px; }
+    .schedule .dow { font-size: 7px; }
+    .schedule .total-col { width: 14mm; min-width: 0; padding: 0 2px; }
+    .name-btn { min-height: 0; padding: 3px 4px; font-size: 9px; }
+    .name-btn .pen { display: none; }
+    .cell { min-height: 26px; padding: 1px; border-radius: 3px; }
+    .cell.empty::after { content: ""; }
+    .cell .main { font-size: 8.5px; }
+    .cell .extra { display: none; }
+    .schedule th.today, .schedule td.today { background: transparent; color: inherit; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     BAŞLIK
+     ========================================================= -->
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <h1 class="app-title">WORK SCHEDULE</h1>
+      <div class="month-label" id="monthLabel"></div>
+    </div>
+    <div class="save-status" id="saveStatus">✓ Otomatik kaydediliyor</div>
+  </div>
+</header>
+
+<main>
+  <!-- Yazdırırken görünen sade başlık -->
+  <div class="print-only">
+    <h1>WORK SCHEDULE</h1>
+    <div id="printMonth"></div>
+  </div>
+
+  <!-- ---------- Butonlar ---------- -->
+  <div class="toolbar">
+    <div class="group">
+      <button class="btn" id="prevBtn">‹ Önceki Ay</button>
+      <button class="btn" id="todayBtn">Bugün</button>
+      <button class="btn" id="nextBtn">Sonraki Ay ›</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="group">
+      <button class="btn primary" id="addEmpBtn">+ Çalışan Ekle</button>
+      <button class="btn" id="editEmpBtn">Çalışan Düzenle</button>
+      <button class="btn" id="printBtn">Yazdır</button>
+    </div>
+  </div>
+
+  <!-- ---------- Aylık takvim ---------- -->
+  <section class="card" id="scheduleCard">
+    <h2>Aylık Çalışma Takvimi</h2>
+    <p class="sub">Bir hücreye dokunarak o günün durumunu ve saatlerini girin. İsme dokunarak ismi değiştirin.</p>
+    <div class="legend">
+      <span><i class="swatch st-work"></i>Çalışıyor</span>
+      <span><i class="swatch st-off"></i>İzinli</span>
+      <span><i class="swatch st-sick"></i>Hastalık</span>
+      <span><i class="swatch st-holiday"></i>Tatil</span>
+    </div>
+    <div class="table-wrap" id="scheduleWrap">
+      <table class="schedule" id="scheduleTable"></table>
+    </div>
+  </section>
+
+  <!-- ---------- Haftalık toplamlar ---------- -->
+  <section class="card" id="weeklyCard">
+    <h2>Haftalık Toplam Çalışma Saatleri</h2>
+    <p class="sub">Haftalar Pazartesi–Cumartesi olarak hesaplanır. Ay sınırındaki haftalara komşu ayın günleri de dahildir.</p>
+    <div class="table-wrap">
+      <table class="summary" id="weeklyTable"></table>
+    </div>
+  </section>
+
+  <!-- ---------- Aylık toplamlar ---------- -->
+  <section class="card" id="monthlyCard">
+    <h2>Aylık Toplam</h2>
+    <p class="sub" id="monthlySub"></p>
+    <div class="month-grid" id="monthlyGrid"></div>
+  </section>
+</main>
+
+<!-- =========================================================
+     PENCERE 1: Gün / hücre düzenleme
+     ========================================================= -->
+<div class="overlay" id="cellOverlay">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="cellTitle">
+    <h3 id="cellTitle"></h3>
+    <p class="dsub" id="cellSub"></p>
+
+    <div class="field">
+      <span class="field-label">Durum</span>
+      <div class="status-grid" id="statusGrid">
+        <label class="status-opt"><input type="radio" name="status" value="work"><span class="st-work">Çalışıyor</span></label>
+        <label class="status-opt"><input type="radio" name="status" value="off"><span class="st-off">İzinli</span></label>
+        <label class="status-opt"><input type="radio" name="status" value="sick"><span class="st-sick">Hastalık</span></label>
+        <label class="status-opt"><input type="radio" name="status" value="holiday"><span class="st-holiday">Tatil</span></label>
+      </div>
+    </div>
+
+    <div class="time-row">
+      <div class="field">
+        <label for="startInput">Başlangıç saati</label>
+        <input type="time" id="startInput">
+      </div>
+      <div class="field">
+        <label for="endInput">Bitiş saati</label>
+        <input type="time" id="endInput">
+      </div>
+    </div>
+    <div class="duration" id="durationText"></div>
+
+    <div class="field">
+      <label for="noteInput">Not</label>
+      <textarea id="noteInput" placeholder="İsteğe bağlı"></textarea>
+    </div>
+
+    <div class="form-error" id="cellError"></div>
+
+    <div class="dialog-actions">
+      <button class="btn danger left" id="cellClearBtn">Temizle</button>
+      <button class="btn" data-close>İptal</button>
+      <button class="btn primary" id="cellSaveBtn">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PENCERE 2: Tek çalışan ismi (ekle / yeniden adlandır)
+     ========================================================= -->
+<div class="overlay" id="nameOverlay">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="nameTitle">
+    <h3 id="nameTitle"></h3>
+    <p class="dsub">Çalışanın takvimde görünecek adını yazın.</p>
+    <div class="field">
+      <label for="nameInput">İsim</label>
+      <input type="text" id="nameInput" maxlength="40" autocomplete="off">
+    </div>
+    <div class="dialog-actions">
+      <button class="btn" data-close>İptal</button>
+      <button class="btn primary" id="nameSaveBtn">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PENCERE 3: Çalışanları toplu düzenle (isim, sıra, silme)
+     ========================================================= -->
+<div class="overlay" id="manageOverlay">
+  <div class="dialog wide" role="dialog" aria-modal="true" aria-labelledby="manageTitle">
+    <h3 id="manageTitle">Çalışanları Düzenle</h3>
+    <p class="dsub">İsimleri değiştirin, sırayı ↑ ↓ ile düzenleyin veya çalışan silin.</p>
+    <div class="emp-list" id="empList"></div>
+    <button class="btn small" id="manageAddBtn">+ Yeni satır</button>
+    <div class="dialog-actions">
+      <button class="btn" data-close>İptal</button>
+      <button class="btn primary" id="manageSaveBtn">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SABİTLER
+   ========================================================= */
+const STORAGE_KEY = 'workSchedule.v1';
+const DEFAULT_EMPLOYEE_COUNT = 10;
+
+// Durum tanımları: etiket, takvimde kısa yazı ve CSS sınıfı
+const STATUS = {
+  work:    { label: 'Çalışıyor', short: null,    cls: 'st-work' },
+  off:     { label: 'İzinli',    short: 'İZİN',  cls: 'st-off' },
+  sick:    { label: 'Hastalık',  short: 'HASTA', cls: 'st-sick' },
+  holiday: { label: 'Tatil',     short: 'TATİL', cls: 'st-holiday' }
+};
+
+const MONTHS = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+const MONTHS_SHORT = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+// JavaScript'te getDay(): 0 = Pazar, 1 = Pazartesi ... 6 = Cumartesi
+const DAYS_SHORT = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+const DAYS_LONG  = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+
+/* =========================================================
+   VERİ (localStorage)
+   Yapı:
+   {
+     employees: [{ id: 'e1', name: 'Çalışan 1' }, ...],
+     entries:   { 'e1|2026-09-01': { status, start, end, note }, ... },
+     nextId:    11,
+     lastTimes: { start: '08:00', end: '17:00' }  // son girilen saatler (kolaylık için)
+   }
+   ========================================================= */
+function defaultState() {
+  const employees = [];
+  for (let i = 1; i <= DEFAULT_EMPLOYEE_COUNT; i++) {
+    employees.push({ id: 'e' + i, name: 'Çalışan ' + i });
+  }
+  return {
+    employees,
+    entries: {},
+    nextId: DEFAULT_EMPLOYEE_COUNT + 1,
+    lastTimes: { start: '08:00', end: '17:00' }
+  };
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data && Array.isArray(data.employees) && data.entries && typeof data.entries === 'object') {
+        return Object.assign(defaultState(), data);
+      }
+    }
+  } catch (e) { /* localStorage kullanılamıyorsa varsayılanla devam et */ }
+  return defaultState();
+}
+
+function saveState() {
+  const el = document.getElementById('saveStatus');
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    el.textContent = '✓ Kaydedildi';
+    el.classList.remove('error');
+  } catch (e) {
+    el.textContent = '⚠ Kaydedilemedi (tarayıcı depolaması kapalı)';
+    el.classList.add('error');
+  }
+}
+
+let state = loadState();
+
+// Ekranda gösterilen ay (month: 0-11)
+const now = new Date();
+let view = { year: now.getFullYear(), month: now.getMonth() };
+
+/* =========================================================
+   YARDIMCI FONKSİYONLAR
+   ========================================================= */
+const pad = n => String(n).padStart(2, '0');
+
+// Tarihi 'YYYY-MM-DD' anahtarına çevirir (saat dilimi kaymasını önlemek için elle)
+const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const entryKey = (empId, dKey) => empId + '|' + dKey;
+const getEntry = (empId, dKey) => state.entries[entryKey(empId, dKey)] || null;
+const sameDay = (a, b) => dateKey(a) === dateKey(b);
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// '07:30' → 450 dakika
+function toMinutes(t) {
+  if (!t || !/^\d{1,2}:\d{2}$/.test(t)) return null;
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+// Başlangıç–bitiş arası süre (saat). Bitiş başlangıçtan küçükse gece vardiyası sayılır.
+function hoursBetween(start, end) {
+  const s = toMinutes(start), e = toMinutes(end);
+  if (s === null || e === null || s === e) return 0;
+  let diff = e - s;
+  if (diff < 0) diff += 24 * 60;
+  return diff / 60;
+}
+
+// Bir kaydın çalışma saati (sadece "Çalışıyor" durumu sayılır)
+function entryHours(entry) {
+  if (!entry || entry.status !== 'work') return 0;
+  return hoursBetween(entry.start, entry.end);
+}
+
+// 7.5 → "7,5"
+function fmtNum(h) {
+  return h.toLocaleString('tr-TR', { maximumFractionDigits: 2 });
+}
+
+// '07:00' → '07', '07:30' → '07:30' (takvim hücresinde kısa gösterim)
+function shortTime(t) {
+  return t.endsWith(':00') ? t.slice(0, 2) : t;
+}
+
+function monthTitle(y, m) {
+  return (MONTHS[m] + ' ' + y).toLocaleUpperCase('tr-TR');
+}
+
+/* =========================================================
+   TAKVİM HESAPLARI
+   ========================================================= */
+
+// Ayın Pazar hariç tüm günleri (ay uzunluğu ve artık yıl otomatik)
+function monthDays(y, m) {
+  const daysInMonth = new Date(y, m + 1, 0).getDate(); // bir sonraki ayın 0. günü = bu ayın son günü
+  const days = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, m, d);
+    if (date.getDay() !== 0) days.push(date);
+  }
+  return days;
+}
+
+// Pazartesi–Cumartesi haftaları (ayın en az bir iş günü içeren haftalar)
+function monthWeeks(y, m) {
+  const first = new Date(y, m, 1);
+  const last = new Date(y, m + 1, 0);
+  // Ayın 1'inin bulunduğu haftanın Pazartesi'si
+  const offset = (first.getDay() + 6) % 7;          // Pazartesi=0 ... Pazar=6
+  let monday = new Date(y, m, 1 - offset);
+  const weeks = [];
+  while (monday <= last) {
+    const days = [];
+    for (let i = 0; i < 6; i++) {
+      days.push(new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i));
+    }
+    if (days.some(d => d.getMonth() === m)) weeks.push(days);
+    monday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 7);
+  }
+  return weeks;
+}
+
+function sumHours(empId, days) {
+  return days.reduce((sum, d) => sum + entryHours(getEntry(empId, dateKey(d))), 0);
+}
+
+/* =========================================================
+   ÇİZİM (RENDER)
+   ========================================================= */
+function render() {
+  const title = monthTitle(view.year, view.month);
+  document.getElementById('monthLabel').textContent = title;
+  document.getElementById('printMonth').textContent = title;
+  document.title = 'Work Schedule — ' + title;
+  renderSchedule();
+  renderWeekly();
+  renderMonthly();
+}
+
+// ---------- Aylık takvim tablosu ----------
+function renderSchedule() {
+  const table = document.getElementById('scheduleTable');
+  const days = monthDays(view.year, view.month);
+  const today = new Date();
+
+  // Başlık satırı
+  let html = '<thead><tr><th class="name-col">Çalışan</th>';
+  days.forEach((d, i) => {
+    const cls = [];
+    if (d.getDay() === 1 && i > 0) cls.push('week-start');
+    if (sameDay(d, today)) cls.push('today');
+    html += `<th class="${cls.join(' ')}" data-date="${dateKey(d)}">
+               <div class="dow">${DAYS_SHORT[d.getDay()]}</div>
+               <div class="dnum">${d.getDate()}</div>
+             </th>`;
+  });
+  html += '<th class="total-col">Ay Toplamı</th></tr></thead><tbody>';
+
+  if (state.employees.length === 0) {
+    html += `<tr><td class="empty-state" colspan="${days.length + 2}">Henüz çalışan yok. “+ Çalışan Ekle” ile başlayın.</td></tr>`;
+  }
+
+  // Her çalışan için bir satır
+  state.employees.forEach(emp => {
+    html += `<tr><td class="name-col"><button class="name-btn" data-rename="${emp.id}" title="İsmi değiştir">
+               <span>${escapeHtml(emp.name)}</span><span class="pen">✎</span></button></td>`;
+    let total = 0;
+    days.forEach((d, i) => {
+      const dk = dateKey(d);
+      const entry = getEntry(emp.id, dk);
+      const tdCls = [];
+      if (d.getDay() === 1 && i > 0) tdCls.push('week-start');
+      if (sameDay(d, today)) tdCls.push('today');
+      total += entryHours(entry);
+      html += `<td class="${tdCls.join(' ')}">${cellHtml(emp, d, entry)}</td>`;
+    });
+    html += `<td class="total-col">${total ? fmtNum(total) + ' sa' : '<span class="zero">0</span>'}</td></tr>`;
+  });
+
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+// Tek bir hücrenin içeriği
+function cellHtml(emp, d, entry) {
+  const dk = dateKey(d);
+  const label = `${emp.name}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${DAYS_LONG[d.getDay()]}`;
+  if (!entry) {
+    return `<button class="cell empty" data-emp="${emp.id}" data-date="${dk}" aria-label="${escapeHtml(label)}: boş"></button>`;
+  }
+  const st = STATUS[entry.status] || STATUS.off;
+  const noteDot = entry.note ? '<span class="note-dot"></span>' : '';
+  const title = entry.note ? ` title="${escapeHtml(entry.note)}"` : '';
+  let inner;
+  if (entry.status === 'work') {
+    inner = `<span class="main">${shortTime(entry.start)}–${shortTime(entry.end)}</span>
+             <span class="extra">${fmtNum(entryHours(entry))} sa</span>`;
+  } else {
+    inner = `<span class="main">${st.short}</span>`;
+  }
+  return `<button class="cell ${st.cls}" data-emp="${emp.id}" data-date="${dk}"${title}
+            aria-label="${escapeHtml(label)}: ${st.label}">${noteDot}${inner}</button>`;
+}
+
+// ---------- Haftalık özet tablosu ----------
+function renderWeekly() {
+  const table = document.getElementById('weeklyTable');
+  const weeks = monthWeeks(view.year, view.month);
+  const todayKey = dateKey(new Date());
+
+  let html = '<thead><tr><th class="name-col">Çalışan</th>';
+  weeks.forEach((w, i) => {
+    const isCurrent = w.some(d => dateKey(d) === todayKey);
+    const a = w[0], b = w[5];
+    const range = `${a.getDate()} ${MONTHS_SHORT[a.getMonth()]} – ${b.getDate()} ${MONTHS_SHORT[b.getMonth()]}`;
+    html += `<th class="${isCurrent ? 'current' : ''}">${i + 1}. Hafta${isCurrent ? '<span class="badge">Bu hafta</span>' : ''}
+               <span class="range">${range}</span></th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  const weekTotals = weeks.map(() => 0);
+  state.employees.forEach(emp => {
+    html += `<tr><td class="name-col">${escapeHtml(emp.name)}</td>`;
+    weeks.forEach((w, i) => {
+      const h = sumHours(emp.id, w);
+      weekTotals[i] += h;
+      const isCurrent = w.some(d => dateKey(d) === todayKey);
+      html += `<td class="${isCurrent ? 'current' : ''}">${h ? fmtNum(h) + ' saat' : '<span class="zero">0</span>'}</td>`;
+    });
+    html += '</tr>';
+  });
+  if (state.employees.length === 0) {
+    html += `<tr><td class="empty-state" colspan="${weeks.length + 1}">Çalışan yok.</td></tr>`;
+  }
+  html += '</tbody><tfoot><tr><td class="name-col">Toplam</td>';
+  weekTotals.forEach(t => { html += `<td>${fmtNum(t)} saat</td>`; });
+  html += '</tr></tfoot>';
+  table.innerHTML = html;
+}
+
+// ---------- Aylık toplam kartları ----------
+function renderMonthly() {
+  const grid = document.getElementById('monthlyGrid');
+  const days = monthDays(view.year, view.month);
+  document.getElementById('monthlySub').textContent =
+    `${MONTHS[view.month]} ${view.year} içindeki tüm Pazartesi–Cumartesi günleri (${days.length} gün).`;
+
+  if (state.employees.length === 0) {
+    grid.innerHTML = '<div class="empty-state">Çalışan yok.</div>';
+    return;
+  }
+
+  grid.innerHTML = state.employees.map(emp => {
+    const count = { work: 0, off: 0, sick: 0, holiday: 0 };
+    let total = 0;
+    days.forEach(d => {
+      const e = getEntry(emp.id, dateKey(d));
+      if (e && count[e.status] !== undefined) count[e.status]++;
+      total += entryHours(e);
+    });
+    const chips = Object.keys(STATUS)
+      .filter(k => count[k] > 0)
+      .map(k => `<span class="chip ${STATUS[k].cls}">${STATUS[k].label}: ${count[k]} gün</span>`)
+      .join('');
+    return `<div class="emp-total">
+              <div class="n">${escapeHtml(emp.name)}</div>
+              <div class="h">${fmtNum(total)} <small>saat</small></div>
+              <div class="chips">${chips || '<span class="zero">Henüz kayıt yok</span>'}</div>
+            </div>`;
+  }).join('');
+}
+
+// Bugünün sütununu görünür alana kaydır (telefonda faydalı)
+function scrollToToday() {
+  const wrap = document.getElementById('scheduleWrap');
+  const th = wrap.querySelector('th.today');
+  const nameCol = wrap.querySelector('thead .name-col');
+  wrap.scrollLeft = th ? Math.max(0, th.offsetLeft - (nameCol ? nameCol.offsetWidth : 0) - 8) : 0;
+}
+
+/* =========================================================
+   PENCERE (MODAL) YÖNETİMİ
+   ========================================================= */
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+function closeAll() { document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open')); }
+
+// "İptal" butonları ve arka plana tıklama pencereyi kapatır
+document.querySelectorAll('.overlay').forEach(ov => {
+  ov.addEventListener('click', e => {
+    if (e.target === ov || e.target.hasAttribute('data-close')) ov.classList.remove('open');
+  });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+/* ---------- Hücre düzenleme ---------- */
+let editing = null; // { empId, dk, date }
+
+const startInput = document.getElementById('startInput');
+const endInput = document.getElementById('endInput');
+const noteInput = document.getElementById('noteInput');
+const cellError = document.getElementById('cellError');
+
+function selectedStatus() {
+  const r = document.querySelector('input[name="status"]:checked');
+  return r ? r.value : 'work';
+}
+
+// Durum "Çalışıyor" değilse saat alanlarını pasifleştir
+function updateTimeFields() {
+  const isWork = selectedStatus() === 'work';
+  startInput.disabled = !isWork;
+  endInput.disabled = !isWork;
+  const dur = document.getElementById('durationText');
+  if (!isWork) { dur.textContent = 'Bu durumda çalışma saati hesaplanmaz.'; return; }
+  const h = hoursBetween(startInput.value, endInput.value);
+  const overnight = toMinutes(endInput.value) !== null && toMinutes(endInput.value) < toMinutes(startInput.value);
+  dur.textContent = h ? `Süre: ${fmtNum(h)} saat${overnight ? ' (ertesi güne sarkıyor)' : ''}` : '';
+}
+
+function openCellEditor(empId, dk) {
+  const emp = state.employees.find(e => e.id === empId);
+  if (!emp) return;
+  const [y, m, d] = dk.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  editing = { empId, dk };
+
+  document.getElementById('cellTitle').textContent = emp.name;
+  document.getElementById('cellSub').textContent = `${DAYS_LONG[date.getDay()]}, ${d} ${MONTHS[m - 1]} ${y}`;
+
+  const entry = getEntry(empId, dk);
+  const status = entry ? entry.status : 'work';
+  document.querySelector(`input[name="status"][value="${status}"]`).checked = true;
+  // Boş hücrede son kullanılan saatler önerilir
+  startInput.value = (entry && entry.start) || state.lastTimes.start;
+  endInput.value = (entry && entry.end) || state.lastTimes.end;
+  noteInput.value = (entry && entry.note) || '';
+  document.getElementById('cellClearBtn').style.visibility = entry ? 'visible' : 'hidden';
+  cellError.classList.remove('show');
+  updateTimeFields();
+  openOverlay('cellOverlay');
+}
+
+document.getElementById('statusGrid').addEventListener('change', updateTimeFields);
+startInput.addEventListener('input', updateTimeFields);
+endInput.addEventListener('input', updateTimeFields);
+
+document.getElementById('cellSaveBtn').addEventListener('click', () => {
+  if (!editing) return;
+  const status = selectedStatus();
+  const entry = { status, note: noteInput.value.trim() };
+
+  if (status === 'work') {
+    const s = startInput.value, e = endInput.value;
+    if (!s || !e) { showCellError('Lütfen başlangıç ve bitiş saatini girin.'); return; }
+    if (s === e) { showCellError('Başlangıç ve bitiş saati aynı olamaz.'); return; }
+    entry.start = s;
+    entry.end = e;
+    state.lastTimes = { start: s, end: e };
+  }
+
+  state.entries[entryKey(editing.empId, editing.dk)] = entry;
+  saveState();
+  closeOverlay('cellOverlay');
+  render();
+});
+
+document.getElementById('cellClearBtn').addEventListener('click', () => {
+  if (!editing) return;
+  delete state.entries[entryKey(editing.empId, editing.dk)];
+  saveState();
+  closeOverlay('cellOverlay');
+  render();
+});
+
+function showCellError(msg) {
+  cellError.textContent = msg;
+  cellError.classList.add('show');
+}
+
+/* ---------- Tek çalışan: ekle / yeniden adlandır ---------- */
+let naming = null; // { mode: 'add' | 'rename', empId }
+const nameInput = document.getElementById('nameInput');
+
+function openNameEditor(mode, empId) {
+  naming = { mode, empId };
+  if (mode === 'add') {
+    document.getElementById('nameTitle').textContent = 'Çalışan Ekle';
+    nameInput.value = '';
+    nameInput.placeholder = 'Çalışan ' + (state.employees.length + 1);
+  } else {
+    const emp = state.employees.find(e => e.id === empId);
+    document.getElementById('nameTitle').textContent = 'İsmi Değiştir';
+    nameInput.value = emp ? emp.name : '';
+    nameInput.placeholder = '';
+  }
+  openOverlay('nameOverlay');
+  setTimeout(() => { nameInput.focus(); nameInput.select(); }, 50);
+}
+
+function saveName() {
+  if (!naming) return;
+  const name = nameInput.value.trim() || nameInput.placeholder.trim();
+  if (!name) { nameInput.focus(); return; }
+  if (naming.mode === 'add') {
+    state.employees.push({ id: 'e' + state.nextId++, name });
+  } else {
+    const emp = state.employees.find(e => e.id === naming.empId);
+    if (emp) emp.name = name;
+  }
+  saveState();
+  closeOverlay('nameOverlay');
+  render();
+}
+
+document.getElementById('nameSaveBtn').addEventListener('click', saveName);
+nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveName(); });
+
+/* ---------- Çalışanları toplu düzenle ---------- */
+let draft = []; // düzenleme sırasında geçici liste
+
+function openManager() {
+  draft = state.employees.map(e => ({ ...e }));
+  renderDraft();
+  openOverlay('manageOverlay');
+}
+
+function renderDraft() {
+  const list = document.getElementById('empList');
+  if (draft.length === 0) {
+    list.innerHTML = '<div class="empty-state">Liste boş.</div>';
+    return;
+  }
+  list.innerHTML = draft.map((e, i) => `
+    <div class="emp-row" data-i="${i}">
+      <input type="text" value="${escapeHtml(e.name)}" maxlength="40" aria-label="Çalışan ${i + 1} ismi">
+      <button class="btn small" data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Yukarı taşı">↑</button>
+      <button class="btn small" data-act="down" ${i === draft.length - 1 ? 'disabled' : ''} aria-label="Aşağı taşı">↓</button>
+      <button class="btn small danger" data-act="del">Sil</button>
+    </div>`).join('');
+}
+
+// İsim kutularındaki değişiklikleri taslağa yaz
+function syncDraftNames() {
+  document.querySelectorAll('#empList .emp-row').forEach(row => {
+    const i = Number(row.dataset.i);
+    draft[i].name = row.querySelector('input').value;
+  });
+}
+
+document.getElementById('empList').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  syncDraftNames();
+  const i = Number(btn.closest('.emp-row').dataset.i);
+  const act = btn.dataset.act;
+  if (act === 'up' && i > 0) [draft[i - 1], draft[i]] = [draft[i], draft[i - 1]];
+  if (act === 'down' && i < draft.length - 1) [draft[i + 1], draft[i]] = [draft[i], draft[i + 1]];
+  if (act === 'del') draft.splice(i, 1);
+  renderDraft();
+});
+
+document.getElementById('manageAddBtn').addEventListener('click', () => {
+  syncDraftNames();
+  draft.push({ id: null, name: '' });
+  renderDraft();
+  const inputs = document.querySelectorAll('#empList input');
+  inputs[inputs.length - 1].focus();
+});
+
+document.getElementById('manageSaveBtn').addEventListener('click', () => {
+  syncDraftNames();
+  const keptIds = new Set(draft.filter(e => e.id).map(e => e.id));
+  const removed = state.employees.filter(e => !keptIds.has(e.id));
+
+  if (removed.length) {
+    const names = removed.map(e => e.name).join(', ');
+    if (!confirm(`${names} ve tüm çalışma kayıtları silinecek. Emin misiniz?`)) return;
+    // Silinen çalışanların kayıtlarını da temizle
+    const removedIds = new Set(removed.map(e => e.id));
+    Object.keys(state.entries).forEach(k => {
+      if (removedIds.has(k.split('|')[0])) delete state.entries[k];
+    });
+  }
+
+  state.employees = draft.map((e, i) => ({
+    id: e.id || 'e' + state.nextId++,
+    name: e.name.trim() || 'Çalışan ' + (i + 1)
+  }));
+  saveState();
+  closeOverlay('manageOverlay');
+  render();
+});
+
+/* =========================================================
+   TAKVİM TIKLAMALARI VE BUTONLAR
+   ========================================================= */
+document.getElementById('scheduleTable').addEventListener('click', e => {
+  const cell = e.target.closest('button.cell');
+  if (cell) { openCellEditor(cell.dataset.emp, cell.dataset.date); return; }
+  const nameBtn = e.target.closest('button[data-rename]');
+  if (nameBtn) openNameEditor('rename', nameBtn.dataset.rename);
+});
+
+function changeMonth(delta) {
+  const d = new Date(view.year, view.month + delta, 1); // yıl geçişleri otomatik
+  view = { year: d.getFullYear(), month: d.getMonth() };
+  render();
+  document.getElementById('scheduleWrap').scrollLeft = 0;
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => changeMonth(-1));
+document.getElementById('nextBtn').addEventListener('click', () => changeMonth(1));
+document.getElementById('todayBtn').addEventListener('click', () => {
+  const t = new Date();
+  view = { year: t.getFullYear(), month: t.getMonth() };
+  render();
+  scrollToToday();
+});
+document.getElementById('addEmpBtn').addEventListener('click', () => openNameEditor('add'));
+document.getElementById('editEmpBtn').addEventListener('click', openManager);
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+/* =========================================================
+   BAŞLAT
+   ========================================================= */
+render();
+scrollToToday();
+</script>
+</body>
+</html>
