@@ -13,6 +13,8 @@
     --sick-bg: #f6e0df; --sick-fg: #9b3534; --sick-bd: #e7c0bf;
     --hol-bg:  #f7edcf; --hol-fg:  #83620f; --hol-bd:  #e5d39c;
     --shadow: 0 1px 2px rgba(19, 39, 74, .06), 0 4px 14px rgba(19, 39, 74, .05);
+    --seq: #2f5fa7;
+    --c-work: #3f8a5c; --c-hol: #c49a2c; --c-off: #8c95a5; --c-sick: #c0504d;
     --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
     --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -29,6 +31,8 @@
       --sick-bg: #3b1f23; --sick-fg: #f0a8a6; --sick-bd: #6a3338;
       --hol-bg: #372f17;  --hol-fg: #e7cb7a;  --hol-bd: #66552a;
       --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --seq: #6f9be0;
+      --c-work: #3d9e82; --c-hol: #bc8835; --c-off: #5f6a7e; --c-sick: #d9706a;
     }
   }
   :root[data-theme="dark"] {
@@ -42,7 +46,25 @@
     --sick-bg: #3b1f23; --sick-fg: #f0a8a6; --sick-bd: #6a3338;
     --hol-bg: #372f17;  --hol-fg: #e7cb7a;  --hol-bd: #66552a;
     --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --seq: #6f9be0;
+    --c-work: #3d9e82; --c-hol: #bc8835; --c-off: #5f6a7e; --c-sick: #d9706a;
   }
+
+  /* Renk temaları (her cihaz kendi seçer) */
+  html[data-accent="forest"]   { --head: #16392c; --head-2: #1f5140; --accent: #1d4d3a; --seq: #2b7a5a; }
+  html[data-accent="burgundy"] { --head: #4a1826; --head-2: #6a2338; --accent: #5e1f31; --seq: #9a3552; }
+  html[data-accent="graphite"] { --head: #23272e; --head-2: #3a404a; --accent: #2d333b; --seq: #4f5b6d; }
+  html[data-accent="ocean"]    { --head: #0f3a4a; --head-2: #15566b; --accent: #12485c; --seq: #1f7896; }
+  @media (prefers-color-scheme: dark) {
+    html[data-accent="forest"]:not([data-theme="light"])   { --head: #0b1f18; --head-2: #143629; --seq: #5fbf95; }
+    html[data-accent="burgundy"]:not([data-theme="light"]) { --head: #22090f; --head-2: #3d1320; --seq: #e0829b; }
+    html[data-accent="graphite"]:not([data-theme="light"]) { --head: #111317; --head-2: #1f232a; --seq: #9aa7ba; }
+    html[data-accent="ocean"]:not([data-theme="light"])    { --head: #07202a; --head-2: #0e3746; --seq: #5cc0df; }
+  }
+  html[data-accent="forest"][data-theme="dark"]   { --head: #0b1f18; --head-2: #143629; --seq: #5fbf95; }
+  html[data-accent="burgundy"][data-theme="dark"] { --head: #22090f; --head-2: #3d1320; --seq: #e0829b; }
+  html[data-accent="graphite"][data-theme="dark"] { --head: #111317; --head-2: #1f232a; --seq: #9aa7ba; }
+  html[data-accent="ocean"][data-theme="dark"]    { --head: #07202a; --head-2: #0e3746; --seq: #5cc0df; }
 
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
@@ -66,6 +88,44 @@
   .chip.busy i { background: #9fb6de; animation: blink 1s infinite; }
   .chip button { background: var(--brass); color: #14213a; border: 0; border-radius: 999px; font: 700 12px var(--f-body); padding: 3px 10px; cursor: pointer; }
   @keyframes blink { 50% { opacity: .3; } }
+  .swatches { display: inline-flex; gap: 6px; align-items: center; }
+  .swatches button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; }
+  .swatches button[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 2px var(--brass); }
+
+  /* Özet kutuları */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 2px; }
+  .stat b { font: 700 32px/1.05 var(--f-display); font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .stat small { color: var(--muted); font-size: 13px; }
+
+  /* Aylık grafik */
+  .chart { display: grid; gap: 4px; }
+  .chart-head, .crow { display: grid; grid-template-columns: minmax(90px, 150px) minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: center; }
+  .chart-head { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .crow { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .crow:last-child { border-bottom: 0; }
+  .crow .n { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hbar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .hbar .track { flex: 1; height: 14px; position: relative; min-width: 0; }
+  .hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--seq); border-radius: 0 4px 4px 0; min-width: 2px; }
+  .hbar .v { font: 600 13px var(--f-mono); min-width: 58px; text-align: right; }
+  .stack { display: flex; height: 14px; gap: 2px; min-width: 0; }
+  .stack i { display: block; height: 100%; border-radius: 2px; }
+  .stack i:first-child { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  .stack .empty-bar { flex: 1; background: var(--surface-2); border: 1px dashed var(--line-strong); border-radius: 3px; }
+  .k-work { background: var(--c-work); } .k-hol { background: var(--c-hol); } .k-off { background: var(--c-off); } .k-sick { background: var(--c-sick); }
+  .clegend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); }
+  .clegend span { display: inline-flex; align-items: center; gap: 6px; }
+  .clegend i { width: 12px; height: 12px; border-radius: 3px; }
+  .wcell { position: relative; }
+  #tip { position: fixed; z-index: 70; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 13px; padding: 6px 10px; border-radius: 8px; box-shadow: var(--shadow); max-width: 240px; }
+
+  /* Yönetici yardım kutusu */
+  .guide { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--wa); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow); }
+  .guide .ic { font-size: 26px; }
+  .guide ol { margin: 4px 0 0; padding-left: 18px; font-size: 14px; }
+  .guide b { font-size: 15px; }
 
   main { max-width: 1320px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
   body.saving main, body.saving .brush { pointer-events: none; opacity: .65; }
@@ -241,6 +301,16 @@
   body.brushing .toast { bottom: calc(230px + env(safe-area-inset-bottom, 0px)); }
 
   @media (max-width: 640px) {
+    .chart-head, .crow { grid-template-columns: 84px minmax(0, 1fr); }
+    .chart-head .c3, .crow .stack { grid-column: 2; }
+    .chart-head .c3 { display: none; }
+    .guide { grid-template-columns: 1fr; }
+    .today-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tcard { padding: 8px 10px; }
+    .tcard .r, .tcard .t { font-size: 13px; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .stat b { font-size: 28px; }
+    .guide .ic { display: none; }
     .brand h1 { font-size: 23px; }
     .mark { width: 42px; height: 42px; font-size: 19px; }
     .month { font-size: 21px; }
@@ -269,7 +339,7 @@
 
 <div id="app"></div>
 
-<script type="application/json" id="plan-data">{"v":1,"shareUrl":"https://claude.ai/artifact/SXg1ahXMwkcWK6qSNAERhm","employees":[{"id":"e01","name":""},{"id":"e02","name":""},{"id":"e03","name":""},{"id":"e04","name":""},{"id":"e05","name":""},{"id":"e06","name":""},{"id":"e07","name":""},{"id":"e08","name":""},{"id":"e09","name":""},{"id":"e10","name":""}],"tours":[],"entries":{}}</script>
+<script type="application/json" id="plan-data">{"v":1,"shareUrl":"https://claude.ai/artifact/SXg1ahXMwkcWK6qSNAERhm","employees":[{"id":"e01","name":"Berk"},{"id":"e03","name":"Isa"},{"id":"e04","name":"Mesut"},{"id":"e02","name":"Aytunc"},{"id":"e05","name":""},{"id":"e06","name":""},{"id":"e07","name":""},{"id":"e08","name":""},{"id":"e09","name":""},{"id":"e10","name":""}],"tours":[{"id":"tmuibat3w9xrj","code":"T1","name":"C212","start":"07:00","end":"15:00","color":"#1f8a86"},{"id":"tmuibb4dfnhws","code":"T2","name":"C2222","start":"07:00","end":"15:00","color":"#c0702a"}],"entries":{"e01__2026-09-01":{"status":"work","tour":"tmuibat3w9xrj","start":"07:00","end":"15:00","note":""},"e01__2026-09-02":{"status":"hol","tour":null,"start":null,"end":null,"note":""},"e01__2026-09-03":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"15:00","note":""},"e01__2026-09-04":{"status":"off","tour":null,"start":null,"end":null,"note":""},"e01__2026-09-05":{"status":"work","tour":null,"start":"07:00","end":"15:00","note":""},"e01__2026-09-26":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"15:00","note":"Anahtari al"},"e02__2026-08-31":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e02__2026-09-01":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e02__2026-09-02":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e02__2026-09-03":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e02__2026-09-04":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e02__2026-09-05":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"18:00","note":""},"e04__2026-09-03":{"status":"work","tour":null,"start":"07:00","end":"18:00","note":""},"e04__2026-09-04":{"status":"work","tour":null,"start":"07:00","end":"18:00","note":""},"e02__2026-09-26":{"status":"off","tour":null,"start":null,"end":null,"note":""},"e03__2026-09-01":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"21:00","note":""},"e01__2026-09-08":{"status":"sick","tour":null,"start":null,"end":null,"note":""},"e01__2026-09-18":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"15:00","note":""},"e01__2026-09-16":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"15:00","note":""},"e01__2026-09-15":{"status":"work","tour":"tmuibb4dfnhws","start":"07:00","end":"15:00","note":""},"e01__2026-09-21":{"status":"work","tour":"tmuibat3w9xrj","start":"07:00","end":"15:00","note":""},"e04__2026-09-01":{"status":"work","tour":"tmuibat3w9xrj","start":"07:00","end":"15:00","note":"Erken gel"}}}</script>
 
 <script id="app-js">
 /* =========================================================
@@ -283,6 +353,11 @@
 const I18N = {
   tr: {
     locale: 'tr-TR', sub: 'Personel & Tur Planı',
+    color: 'Renk', kpiHours: 'Planlanan saat', kpiDays: 'Çalışma günü', kpiToday: 'Bugün çalışan', kpiAbsent: 'İzin · hasta · tatil',
+    kpiOf: '{n} kişiden', kpiSub: 'bu ay, tüm ekip',
+    chartHours: 'Aylık saat', chartDays: 'Gün dağılımı', daysN: '{n} gün',
+    sendTeam: '📲 Ekibe gönder', personal: 'Kişiye özel',
+    guideT: 'Planı ekibe tek tuşla gönderin', guide1: 'Yeşil “Ekibe gönder” butonuna dokunun.', guide2: 'WhatsApp açılır, ekip grubunu seçin.', guide3: 'Gönder’e basın. Değişiklikler aynı bağlantıda otomatik güncellenir.', gotIt: 'Anladım',
     months: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
     mon3: ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],
     day3: ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],
@@ -305,7 +380,7 @@ const I18N = {
     clear: 'Temizle', cancel: 'Vazgeç', save: 'Kaydet', close: 'Kapat',
     dur: 'Süre: {h} saat', overnight: 'ertesi güne sarkıyor', noHours: 'Bu durumda saat sayılmaz.', badTime: 'Geçerli başlangıç ve bitiş saati girin.',
     empsSub: 'İsimleri yazın, ↑ ↓ ile sıralayın.', addRow: '+ Yeni satır', del: 'Sil', sure: 'Emin misin?', namePh: 'Ad Soyad',
-    toursSub: 'Kod takvimde görünür (örn. T1). Varsayılan saatler tur seçilince otomatik gelir.', addTour: '+ Yeni tur', tourPh: 'Güzergâh / tur adı', color: 'Renk',
+    toursSub: 'Kod takvimde görünür (örn. T1). Varsayılan saatler tur seçilince otomatik gelir.', addTour: '+ Yeni tur', tourPh: 'Güzergâh / tur adı',
     quickT: 'HIZLI GİRİŞ', quickHint: 'Bir güne dokun, seçim uygulanır. Gün başlığına dokun, o gün tüm ekibe uygulanır.',
     undo: '↶ Geri al', done: 'Bitti', undone: 'Geri alındı',
     saved: 'Kaydedildi', saving: 'Kaydediliyor…', unsaved: '{n} değişiklik', saveNow: 'Kaydet', upToDate: 'Güncel',
@@ -319,6 +394,11 @@ const I18N = {
   },
   en: {
     locale: 'en-GB', sub: 'Staff & Route Plan',
+    color: 'Colour', kpiHours: 'Planned hours', kpiDays: 'Work days', kpiToday: 'Working today', kpiAbsent: 'Off · sick · holiday',
+    kpiOf: 'of {n}', kpiSub: 'this month, whole team',
+    chartHours: 'Hours this month', chartDays: 'Day breakdown', daysN: '{n} days',
+    sendTeam: '📲 Send to team', personal: 'Personal links',
+    guideT: 'Send the plan to your team in one tap', guide1: 'Tap the green “Send to team” button.', guide2: 'WhatsApp opens; pick the team group.', guide3: 'Tap Send. Later changes update automatically at the same link.', gotIt: 'Got it',
     months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
     mon3: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
     day3: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
@@ -341,7 +421,7 @@ const I18N = {
     clear: 'Clear', cancel: 'Cancel', save: 'Save', close: 'Close',
     dur: 'Duration: {h} h', overnight: 'runs past midnight', noHours: 'No hours counted for this status.', badTime: 'Enter a valid start and end time.',
     empsSub: 'Type the names, reorder with ↑ ↓.', addRow: '+ Add row', del: 'Delete', sure: 'Sure?', namePh: 'Full name',
-    toursSub: 'The code shows in the calendar (e.g. T1). Default hours fill in when the route is picked.', addTour: '+ Add route', tourPh: 'Route name', color: 'Colour',
+    toursSub: 'The code shows in the calendar (e.g. T1). Default hours fill in when the route is picked.', addTour: '+ Add route', tourPh: 'Route name',
     quickT: 'QUICK ENTRY', quickHint: 'Tap a day to apply. Tap a date header to apply it to the whole team that day.',
     undo: '↶ Undo', done: 'Done', undone: 'Undone',
     saved: 'Saved', saving: 'Saving…', unsaved: '{n} unsaved', saveNow: 'Save', upToDate: 'Up to date',
@@ -355,6 +435,11 @@ const I18N = {
   },
   da: {
     locale: 'da-DK', sub: 'Personale- & ruteplan',
+    color: 'Farve', kpiHours: 'Planlagte timer', kpiDays: 'Arbejdsdage', kpiToday: 'På arbejde i dag', kpiAbsent: 'Fri · syg · ferie',
+    kpiOf: 'af {n}', kpiSub: 'denne måned, hele holdet',
+    chartHours: 'Timer denne måned', chartDays: 'Fordeling af dage', daysN: '{n} dage',
+    sendTeam: '📲 Send til holdet', personal: 'Personlige links',
+    guideT: 'Send planen til holdet med ét tryk', guide1: 'Tryk på den grønne knap “Send til holdet”.', guide2: 'WhatsApp åbner; vælg holdets gruppe.', guide3: 'Tryk Send. Senere ændringer opdateres automatisk på samme link.', gotIt: 'Forstået',
     months: ['Januar','Februar','Marts','April','Maj','Juni','Juli','August','September','Oktober','November','December'],
     mon3: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
     day3: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
@@ -377,7 +462,7 @@ const I18N = {
     clear: 'Ryd', cancel: 'Annuller', save: 'Gem', close: 'Luk',
     dur: 'Varighed: {h} t', overnight: 'går over midnat', noHours: 'Der tælles ingen timer for denne status.', badTime: 'Angiv et gyldigt start- og sluttidspunkt.',
     empsSub: 'Skriv navnene, sorter med ↑ ↓.', addRow: '+ Tilføj række', del: 'Slet', sure: 'Sikker?', namePh: 'Fulde navn',
-    toursSub: 'Koden vises i kalenderen (f.eks. T1). Standardtider udfyldes, når turen vælges.', addTour: '+ Tilføj tur', tourPh: 'Turens navn', color: 'Farve',
+    toursSub: 'Koden vises i kalenderen (f.eks. T1). Standardtider udfyldes, når turen vælges.', addTour: '+ Tilføj tur', tourPh: 'Turens navn',
     quickT: 'HURTIG INDTASTNING', quickHint: 'Tryk på en dag for at anvende. Tryk på en datooverskrift for hele holdet den dag.',
     undo: '↶ Fortryd', done: 'Færdig', undone: 'Fortrudt',
     saved: 'Gemt', saving: 'Gemmer…', unsaved: '{n} ikke gemt', saveNow: 'Gem', upToDate: 'Opdateret',
@@ -393,6 +478,9 @@ const I18N = {
 const LANGS = [['tr', 'TR'], ['en', 'EN'], ['da', 'DA']];
 const STATUS_KEYS = ['work', 'off', 'sick', 'hol'];
 const STATUS_CLS = { work: 'st-work', off: 'st-off', sick: 'st-sick', hol: 'st-hol' };
+const ACCENTS = [['navy', '#1d3864'], ['ocean', '#15566b'], ['forest', '#1f5140'], ['burgundy', '#6a2338'], ['graphite', '#3a404a']];
+// Herkese tek mesaj: üç dilde birden (ekip karışık dilli olabilir)
+const MSG_TEAM = 'EA Transport · Çalışma planı / Work schedule / Arbejdsplan\n{url}\n🇹🇷 Adını seç, programını gör.\n🇬🇧 Pick your name to see your schedule.\n🇩🇰 Vælg dit navn og se din plan.';
 const TOUR_COLORS = ['#3b6fb6', '#1f8a86', '#7a55b3', '#c0702a', '#b8456b', '#6b7d2a', '#5a6b85'];
 
 /* ---------- Küçük yardımcılar ---------- */
@@ -412,6 +500,9 @@ function pickLang() {
   return nav === 'da' ? 'da' : nav === 'en' ? 'en' : 'tr';
 }
 let lang = pickLang();
+let accent = sGet('l', 'ea.accent') || 'navy';
+function applyAccent() { if (accent === 'navy') document.documentElement.removeAttribute('data-accent'); else document.documentElement.setAttribute('data-accent', accent); }
+applyAccent();
 function t(k, vars) {
   let s = I18N[lang][k] ?? I18N.tr[k] ?? k;
   if (vars && typeof s === 'string') for (const [a, b] of Object.entries(vars)) s = s.split('{' + a + '}').join(b);
@@ -465,6 +556,8 @@ const getEntry = (empId, dk) => plan.entries[ekey(empId, dk)] || null;
 function setEntry(empId, dk, entry) { if (entry) plan.entries[ekey(empId, dk)] = entry; else delete plan.entries[ekey(empId, dk)]; }
 const tourById = id => plan.tours.find(x => x.id === id) || null;
 const empName = emp => emp.name || t('empN', { n: plan.employees.indexOf(emp) + 1 });
+// Çalışanlar ismi girilmemiş boş satırları görmez; şef hepsini görür
+const emps = () => canEdit ? plan.employees : plan.employees.filter(e => e.name);
 const sumH = (empId, days) => days.reduce((s, d) => s + entryHours(getEntry(empId, dkey(d))), 0);
 const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
@@ -561,6 +654,9 @@ function renderShell() {
       <div class="top-right">
         <span class="month" id="monthLabel"></span>
         <span class="chip" id="chip"></span>
+        <div class="swatches" role="group" aria-label="${esc(t('color'))}">
+          ${ACCENTS.map(([k, c]) => `<button data-act="accent" data-a="${k}" style="background:${c}" aria-label="${esc(t('color'))} ${k}" aria-pressed="${k === accent}"></button>`).join('')}
+        </div>
         <div class="langs" role="group" aria-label="Dil / Language / Sprog">
           ${LANGS.map(([c, lbl]) => `<button data-act="lang" data-l="${c}" aria-pressed="${c === lang}">${lbl}</button>`).join('')}
         </div>
@@ -581,11 +677,18 @@ function renderShell() {
         <button class="btn" data-act="emp-new">${t('addEmp')}</button>
         <button class="btn" data-act="emp-open">${t('emps')}</button>
         <button class="btn" data-act="tour-open">${t('tours')}</button>
-        <button class="btn wa" data-act="share-open">${t('share')}</button>
+        <a class="btn wa" id="sendTeam" href="#" target="_blank" rel="noopener">${t('sendTeam')}</a>
+        <button class="btn" data-act="share-open">${t('personal')}</button>
       </div>
+    </div>
+    <div class="guide" id="guide" hidden>
+      <div class="ic" aria-hidden="true">📲</div>
+      <div><b>${t('guideT')}</b><ol><li>${t('guide1')}</li><li>${t('guide2')}</li><li>${t('guide3')}</li></ol></div>
+      <button class="btn sm" data-act="guide-ok">${t('gotIt')}</button>
     </div>
     <section class="panel" id="personView" hidden></section>
     <div id="teamView" style="display:grid;gap:16px">
+      <div class="kpi-row" id="kpis"></div>
       <section class="panel" id="todayPanel" hidden>
         <div class="panel-h"><h2 id="todayTitle"></h2><p class="hint">${t('todayHint')}</p></div>
         <div class="today-grid" id="todayGrid"></div>
@@ -603,7 +706,8 @@ function renderShell() {
       </section>
       <section class="panel">
         <div class="panel-h"><h2>${t('monthlyT')}</h2><p class="hint" id="monthHint"></p></div>
-        <div class="totals" id="totals"></div>
+        <div class="clegend" style="margin-bottom:10px">${['work', 'hol', 'off', 'sick'].map(k => `<span><i class="k-${k}"></i>${esc(t(k))}</span>`).join('')}</div>
+        <div class="chart" id="totals"></div>
       </section>
     </div>
   </main>
@@ -625,19 +729,45 @@ function renderShell() {
     </div>
   </div>
   <div class="ov" id="ov" hidden></div>
-  <div class="toast" id="toast" hidden></div>`;
+  <div class="toast" id="toast" hidden></div>
+  <div id="tip" hidden></div>`;
   $('#bStart').value = brush.start; $('#bEnd').value = brush.end;
 }
 
 function render() {
   $('#monthLabel').textContent = (L().months[view.m] + ' ' + view.y).toLocaleUpperCase(L().locale);
   $('#chefBar').hidden = !canEdit;
-  renderChip(); renderWho(); renderBrush();
+  renderChip(); renderWho(); renderBrush(); renderSend();
   const person = plan.employees.find(e => e.id === who);
   $('#personView').hidden = !person;
   $('#teamView').style.display = person ? 'none' : 'grid';
   if (person) { renderPerson(person); return; }
-  renderToday(); renderGrid(); renderWeekly(); renderTotals();
+  renderKpis(); renderToday(); renderGrid(); renderWeekly(); renderTotals();
+}
+
+// Tek tuşla gönderme: WhatsApp'ı hazır mesajla açar
+function renderSend() {
+  const a = $('#sendTeam'); if (!a) return;
+  a.href = plan.shareUrl ? waLink(MSG_TEAM.replace('{url}', plan.shareUrl)) : '#';
+  $('#guide').hidden = !(canEdit && sGet('l', 'ea.guideOk') !== '1');
+}
+
+// Ekip özeti (bu ay)
+function renderKpis() {
+  const days = monthDays(view.y, view.m);
+  let hours = 0, work = 0, absent = 0;
+  emps().forEach(emp => days.forEach(d => {
+    const e = getEntry(emp.id, dkey(d)); if (!e) return;
+    hours += entryHours(e);
+    if (e.status === 'work') work++; else absent++;
+  }));
+  const td = new Date(), inMonth = td.getFullYear() === view.y && td.getMonth() === view.m;
+  const todayWork = emps().filter(emp => getEntry(emp.id, dkey(td))?.status === 'work').length;
+  $('#kpis').innerHTML = `
+    <div class="stat"><span>${t('kpiHours')}</span><b>${fmtH(hours)}</b><small>${t('kpiSub')}</small></div>
+    <div class="stat"><span>${t('kpiDays')}</span><b>${work}</b><small>${t('kpiSub')}</small></div>
+    ${inMonth && td.getDay() !== 0 ? `<div class="stat"><span>${t('kpiToday')}</span><b>${todayWork}</b><small>${t('kpiOf', { n: emps().length })}</small></div>` : ''}
+    <div class="stat"><span>${t('kpiAbsent')}</span><b>${absent}</b><small>${t('kpiSub')}</small></div>`;
 }
 
 function renderChip() {
@@ -650,9 +780,9 @@ function renderChip() {
 
 function renderWho() {
   const sel = $('#who');
-  const opts = `<option value="">${esc(t('team'))}</option>` + plan.employees.map(e => `<option value="${esc(e.id)}">${esc(empName(e))}</option>`).join('');
+  const opts = `<option value="">${esc(t('team'))}</option>` + emps().map(e => `<option value="${esc(e.id)}">${esc(empName(e))}</option>`).join('');
   if (sel._opts !== opts) { sel.innerHTML = opts; sel._opts = opts; }
-  sel.value = plan.employees.some(e => e.id === who) ? who : '';
+  sel.value = emps().some(e => e.id === who) ? who : '';
 }
 
 function tourTag(x) {
@@ -662,12 +792,12 @@ const statusPill = s => `<span class="pill ${STATUS_CLS[s] || 'st-off'}">${esc(t
 
 function renderToday() {
   const d = new Date();
-  const show = d.getFullYear() === view.y && d.getMonth() === view.m && d.getDay() !== 0 && plan.employees.length;
+  const show = d.getFullYear() === view.y && d.getMonth() === view.m && d.getDay() !== 0 && emps().length;
   $('#todayPanel').hidden = !show;
   if (!show) return;
   $('#todayTitle').textContent = `${t('todayT')} · ${L().dayL[d.getDay()]} ${d.getDate()} ${L().months[d.getMonth()]}`;
   const dk = dkey(d);
-  const list = plan.employees.map(emp => ({ emp, e: getEntry(emp.id, dk) }));
+  const list = emps().map(emp => ({ emp, e: getEntry(emp.id, dk) }));
   list.sort((a, b) => (a.e?.status === 'work' ? 0 : 1) - (b.e?.status === 'work' ? 0 : 1) || (mins(a.e?.start) ?? 9999) - (mins(b.e?.start) ?? 9999));
   $('#todayGrid').innerHTML = list.map(({ emp, e }) => {
     let body;
@@ -691,8 +821,8 @@ function renderGrid() {
     h += `<th class="${c}"${act}><div class="dow">${L().day3[d.getDay()]}</div><div class="dn">${d.getDate()}</div></th>`;
   });
   h += `<th>${t('monthCol')}</th></tr></thead><tbody>`;
-  if (!plan.employees.length) h += `<tr><td class="empty" colspan="${days.length + 2}">${t('noEmps')}</td></tr>`;
-  plan.employees.forEach(emp => {
+  if (!emps().length) h += `<tr><td class="empty" colspan="${days.length + 2}">${t('noEmps')}</td></tr>`;
+  emps().forEach(emp => {
     const ph = emp.name ? '' : ' ph';
     const nm = canEdit
       ? `<button class="name${ph}" data-act="rename" data-emp="${esc(emp.id)}">${esc(empName(emp))}<span aria-hidden="true" style="opacity:.45">✎</span></button>`
@@ -734,9 +864,14 @@ function renderWeekly() {
   weeks.forEach((w, i) => { h += `<th class="${cur[i] ? 'cur' : ''}">${t('weekN', { n: i + 1 })}${cur[i] ? ' · ' + t('thisWeek') : ''}<span class="rg">${weekRange(w)}</span></th>`; });
   h += '</tr></thead><tbody>';
   const tot = weeks.map(() => 0);
-  plan.employees.forEach(emp => {
+  emps().forEach(emp => {
     h += `<tr><td class="sticky">${esc(empName(emp))}</td>`;
-    weeks.forEach((w, i) => { const x = sumH(emp.id, w); tot[i] += x; h += `<td class="${cur[i] ? 'cur' : ''}">${x ? fmtH(x) + ' ' + t('hShort') : '<span class="zero">0</span>'}</td>`; });
+    weeks.forEach((w, i) => {
+      const x = sumH(emp.id, w); tot[i] += x;
+      const pct = Math.min(1, x / 60) * 42;   // 60 saat = en koyu
+      const bg = x ? ` style="background:color-mix(in srgb, var(--seq) ${pct.toFixed(0)}%, transparent)"` : '';
+      h += `<td class="wcell ${cur[i] ? 'cur' : ''}"${bg} data-tip="${esc(empName(emp))} · ${esc(t('weekN', { n: i + 1 }))}: ${fmtH(x)} ${esc(t('hours'))}">${x ? fmtH(x) + ' ' + t('hShort') : '<span class="zero">0</span>'}</td>`;
+    });
     h += '</tr>';
   });
   h += `</tbody><tfoot><tr><td class="sticky">${t('total')}</td>` + tot.map(x => `<td>${fmtH(x)} ${t('hShort')}</td>`).join('') + '</tr></tfoot>';
@@ -746,12 +881,25 @@ function renderWeekly() {
 function renderTotals() {
   const days = monthDays(view.y, view.m);
   $('#monthHint').textContent = t('monthlyHint', { m: L().months[view.m], y: view.y, n: days.length });
-  $('#totals').innerHTML = plan.employees.map(emp => {
-    const cnt = { work: 0, off: 0, sick: 0, hol: 0 }; let tot = 0;
+  if (!emps().length) { $('#totals').innerHTML = `<div class="empty">${t('noEmps')}</div>`; return; }
+  const rows = emps().map(emp => {
+    const cnt = { work: 0, hol: 0, off: 0, sick: 0 }; let tot = 0;
     days.forEach(d => { const e = getEntry(emp.id, dkey(d)); if (e && cnt[e.status] !== undefined) cnt[e.status]++; tot += entryHours(e); });
-    const chips = STATUS_KEYS.filter(k => cnt[k]).map(k => `<span class="pill ${STATUS_CLS[k]}">${esc(t(k))} ${cnt[k]}</span>`).join('');
-    return `<div class="tt"><span class="n">${esc(empName(emp))}</span><span class="h">${fmtH(tot)} <small>${t('hours')}</small></span><div class="chips">${chips || `<span class="hint">${t('noEntries')}</span>`}</div></div>`;
-  }).join('') || `<div class="empty">${t('noEmps')}</div>`;
+    return { emp, cnt, tot };
+  });
+  const maxH = Math.max(1, ...rows.map(r => r.tot));
+  const nDays = days.length;
+  $('#totals').innerHTML = `<div class="chart-head"><span>${t('employee')}</span><span>${t('chartHours')}</span><span class="c3">${t('chartDays')}</span></div>` +
+    rows.map(({ emp, cnt, tot }) => {
+      const name = esc(empName(emp));
+      const segs = ['work', 'hol', 'off', 'sick'].filter(k => cnt[k]).map(k =>
+        `<i class="k-${k}" style="flex:${cnt[k]}" data-tip="${name} · ${esc(t(k))}: ${esc(t('daysN', { n: cnt[k] }))}"></i>`).join('');
+      const planned = cnt.work + cnt.hol + cnt.off + cnt.sick;
+      const rest = nDays - planned;
+      return `<div class="crow"><span class="n">${name}</span>
+        <div class="hbar" data-tip="${name} · ${fmtH(tot)} ${esc(t('hours'))}"><div class="track"><div class="fill" style="width:${(tot / maxH * 100).toFixed(1)}%"></div></div><span class="v">${fmtH(tot)} ${t('hShort')}</span></div>
+        <div class="stack">${segs}${rest > 0 ? `<i class="empty-bar" style="flex:${rest}" data-tip="${name} · ${esc(t('notPlanned'))}: ${esc(t('daysN', { n: rest }))}"></i>` : ''}</div></div>`;
+    }).join('');
 }
 
 function renderPerson(emp) {
@@ -1010,7 +1158,7 @@ function openShare() {
     <div class="f"><label for="shareUrl">${t('link')}</label>
       <div class="copyrow"><input type="url" id="shareUrl" value="${esc(url)}" placeholder="https://claude.ai/artifact/…"><button class="btn" data-act="copy" data-from="#shareUrl">${t('copy')}</button></div>
     </div>
-    <a class="btn wa wa-all" href="${esc(waLink(t('msgAll', { url })))}" target="_blank" rel="noopener">${t('waAll')}</a>
+    <a class="btn wa wa-all" href="${esc(waLink(MSG_TEAM.replace('{url}', url)))}" target="_blank" rel="noopener">${t('waAll')}</a>
     <div class="f" style="margin-top:16px"><span class="l">${t('perPerson')}</span><div class="plist">${rows}</div></div>
     <div class="acts"><button class="btn" data-act="dlg-close">${t('close')}</button></div>`, true);
 }
@@ -1031,9 +1179,13 @@ function scrollToday() {
 
 document.addEventListener('click', ev => {
   if (ev.target.id === 'ov') return closeDlg();
+  const send = ev.target.closest('#sendTeam');
+  if (send && !plan.shareUrl) { ev.preventDefault(); openShare(); return; }
   const el = ev.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act;
   switch (a) {
+    case 'accent': accent = el.dataset.a; sSet('l', 'ea.accent', accent); applyAccent(); document.querySelectorAll('.swatches button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.a === accent))); break;
+    case 'guide-ok': sSet('l', 'ea.guideOk', '1'); renderSend(); break;
     case 'lang': lang = el.dataset.l; sSet('l', 'ea.lang', lang); renderShell(); render(); break;
     case 'prev': go(-1); break;
     case 'next': go(1); break;
@@ -1079,6 +1231,18 @@ document.addEventListener('input', ev => {
   if (id === 'bStart' || id === 'bEnd') { brush[id === 'bStart' ? 'start' : 'end'] = ev.target.value; renderBrush(); }
   else if (id === 'cStart' || id === 'cEnd') refreshCellForm();
 });
+
+// Grafik ipuçları (fare ile üzerine gelince / dokununca)
+function showTip(ev) {
+  const el = ev.target.closest && ev.target.closest('[data-tip]'); const tip = $('#tip'); if (!tip) return;
+  if (!el) { tip.hidden = true; return; }
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const x = Math.min(ev.clientX + 12, window.innerWidth - tip.offsetWidth - 8);
+  tip.style.left = Math.max(8, x) + 'px'; tip.style.top = (ev.clientY + 14) + 'px';
+}
+document.addEventListener('pointermove', showTip);
+document.addEventListener('pointerdown', showTip);
+document.addEventListener('scroll', () => { const tp = $('#tip'); if (tp) tp.hidden = true; }, true);
 
 /* =========================================================
    BAŞLAT
