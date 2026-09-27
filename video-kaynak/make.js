@@ -117,7 +117,7 @@ const TXT = {
       c8: 'Her değişiklik kendiliğinden kaydedilir. “Bitti” ile hızlı girişi kapat.',
       c9: 'Hazır olunca yeşil “📲 Ekibe gönder” butonuna dokun.',
       c10: 'WhatsApp açılır, mesaj hazırdır: ekip grubunu seç ve Gönder’e bas.',
-      c11: '“Kişiye özel”: her çalışana doğrudan kendi programını açan bağlantı.',
+      c11: 'Tek bir kişiye göndermek için “Çalışanlar”da isminin yanındaki yeşil butona dokun. Bağlantı doğrudan o kişinin programını açar.',
       c12: 'Sonraki değişikliklerde tekrar göndermene gerek yok. Aynı bağlantı hep güncel kalır.',
       endT: 'Ekibe gönder → grubu seç → Gönder', endS: 'Hepsi bu kadar.'
     }
@@ -308,9 +308,8 @@ function chatHtml(label, msg) {
 
     await page.goto('file://' + file); await page.waitForTimeout(1200);
     await page.evaluate(() => { publishNow = async () => { pending = 0; renderChip(); }; });
-    await page.click('[data-act="share-open"]'); await page.waitForTimeout(400);
-    await page.evaluate(() => document.querySelector('.plist')?.scrollIntoView({ block: 'center' }));
-    await cue(page, { text: TXT.c11, target: '.prow', step: 11, total: T, pos: 'top', scroll: false }); await snap(page, 4.4);
+    await page.click('[data-act="emp-open"]'); await page.waitForTimeout(400);
+    await cue(page, { text: TXT.c11, target: '#eRows .row .wa-one', step: 11, total: T, pos: 'top', scroll: false }); await snap(page, 4.4);
     await clearCue(page); await page.evaluate(() => closeDlg());
     await page.evaluate(() => window.scrollTo(0, 0));
     await cue(page, { text: TXT.c12, target: '#sendTeam', step: 12, total: T, tap: false, scroll: false }); await snap(page, 4.4);

@@ -1,0 +1,116 @@
+<title>EA Transport Rehber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #eef1f5; --surface: #ffffff; --ink: #14213a; --muted: #5f6b7e; --line: #dde3eb;
+    --head: #13274a; --head-2: #1d3864; --head-ink: #ffffff; --brass: #b08a45; --brass-soft: #ecdcb8;
+    --focus: #6f95d4;
+    --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0c1422; --surface: #132036; --ink: #e6ebf3; --muted: #98a4b9; --line: #25365a;
+      --head: #0a1427; --head-2: #13254a; --brass: #cfa75d; --brass-soft: #e9d3a5; --focus: #8fb0ea;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0c1422; --surface: #132036; --ink: #e6ebf3; --muted: #98a4b9; --line: #25365a;
+    --head: #0a1427; --head-2: #13254a; --brass: #cfa75d; --brass-soft: #e9d3a5; --focus: #8fb0ea;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body); }
+  .top { background: linear-gradient(135deg, var(--head), var(--head-2)); color: var(--head-ink); border-bottom: 3px solid var(--brass); padding: 16px; }
+  .top-in { max-width: 980px; margin: 0 auto; display: flex; gap: 14px; align-items: center; }
+  .mark { width: 48px; height: 48px; flex: none; border: 2px solid var(--brass); border-radius: 8px; display: grid; place-items: center; font: 700 22px var(--f-display); color: var(--brass); }
+  .top h1 { margin: 0; font: 700 26px/1 var(--f-display); letter-spacing: .08em; }
+  .top p { margin: 5px 0 0; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--brass-soft); }
+  main { max-width: 980px; margin: 0 auto; padding-block: 18px 40px; padding-inline: 16px; display: grid; gap: 18px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tabs button { min-height: 44px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 15px var(--f-body); cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--brass); border-color: var(--brass); color: #14213a; }
+  .tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .tabs .sep { width: 1px; background: var(--line); margin: 4px 2px; }
+  .stage { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  video { width: 100%; max-width: 100%; aspect-ratio: 390 / 844; background: #0b1426; border-radius: 18px; box-shadow: 0 12px 34px rgba(8, 16, 32, .22); display: block; }
+  .info h2 { margin: 0 0 4px; font: 700 30px/1.1 var(--f-display); letter-spacing: .02em; text-wrap: balance; }
+  .info .meta { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+  .info ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+  .info .open { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; min-height: 48px; padding: 0 18px; border-radius: 10px; background: var(--head); color: #fff; font-weight: 700; text-decoration: none; }
+  :root[data-theme="dark"] .info .open { background: var(--brass); color: #14213a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .info .open { background: var(--brass); color: #14213a; } }
+  @media (max-width: 700px) {
+    .stage { grid-template-columns: 1fr; }
+    video { max-width: 380px; margin: 0 auto; }
+    .tabs button { flex: 1 1 auto; padding: 0 10px; }
+  }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="mark" aria-hidden="true">EA</div>
+    <div><h1>EA TRANSPORT</h1><p id="sub">Rehber videoları</p></div>
+  </div>
+</header>
+
+<main>
+  <div class="tabs" role="tablist" aria-label="Video">
+    <button role="tab" id="tab-tr" data-k="tr" aria-selected="true">Personel · TR</button>
+    <button role="tab" id="tab-en" data-k="en" aria-selected="false">Staff · EN</button>
+    <button role="tab" id="tab-da" data-k="da" aria-selected="false">Personale · DA</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button role="tab" id="tab-yonetici" data-k="yonetici" aria-selected="false">Yönetici · TR</button>
+  </div>
+
+  <section class="stage" role="tabpanel" aria-labelledby="tab-tr" id="panel">
+    <video id="vid" controls playsinline preload="metadata" poster="videolar/kapak-TR.jpg" src="videolar/personel-rehberi-TR.mp4"></video>
+    <div class="info">
+      <h2 id="h">Çalışma planımı nasıl görürüm?</h2>
+      <p class="meta" id="meta">Personel rehberi · yaklaşık 50 saniye · örnek verilerle</p>
+      <ol id="steps"></ol>
+      <a class="open" id="open" href="https://claude.ai/artifact/SXg1ahXMwkcWK6qSNAERhm" target="_blank" rel="noopener">Plana git →</a>
+    </div>
+  </section>
+</main>
+
+<script>
+// Her sekme: video dosyası, kapak, başlık ve adımlar. #tr, #en, #da, #yonetici bağlantıları doğrudan ilgili sekmeyi açar.
+const PLAN = 'https://claude.ai/artifact/SXg1ahXMwkcWK6qSNAERhm';
+const V = {
+  tr: { src: 'personel-rehberi-TR.mp4', poster: 'kapak-TR.jpg', lang: 'tr', sub: 'Rehber videoları',
+    h: 'Çalışma planımı nasıl görürüm?', meta: 'Personel rehberi · yaklaşık 50 saniye · örnek verilerle', open: 'Plana git →',
+    steps: ['Şefinden gelen WhatsApp mesajındaki bağlantıya dokun.', 'Üstten dilini seç: TR, EN veya DA.', '“Program” kutusundan adını seç.', 'Sarı satır bugün: tur, saat ve toplam saat yazar. 📝 satırı şefinin notudur.', 'Renkler: gri izin, sarı tatil, kırmızı hastalık.', 'Plan kendiliğinden güncellenir. Hep aynı bağlantıyı aç.'] },
+  en: { src: 'personel-rehberi-EN.mp4', poster: 'kapak-EN.jpg', lang: 'en', sub: 'Guide videos',
+    h: 'How do I see my work schedule?', meta: 'Staff guide · about 50 seconds · example data', open: 'Open the plan →',
+    steps: ['Tap the link in the WhatsApp message from your manager.', 'Pick your language at the top: TR, EN or DA.', 'Pick your name in the “Schedule” box.', 'The yellow row is today: route, hours and total. The 📝 line is a note from your manager.', 'Colours: grey = day off, yellow = holiday, red = sick.', 'The plan updates by itself. Always open the same link.'] },
+  da: { src: 'personel-rehberi-DA.mp4', poster: 'kapak-DA.jpg', lang: 'da', sub: 'Videoguides',
+    h: 'Hvordan ser jeg min arbejdsplan?', meta: 'Guide til medarbejdere · ca. 50 sekunder · eksempeldata', open: 'Åbn planen →',
+    steps: ['Tryk på linket i WhatsApp-beskeden fra din leder.', 'Vælg sprog øverst: TR, EN eller DA.', 'Vælg dit navn i feltet “Plan”.', 'Den gule række er i dag: tur, tider og timer. Linjen med 📝 er en note fra din leder.', 'Farver: grå = fri, gul = ferie, rød = syg.', 'Planen opdateres af sig selv. Åbn altid det samme link.'] },
+  yonetici: { src: 'yonetici-rehberi-TR.mp4', poster: 'kapak-YON.jpg', lang: 'tr', sub: 'Rehber videoları',
+    h: 'Planı hazırla, tek tuşla gönder', meta: 'Yönetici rehberi · yaklaşık 1 dakika · örnek verilerle', open: 'Plana git →',
+    steps: ['“Çalışanlar” ve “Turlar” ile isimleri ve güzergâhları bir kez gir.', 'Tek gün için güne dokun; çok gün için “⚡ Hızlı giriş”i aç, günlere dokun.', 'Gün başlığına dokunmak o günü tüm ekibe uygular. Yanlışsa “↶ Geri al”.', 'Değişiklikler kendiliğinden kaydedilir.', 'Yeşil “📲 Ekibe gönder”e dokun, WhatsApp’ta grubu seç, Gönder.', 'Tek kişiye göndermek için “Çalışanlar”da isminin yanındaki yeşil butonu kullan.'] }
+};
+const $ = s => document.querySelector(s);
+function show(k, push) {
+  const v = V[k] || V.tr;
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === k)));
+  $('#panel').setAttribute('aria-labelledby', 'tab-' + k);
+  const vid = $('#vid');
+  if (!vid.src.endsWith(v.src)) { vid.pause(); vid.poster = 'videolar/' + v.poster; vid.src = 'videolar/' + v.src; }
+  document.documentElement.lang = v.lang;
+  $('#sub').textContent = v.sub;
+  $('#h').textContent = v.h;
+  $('#meta').textContent = v.meta;
+  $('#steps').innerHTML = v.steps.map(s => `<li>${s}</li>`).join('');
+  $('#open').textContent = v.open;
+  $('#open').href = PLAN;
+  if (push) { try { history.replaceState(null, '', '#' + k); } catch (e) {} }
+}
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (b) show(b.dataset.k, true); });
+const start = (location.hash || '').slice(1);
+show(V[start] ? start : 'tr', false);
+</script>

@@ -50,22 +50,6 @@
     --c-work: #3d9e82; --c-hol: #bc8835; --c-off: #5f6a7e; --c-sick: #d9706a;
   }
 
-  /* Renk temaları (her cihaz kendi seçer) */
-  html[data-accent="forest"]   { --head: #16392c; --head-2: #1f5140; --accent: #1d4d3a; --seq: #2b7a5a; }
-  html[data-accent="burgundy"] { --head: #4a1826; --head-2: #6a2338; --accent: #5e1f31; --seq: #9a3552; }
-  html[data-accent="graphite"] { --head: #23272e; --head-2: #3a404a; --accent: #2d333b; --seq: #4f5b6d; }
-  html[data-accent="ocean"]    { --head: #0f3a4a; --head-2: #15566b; --accent: #12485c; --seq: #1f7896; }
-  @media (prefers-color-scheme: dark) {
-    html[data-accent="forest"]:not([data-theme="light"])   { --head: #0b1f18; --head-2: #143629; --seq: #5fbf95; }
-    html[data-accent="burgundy"]:not([data-theme="light"]) { --head: #22090f; --head-2: #3d1320; --seq: #e0829b; }
-    html[data-accent="graphite"]:not([data-theme="light"]) { --head: #111317; --head-2: #1f232a; --seq: #9aa7ba; }
-    html[data-accent="ocean"]:not([data-theme="light"])    { --head: #07202a; --head-2: #0e3746; --seq: #5cc0df; }
-  }
-  html[data-accent="forest"][data-theme="dark"]   { --head: #0b1f18; --head-2: #143629; --seq: #5fbf95; }
-  html[data-accent="burgundy"][data-theme="dark"] { --head: #22090f; --head-2: #3d1320; --seq: #e0829b; }
-  html[data-accent="graphite"][data-theme="dark"] { --head: #111317; --head-2: #1f232a; --seq: #9aa7ba; }
-  html[data-accent="ocean"][data-theme="dark"]    { --head: #07202a; --head-2: #0e3746; --seq: #5cc0df; }
-
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
   .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
@@ -88,9 +72,11 @@
   .chip.busy i { background: #9fb6de; animation: blink 1s infinite; }
   .chip button { background: var(--brass); color: #14213a; border: 0; border-radius: 999px; font: 700 12px var(--f-body); padding: 3px 10px; cursor: pointer; }
   @keyframes blink { 50% { opacity: .3; } }
-  .swatches { display: inline-flex; gap: 6px; align-items: center; }
-  .swatches button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; }
-  .swatches button[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 2px var(--brass); }
+  .modes { display: inline-flex; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; overflow: hidden; }
+  .modes button { background: none; border: 0; color: inherit; font: 600 13px var(--f-body); padding: 8px 11px; min-height: 36px; cursor: pointer; opacity: .7; display: inline-flex; gap: 5px; align-items: center; }
+  .modes button[aria-pressed="true"] { background: var(--brass); color: #14213a; opacity: 1; }
+  .modes button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .row .wa-one { min-width: 44px; }
 
   /* Özet kutuları */
   .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
@@ -262,7 +248,7 @@
   .acts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
   .acts .l { margin-right: auto; }
   .rows { display: grid; gap: 8px; margin-bottom: 12px; }
-  .row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; align-items: center; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto auto; gap: 6px; align-items: center; }
   .trow { display: grid; grid-template-columns: 70px 1fr 96px 96px auto; gap: 6px; align-items: center; }
   .trow .c { display: flex; gap: 4px; grid-column: 1 / -1; align-items: center; flex-wrap: wrap; }
   .trow + .trow { border-top: 1px solid var(--line); padding-top: 10px; }
@@ -320,6 +306,7 @@
     .nav { display: grid; grid-template-columns: auto 1fr auto; width: 100%; }
     .who { width: 100%; }
     .who select { flex: 1; min-width: 0; }
+    #howTo { width: 100%; }
     .chef { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
     .chef .btn { padding: 0 8px; font-size: 14px; }
     .chef .btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
@@ -338,6 +325,39 @@
     .brush-top b { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .cell.just, .chip.busy i { animation: none; } }
+
+  /* Kullanıcının seçtiği ekran modu (açık / koyu) her şeyin önüne geçer */
+  :root[data-mode="light"] {
+    color-scheme: light;
+    --bg: #eef1f5; --surface: #ffffff; --surface-2: #f5f7fa; --ink: #14213a; --muted: #5f6b7e;
+    --line: #dde3eb; --line-strong: #c3ccd8; --head: #13274a; --head-2: #1d3864; --head-ink: #ffffff;
+    --brass: #b08a45; --brass-soft: #ecdcb8; --focus: #6f95d4; --today: #fbf3df;
+    --accent: #13274a; --accent-ink: #ffffff; --wa: #1f7a4d; --wa-ink: #ffffff;
+    --work-bg: #e2f0e6; --work-fg: #276444; --work-bd: #bddcc7;
+    --off-bg:  #eceff3; --off-fg:  #5b6576; --off-bd:  #d3d9e1;
+    --sick-bg: #f6e0df; --sick-fg: #9b3534; --sick-bd: #e7c0bf;
+    --hol-bg:  #f7edcf; --hol-fg:  #83620f; --hol-bd:  #e5d39c;
+    --shadow: 0 1px 2px rgba(19, 39, 74, .06), 0 4px 14px rgba(19, 39, 74, .05);
+    --seq: #2f5fa7;
+    --c-work: #3f8a5c; --c-hol: #c49a2c; --c-off: #8c95a5; --c-sick: #c0504d;
+    --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  :root[data-mode="dark"] {
+    color-scheme: dark;
+    --bg: #0c1422; --surface: #132036; --surface-2: #192941; --ink: #e6ebf3; --muted: #98a4b9;
+    --line: #25365a; --line-strong: #34497a; --head: #0a1427; --head-2: #13254a; --head-ink: #f2f5fa;
+    --brass: #cfa75d; --brass-soft: #e9d3a5; --focus: #8fb0ea; --today: #2a2615;
+    --accent: #cfa75d; --accent-ink: #14213a; --wa: #2f9a64; --wa-ink: #07140d;
+    --work-bg: #183526; --work-fg: #93d4ab; --work-bd: #2a5a40;
+    --off-bg: #212c40;  --off-fg: #a6b1c3;  --off-bd: #34425c;
+    --sick-bg: #3b1f23; --sick-fg: #f0a8a6; --sick-bd: #6a3338;
+    --hol-bg: #372f17;  --hol-fg: #e7cb7a;  --hol-bd: #66552a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --seq: #6f9be0;
+    --c-work: #3d9e82; --c-hol: #bc8835; --c-off: #5f6a7e; --c-sick: #d9706a;
+  }
 </style>
 
 <div id="app"></div>
@@ -356,6 +376,7 @@
 const I18N = {
   tr: {
     locale: 'tr-TR', sub: 'Personel & Tur Planı',
+    light: 'Açık', dark: 'Koyu', howTo: '▶ Nasıl kullanılır?', videoGuide: '▶ Videolu anlatım', sendOne: 'WhatsApp ile gönder',
     color: 'Renk', kpiHours: 'Planlanan saat', kpiDays: 'Çalışma günü', kpiToday: 'Bugün çalışan', kpiAbsent: 'İzin · hasta · tatil',
     kpiOf: '{n} kişiden', kpiSub: 'bu ay, tüm ekip',
     chartHours: 'Aylık saat', chartDays: 'Gün dağılımı', daysN: '{n} gün',
@@ -382,7 +403,7 @@ const I18N = {
     note: 'Not (çalışan görür)', notePh: 'Örn. araç 34 EA 112, 06:45’te garajda', applyWeek: 'Bu haftanın tüm günlerine uygula (Pzt–Cmt)',
     clear: 'Temizle', cancel: 'Vazgeç', save: 'Kaydet', close: 'Kapat',
     dur: 'Süre: {h} saat', overnight: 'ertesi güne sarkıyor', noHours: 'Bu durumda saat sayılmaz.', badTime: 'Geçerli başlangıç ve bitiş saati girin.',
-    empsSub: 'İsimleri yazın, ↑ ↓ ile sıralayın.', addRow: '+ Yeni satır', del: 'Sil', sure: 'Emin misin?', namePh: 'Ad Soyad',
+    empsSub: 'İsimleri yazın, ↑ ↓ ile sıralayın. 📲 ile kişiye kendi programını gönderin.', addRow: '+ Yeni satır', del: 'Sil', sure: 'Emin misin?', namePh: 'Ad Soyad',
     toursSub: 'Kod takvimde görünür (örn. T1). Varsayılan saatler tur seçilince otomatik gelir.', addTour: '+ Yeni tur', tourPh: 'Güzergâh / tur adı',
     quickT: 'HIZLI GİRİŞ', quickHint: 'Bir güne dokun, seçim uygulanır. Gün başlığına dokun, o gün tüm ekibe uygulanır.',
     undo: '↶ Geri al', done: 'Bitti', undone: 'Geri alındı',
@@ -397,6 +418,7 @@ const I18N = {
   },
   en: {
     locale: 'en-GB', sub: 'Staff & Route Plan',
+    light: 'Light', dark: 'Dark', howTo: '▶ How it works', videoGuide: '▶ Video guide', sendOne: 'Send on WhatsApp',
     color: 'Colour', kpiHours: 'Planned hours', kpiDays: 'Work days', kpiToday: 'Working today', kpiAbsent: 'Off · sick · holiday',
     kpiOf: 'of {n}', kpiSub: 'this month, whole team',
     chartHours: 'Hours this month', chartDays: 'Day breakdown', daysN: '{n} days',
@@ -423,7 +445,7 @@ const I18N = {
     note: 'Note (visible to the employee)', notePh: 'e.g. vehicle 34 EA 112, at the depot 06:45', applyWeek: 'Apply to the whole week (Mon–Sat)',
     clear: 'Clear', cancel: 'Cancel', save: 'Save', close: 'Close',
     dur: 'Duration: {h} h', overnight: 'runs past midnight', noHours: 'No hours counted for this status.', badTime: 'Enter a valid start and end time.',
-    empsSub: 'Type the names, reorder with ↑ ↓.', addRow: '+ Add row', del: 'Delete', sure: 'Sure?', namePh: 'Full name',
+    empsSub: 'Type the names, reorder with ↑ ↓. Tap 📲 to send someone their own schedule.', addRow: '+ Add row', del: 'Delete', sure: 'Sure?', namePh: 'Full name',
     toursSub: 'The code shows in the calendar (e.g. T1). Default hours fill in when the route is picked.', addTour: '+ Add route', tourPh: 'Route name',
     quickT: 'QUICK ENTRY', quickHint: 'Tap a day to apply. Tap a date header to apply it to the whole team that day.',
     undo: '↶ Undo', done: 'Done', undone: 'Undone',
@@ -438,6 +460,7 @@ const I18N = {
   },
   da: {
     locale: 'da-DK', sub: 'Personale- & ruteplan',
+    light: 'Lys', dark: 'Mørk', howTo: '▶ Sådan virker det', videoGuide: '▶ Videoguide', sendOne: 'Send på WhatsApp',
     color: 'Farve', kpiHours: 'Planlagte timer', kpiDays: 'Arbejdsdage', kpiToday: 'På arbejde i dag', kpiAbsent: 'Fri · syg · ferie',
     kpiOf: 'af {n}', kpiSub: 'denne måned, hele holdet',
     chartHours: 'Timer denne måned', chartDays: 'Fordeling af dage', daysN: '{n} dage',
@@ -464,7 +487,7 @@ const I18N = {
     note: 'Note (vises for medarbejderen)', notePh: 'F.eks. bil 34 EA 112, i garagen kl. 06:45', applyWeek: 'Anvend på hele ugen (man–lør)',
     clear: 'Ryd', cancel: 'Annuller', save: 'Gem', close: 'Luk',
     dur: 'Varighed: {h} t', overnight: 'går over midnat', noHours: 'Der tælles ingen timer for denne status.', badTime: 'Angiv et gyldigt start- og sluttidspunkt.',
-    empsSub: 'Skriv navnene, sorter med ↑ ↓.', addRow: '+ Tilføj række', del: 'Slet', sure: 'Sikker?', namePh: 'Fulde navn',
+    empsSub: 'Skriv navnene, sorter med ↑ ↓. Tryk 📲 for at sende en medarbejder sin egen plan.', addRow: '+ Tilføj række', del: 'Slet', sure: 'Sikker?', namePh: 'Fulde navn',
     toursSub: 'Koden vises i kalenderen (f.eks. T1). Standardtider udfyldes, når turen vælges.', addTour: '+ Tilføj tur', tourPh: 'Turens navn',
     quickT: 'HURTIG INDTASTNING', quickHint: 'Tryk på en dag for at anvende. Tryk på en datooverskrift for hele holdet den dag.',
     undo: '↶ Fortryd', done: 'Færdig', undone: 'Fortrudt',
@@ -481,7 +504,8 @@ const I18N = {
 const LANGS = [['tr', 'TR'], ['en', 'EN'], ['da', 'DA']];
 const STATUS_KEYS = ['work', 'off', 'sick', 'hol'];
 const STATUS_CLS = { work: 'st-work', off: 'st-off', sick: 'st-sick', hol: 'st-hol' };
-const ACCENTS = [['navy', '#1d3864'], ['ocean', '#15566b'], ['forest', '#1f5140'], ['burgundy', '#6a2338'], ['graphite', '#3a404a']];
+// Rehber videoları ayrı, sabit bir sayfada (plan her kayıtta yeniden yayınlandığı için)
+const GUIDE_URL = 'https://claude.ai/artifact/69orq51Zyj43L76AscxGr8';
 // Herkese tek mesaj: üç dilde birden (ekip karışık dilli olabilir)
 const MSG_TEAM = 'EA Transport · Çalışma planı / Work schedule / Arbejdsplan\n{url}\n🇹🇷 Adını seç, programını gör.\n🇬🇧 Pick your name to see your schedule.\n🇩🇰 Vælg dit navn og se din plan.';
 const TOUR_COLORS = ['#3b6fb6', '#1f8a86', '#7a55b3', '#c0702a', '#b8456b', '#6b7d2a', '#5a6b85'];
@@ -503,9 +527,16 @@ function pickLang() {
   return nav === 'da' ? 'da' : nav === 'en' ? 'en' : 'tr';
 }
 let lang = pickLang();
-let accent = sGet('l', 'ea.accent') || 'navy';
-function applyAccent() { if (accent === 'navy') document.documentElement.removeAttribute('data-accent'); else document.documentElement.setAttribute('data-accent', accent); }
-applyAccent();
+// Ekran modu: açık / koyu (her cihaz kendi seçer; seçilmezse telefonun ayarı)
+let mode = sGet('l', 'ea.mode') || '';
+function applyMode() { if (mode) document.documentElement.setAttribute('data-mode', mode); else document.documentElement.removeAttribute('data-mode'); }
+function effectiveMode() {
+  if (mode) return mode;
+  const th = document.documentElement.getAttribute('data-theme');
+  if (th === 'dark' || th === 'light') return th;
+  return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+applyMode();
 function t(k, vars) {
   let s = I18N[lang][k] ?? I18N.tr[k] ?? k;
   if (vars && typeof s === 'string') for (const [a, b] of Object.entries(vars)) s = s.split('{' + a + '}').join(b);
@@ -657,8 +688,9 @@ function renderShell() {
       <div class="top-right">
         <span class="month" id="monthLabel"></span>
         <span class="chip" id="chip"></span>
-        <div class="swatches" role="group" aria-label="${esc(t('color'))}">
-          ${ACCENTS.map(([k, c]) => `<button data-act="accent" data-a="${k}" style="background:${c}" aria-label="${esc(t('color'))} ${k}" aria-pressed="${k === accent}"></button>`).join('')}
+        <div class="modes" role="group" aria-label="${esc(t('light'))} / ${esc(t('dark'))}">
+          <button data-act="mode" data-m="light" aria-pressed="${effectiveMode() === 'light'}">☀ ${t('light')}</button>
+          <button data-act="mode" data-m="dark" aria-pressed="${effectiveMode() === 'dark'}">☾ ${t('dark')}</button>
         </div>
         <div class="langs" role="group" aria-label="Dil / Language / Sprog">
           ${LANGS.map(([c, lbl]) => `<button data-act="lang" data-l="${c}" aria-pressed="${c === lang}">${lbl}</button>`).join('')}
@@ -674,6 +706,7 @@ function renderShell() {
         <button class="btn" data-act="next">${t('next')}</button>
       </div>
       <div class="who"><label for="who">${t('schedule')}:</label><select id="who"></select></div>
+      <a class="btn" id="howTo" href="${GUIDE_URL}#${lang}" target="_blank" rel="noopener">${t('howTo')}</a>
       <div class="grow"></div>
       <div class="chef" id="chefBar" hidden>
         <button class="btn" data-act="brush" id="brushBtn" aria-pressed="false">${t('quick')}</button>
@@ -681,13 +714,12 @@ function renderShell() {
         <button class="btn" data-act="emp-open">${t('emps')}</button>
         <button class="btn" data-act="tour-open">${t('tours')}</button>
         <a class="btn wa" id="sendTeam" href="#" target="_blank" rel="noopener">${t('sendTeam')}</a>
-        <button class="btn" data-act="share-open">${t('personal')}</button>
       </div>
     </div>
     <div class="guide" id="guide" hidden>
       <div class="ic" aria-hidden="true">📲</div>
       <div><b>${t('guideT')}</b><ol><li>${t('guide1')}</li><li>${t('guide2')}</li><li>${t('guide3')}</li></ol></div>
-      <button class="btn sm" data-act="guide-ok">${t('gotIt')}</button>
+      <div style="display:grid;gap:6px"><a class="btn sm" href="${GUIDE_URL}#yonetici" target="_blank" rel="noopener">${t('videoGuide')}</a><button class="btn sm" data-act="guide-ok">${t('gotIt')}</button></div>
     </div>
     <section class="panel" id="personView" hidden></section>
     <div id="teamView" style="display:grid;gap:16px">
@@ -1081,6 +1113,7 @@ function drawEmp() {
       <input type="text" id="emp-${i}" value="${esc(e.name)}" maxlength="40" placeholder="${esc(e.id ? t('empN', { n: k + 1 }) : t('namePh'))}" aria-label="${esc(t('namePh'))}">
       <button class="btn sm" data-act="e-up" ${k === 0 ? 'disabled' : ''} aria-label="↑">↑</button>
       <button class="btn sm" data-act="e-down" ${k === vis.length - 1 ? 'disabled' : ''} aria-label="↓">↓</button>
+      ${e.id && plan.shareUrl ? `<a class="btn sm wa wa-one" href="${esc(waLink(t('msgOne', { name: e.name || t('empN', { n: k + 1 }), url: plan.shareUrl + '#' + e.id })))}" target="_blank" rel="noopener" aria-label="${esc(t('sendOne'))}" title="${esc(t('sendOne'))}">📲</a>` : '<span></span>'}
       <button class="btn sm warn" data-act="e-del">${e.arm ? t('sure') : t('del')}</button>
     </div>`).join('') || `<div class="empty">${t('noEmps')}</div>`;
 }
@@ -1187,7 +1220,7 @@ document.addEventListener('click', ev => {
   const el = ev.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act;
   switch (a) {
-    case 'accent': accent = el.dataset.a; sSet('l', 'ea.accent', accent); applyAccent(); document.querySelectorAll('.swatches button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.a === accent))); break;
+    case 'mode': mode = el.dataset.m; sSet('l', 'ea.mode', mode); applyMode(); document.querySelectorAll('.modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === mode))); break;
     case 'guide-ok': sSet('l', 'ea.guideOk', '1'); renderSend(); break;
     case 'lang': lang = el.dataset.l; sSet('l', 'ea.lang', lang); renderShell(); render(); break;
     case 'prev': go(-1); break;
