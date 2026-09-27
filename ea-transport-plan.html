@@ -72,6 +72,9 @@
   .chip.busy i { background: #9fb6de; animation: blink 1s infinite; }
   .chip button { background: var(--brass); color: #14213a; border: 0; border-radius: 999px; font: 700 12px var(--f-body); padding: 3px 10px; cursor: pointer; }
   @keyframes blink { 50% { opacity: .3; } }
+  .vtabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+  #guideVid { display: block; width: 100%; max-width: 360px; max-height: 70vh; aspect-ratio: 390 / 844; margin: 0 auto; background: #0b1426; border-radius: 14px; }
+  #vidErr a { color: inherit; word-break: break-all; }
   .modes { display: inline-flex; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; overflow: hidden; }
   .modes button { background: none; border: 0; color: inherit; font: 600 13px var(--f-body); padding: 8px 11px; min-height: 36px; cursor: pointer; opacity: .7; display: inline-flex; gap: 5px; align-items: center; }
   .modes button[aria-pressed="true"] { background: var(--brass); color: #14213a; opacity: 1; }
@@ -376,6 +379,7 @@
 const I18N = {
   tr: {
     locale: 'tr-TR', sub: 'Personel & Tur Planı',
+    vidErr: 'Video açılamadı. Yedek rehber sayfası:',
     light: 'Açık', dark: 'Koyu', howTo: '▶ Nasıl kullanılır?', videoGuide: '▶ Videolu anlatım', sendOne: 'WhatsApp ile gönder',
     color: 'Renk', kpiHours: 'Planlanan saat', kpiDays: 'Çalışma günü', kpiToday: 'Bugün çalışan', kpiAbsent: 'İzin · hasta · tatil',
     kpiOf: '{n} kişiden', kpiSub: 'bu ay, tüm ekip',
@@ -418,6 +422,7 @@ const I18N = {
   },
   en: {
     locale: 'en-GB', sub: 'Staff & Route Plan',
+    vidErr: 'The video could not load. Backup guide page:',
     light: 'Light', dark: 'Dark', howTo: '▶ How it works', videoGuide: '▶ Video guide', sendOne: 'Send on WhatsApp',
     color: 'Colour', kpiHours: 'Planned hours', kpiDays: 'Work days', kpiToday: 'Working today', kpiAbsent: 'Off · sick · holiday',
     kpiOf: 'of {n}', kpiSub: 'this month, whole team',
@@ -460,6 +465,7 @@ const I18N = {
   },
   da: {
     locale: 'da-DK', sub: 'Personale- & ruteplan',
+    vidErr: 'Videoen kunne ikke indlæses. Reserveside:',
     light: 'Lys', dark: 'Mørk', howTo: '▶ Sådan virker det', videoGuide: '▶ Videoguide', sendOne: 'Send på WhatsApp',
     color: 'Farve', kpiHours: 'Planlagte timer', kpiDays: 'Arbejdsdage', kpiToday: 'På arbejde i dag', kpiAbsent: 'Fri · syg · ferie',
     kpiOf: 'af {n}', kpiSub: 'denne måned, hele holdet',
@@ -504,8 +510,14 @@ const I18N = {
 const LANGS = [['tr', 'TR'], ['en', 'EN'], ['da', 'DA']];
 const STATUS_KEYS = ['work', 'off', 'sick', 'hol'];
 const STATUS_CLS = { work: 'st-work', off: 'st-off', sick: 'st-sick', hol: 'st-hol' };
-// Rehber videoları ayrı, sabit bir sayfada (plan her kayıtta yeniden yayınlandığı için)
+// Rehber videoları bu sayfanın yanındaki dosyalar; açılmazsa yedek rehber sayfası
 const GUIDE_URL = 'https://claude.ai/artifact/69orq51Zyj43L76AscxGr8';
+const VIDEOS = {
+  tr: { file: 'videolar/personel-rehberi-TR.mp4', poster: 'videolar/kapak-TR.jpg', label: 'Personel · TR' },
+  en: { file: 'videolar/personel-rehberi-EN.mp4', poster: 'videolar/kapak-EN.jpg', label: 'Staff · EN' },
+  da: { file: 'videolar/personel-rehberi-DA.mp4', poster: 'videolar/kapak-DA.jpg', label: 'Personale · DA' },
+  yonetici: { file: 'videolar/yonetici-rehberi-TR.mp4', poster: 'videolar/kapak-YON.jpg', label: 'Yönetici · TR' }
+};
 // Herkese tek mesaj: üç dilde birden (ekip karışık dilli olabilir)
 const MSG_TEAM = 'EA Transport · Çalışma planı / Work schedule / Arbejdsplan\n{url}\n🇹🇷 Adını seç, programını gör.\n🇬🇧 Pick your name to see your schedule.\n🇩🇰 Vælg dit navn og se din plan.';
 const TOUR_COLORS = ['#3b6fb6', '#1f8a86', '#7a55b3', '#c0702a', '#b8456b', '#6b7d2a', '#5a6b85'];
@@ -706,7 +718,7 @@ function renderShell() {
         <button class="btn" data-act="next">${t('next')}</button>
       </div>
       <div class="who"><label for="who">${t('schedule')}:</label><select id="who"></select></div>
-      <a class="btn" id="howTo" href="${GUIDE_URL}#${lang}" target="_blank" rel="noopener">${t('howTo')}</a>
+      <button class="btn" id="howTo" data-act="howto" data-k="${lang}">${t('howTo')}</button>
       <div class="grow"></div>
       <div class="chef" id="chefBar" hidden>
         <button class="btn" data-act="brush" id="brushBtn" aria-pressed="false">${t('quick')}</button>
@@ -719,7 +731,7 @@ function renderShell() {
     <div class="guide" id="guide" hidden>
       <div class="ic" aria-hidden="true">📲</div>
       <div><b>${t('guideT')}</b><ol><li>${t('guide1')}</li><li>${t('guide2')}</li><li>${t('guide3')}</li></ol></div>
-      <div style="display:grid;gap:6px"><a class="btn sm" href="${GUIDE_URL}#yonetici" target="_blank" rel="noopener">${t('videoGuide')}</a><button class="btn sm" data-act="guide-ok">${t('gotIt')}</button></div>
+      <div style="display:grid;gap:6px"><button class="btn sm" data-act="howto" data-k="yonetici">${t('videoGuide')}</button><button class="btn sm" data-act="guide-ok">${t('gotIt')}</button></div>
     </div>
     <section class="panel" id="personView" hidden></section>
     <div id="teamView" style="display:grid;gap:16px">
@@ -1031,7 +1043,7 @@ function undo() {
    PENCERELER
    ========================================================= */
 function openDlg(html, wide) { const ov = $('#ov'); ov.innerHTML = `<div class="dlg${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div>`; ov.hidden = false; }
-function closeDlg() { const ov = $('#ov'); ov.hidden = true; ov.innerHTML = ''; }
+function closeDlg() { const ov = $('#ov'); ov.querySelector('video')?.pause(); ov.hidden = true; ov.innerHTML = ''; }
 
 /* ---------- Gün ---------- */
 let editing = null;
@@ -1179,6 +1191,20 @@ function saveTours() {
   closeDlg(); commit(true);
 }
 
+/* ---------- Nasıl kullanılır? (video) ---------- */
+function openVideo(k) {
+  if (!VIDEOS[k]) k = lang;
+  const keys = canEdit ? ['tr', 'en', 'da', 'yonetici'] : ['tr', 'en', 'da'];
+  const v = VIDEOS[k];
+  openDlg(`<h3>${t('howTo').replace('▶ ', '')}</h3>
+    <div class="vtabs">${keys.map(x => `<button class="btn sm" data-act="howto" data-k="${x}" aria-pressed="${x === k}">${VIDEOS[x].label}</button>`).join('')}</div>
+    <video id="guideVid" controls playsinline preload="metadata" poster="${v.poster}" src="${v.file}"></video>
+    <p class="hint" id="vidErr" hidden>${t('vidErr')} <a href="${GUIDE_URL}#${k}" target="_blank" rel="noopener">${GUIDE_URL}</a></p>
+    <div class="acts" style="margin-top:12px"><button class="btn" data-act="dlg-close">${t('close')}</button></div>`);
+  const vid = $('#guideVid');
+  vid.addEventListener('error', () => { $('#vidErr').hidden = false; });
+}
+
 /* ---------- Paylaş (WhatsApp) ---------- */
 const waLink = text => 'https://wa.me/?text=' + encodeURIComponent(text);
 function openShare() {
@@ -1220,6 +1246,7 @@ document.addEventListener('click', ev => {
   const el = ev.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act;
   switch (a) {
+    case 'howto': openVideo(el.dataset.k); break;
     case 'mode': mode = el.dataset.m; sSet('l', 'ea.mode', mode); applyMode(); document.querySelectorAll('.modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === mode))); break;
     case 'guide-ok': sSet('l', 'ea.guideOk', '1'); renderSend(); break;
     case 'lang': lang = el.dataset.l; sSet('l', 'ea.lang', lang); renderShell(); render(); break;
